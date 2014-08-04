@@ -16,18 +16,18 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
 /**
  * Abstract Test Entity class, used to test the system works correctly with domain entities that inherit from
  * a base class.<br/>
  * Note that in order to have all of the fields of the entity correctly serialized, the base class must be serializable.
  */
-public abstract class BaseTestEntity implements IDeepType {
-    @DeepField(fieldName = "domain_name")
+public abstract class BaseTestEntity implements KinaType {
+    @Field(fieldName = "domain_name")
     protected String domain;
-    @DeepField(isPartOfPartitionKey = true)
+    @Field(isPartOfPartitionKey = true)
     private String id;
 
     public BaseTestEntity(String domain) {

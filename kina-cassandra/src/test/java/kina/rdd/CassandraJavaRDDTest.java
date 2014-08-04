@@ -30,7 +30,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import kina.config.CassandraConfigFactory;
 import kina.config.CassandraKinaConfig;
-import kina.context.AbstractDeepSparkContextTest;
+import kina.context.AbstractKinaContextAwareTest;
 import kina.embedded.CassandraServer;
 import kina.entity.CassandraCell;
 import kina.entity.Cell;
@@ -57,7 +57,7 @@ import static org.testng.Assert.*;
  * Integration tests for Java RDDs.
  */
 @Test(suiteName = "cassandraRddTests", dependsOnGroups = {"CassandraCellRDDTest"}, groups = {"CassandraJavaRDDTest"})
-public final class CassandraJavaRDDTest extends AbstractDeepSparkContextTest {
+public final class CassandraJavaRDDTest extends AbstractKinaContextAwareTest {
     private Logger logger = Logger.getLogger(getClass());
 
     private CassandraJavaRDD<TestEntity> rdd;

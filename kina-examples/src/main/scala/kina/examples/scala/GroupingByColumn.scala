@@ -41,7 +41,7 @@ object GroupingByColumn {
 
     // Creating the Kina Context where args are Spark Master and Job Name
     val p = new ContextProperties(args)
-    val deepContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     // Configure and initialize the RDD
     val config = CassandraConfigFactory.create(classOf[TweetEntity])
@@ -50,7 +50,7 @@ object GroupingByColumn {
       .initialize
 
     // Create the RDD
-    val rdd: RDD[TweetEntity] = deepContext.cassandraRDD(config)
+    val rdd: RDD[TweetEntity] = kinaContext.cassandraRDD(config)
 
     // grouping
     val groups: RDD[(String, Iterable[TweetEntity])] = rdd groupBy {

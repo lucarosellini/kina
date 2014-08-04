@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package kina.annotations;
+package kina.entity;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.Serializable;
 
 /**
- * Annotation to be used whenever we want to define an object to be used as an entity in Kina.
+ * Marker interface that should be implemented by all those
+ * beans that need to be used with Kina.
+ *
+ * @author Luca Rosellini <luca.rosellini@gmail.com>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface DeepEntity {
-
+public interface KinaType extends Serializable {
 }

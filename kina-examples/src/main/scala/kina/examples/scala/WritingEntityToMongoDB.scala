@@ -17,7 +17,7 @@ package kina.examples.scala
 
 import java.util.List
 
-import kina.config.{MongoConfigFactory, MongoKinaConfig, GenericDeepJobConfigMongoDB}
+import kina.config.{MongoConfigFactory, MongoKinaConfig, GenericMongoKinaConfig}
 import kina.context.MongoKinaContext
 import kina.rdd.mongodb.{MongoEntityRDD, MongoJavaRDD}
 import kina.testentity.MessageEntity
@@ -48,17 +48,17 @@ object WritingEntityToMongoDB {
 
     val p: ContextProperties = new ContextProperties(args)
 
-    val deepContext: MongoKinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext: MongoKinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     val inputConfigEntity: MongoKinaConfig[MessageEntity] = MongoConfigFactory.createMongoDB(classOf[MessageEntity]).host(host).database(database).collection(inputCollection).readPreference(readPreference).initialize
 
-    val inputRDDEntity: RDD[MessageEntity] = deepContext.mongoJavaRDD(inputConfigEntity)
+    val inputRDDEntity: RDD[MessageEntity] = kinaContext.mongoJavaRDD(inputConfigEntity)
 
     val outputConfigEntity: MongoKinaConfig[MessageEntity] = MongoConfigFactory.createMongoDB(classOf[MessageEntity]).host(host).database(database).collection(outputCollection).readPreference(readPreference).initialize
 
     MongoEntityRDD.saveEntity(inputRDDEntity, outputConfigEntity)
 
-    deepContext.stop
+    kinaContext.stop
   }
 
 

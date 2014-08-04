@@ -16,22 +16,22 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.bson.types.ObjectId;
 
 
-@DeepEntity
-public class MessageEntity implements IDeepType {
+@Entity
+public class MessageEntity implements KinaType {
 
     private static final long serialVersionUID = 7262854550753855586L;
 
-    @DeepField(fieldName = "_id", isPartOfPartitionKey = true)
+    @Field(fieldName = "_id", isPartOfPartitionKey = true)
     private ObjectId id;
 
 
-    @DeepField(fieldName = "text")
+    @Field(fieldName = "text")
     private String text;
 
     public ObjectId getId() {

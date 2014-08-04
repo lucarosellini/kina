@@ -27,13 +27,13 @@ import kina.exceptions.InstantiationException;
  * Given a list of names of machines, this comparator tries as much as he can
  * to put the hostname of the local machine on the first position of the list.
  */
-public class DeepPartitionLocationComparator implements Comparator<String> {
+public class KinaPartitionLocationComparator implements Comparator<String> {
     private final InetAddress hostname;
 
     /**
      * Default constructor. Automatically tries to resolve the name of the local machine.
      */
-    public DeepPartitionLocationComparator() {
+    public KinaPartitionLocationComparator() {
         try {
             this.hostname = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
@@ -46,7 +46,7 @@ public class DeepPartitionLocationComparator implements Comparator<String> {
      *
      * @param hostname the host name of the current machine.
      */
-    public DeepPartitionLocationComparator(String hostname) {
+    public KinaPartitionLocationComparator(String hostname) {
         try {
             this.hostname = InetAddress.getByName(hostname);
         } catch (UnknownHostException e) {

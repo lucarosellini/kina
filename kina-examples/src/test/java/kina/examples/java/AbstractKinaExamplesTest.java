@@ -16,23 +16,6 @@
 
 package kina.examples.java;
 
-import au.com.bytecode.opencsv.CSVReader;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.querybuilder.Batch;
-import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.google.common.io.Resources;
-import kina.context.KinaContext;
-import kina.embedded.CassandraServer;
-import kina.utils.Constants;
-import org.apache.cassandra.exceptions.ConfigurationException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
@@ -40,13 +23,31 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
+import com.google.common.io.Resources;
+import org.apache.commons.lang3.StringUtils;
+
+import au.com.bytecode.opencsv.CSVReader;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.querybuilder.Batch;
+import com.datastax.driver.core.querybuilder.Insert;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import kina.context.KinaContext;
+import kina.embedded.CassandraServer;
+import kina.utils.Constants;
+import org.apache.cassandra.exceptions.ConfigurationException;
+import org.apache.log4j.Logger;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+
 import static kina.utils.Utils.quote;
 import static org.testng.Assert.assertEquals;
 
 /**
  * Base class for all Kina Examples integration tests.
  */
-public class AbstractDeepExamplesTest {
+public class AbstractKinaExamplesTest {
     private Logger logger = Logger.getLogger(getClass());
     protected static KinaContext context;
     private static CassandraServer cassandraServer;
@@ -95,7 +96,7 @@ public class AbstractDeepExamplesTest {
     @BeforeSuite
     protected void initContextAndServer() throws ConfigurationException, IOException, InterruptedException {
         logger.info("instantiating context");
-        //context = new KinaContext("local", "deepSparkContextTest");
+        //context = new KinaContext("local", "kinaContextTest");
 
         String createKeyspace = "CREATE KEYSPACE " + KEYSPACE_NAME
                 + " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 2 };";

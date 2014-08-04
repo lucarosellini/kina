@@ -40,7 +40,7 @@ public class MongoCellRDDTest {
     public void testReadingRDD() {
 
         String hostConcat = MongoJavaRDDTest.HOST.concat(":").concat(MongoJavaRDDTest.PORT.toString());
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<Cells> inputConfigEntity = MongoConfigFactory.createMongoDB()
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -60,7 +60,7 @@ public class MongoCellRDDTest {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<Cells> inputConfigEntity = MongoConfigFactory.createMongoDB()
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -92,7 +92,7 @@ public class MongoCellRDDTest {
 //
 //        String hostConcat = HOST.concat(":").concat(PORT.toString());
 //
-//        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+//        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 //
 //        MongoKinaConfig<Cells> inputConfigEntity = MongoConfigFactory.createMongoDB()
 //                .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();

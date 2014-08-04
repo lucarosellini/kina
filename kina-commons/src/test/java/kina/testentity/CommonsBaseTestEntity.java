@@ -16,16 +16,16 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
 /**
  * Created by luca on 23/04/14.
  */
-public class CommonsBaseTestEntity implements IDeepType {
-    @DeepField(isPartOfPartitionKey = true)
+public class CommonsBaseTestEntity implements KinaType {
+    @Field(isPartOfPartitionKey = true)
     protected String id;
-    @DeepField(fieldName = "domain_name")
+    @Field(fieldName = "domain_name")
     protected String domain;
 
     public CommonsBaseTestEntity(String id, String domain) {

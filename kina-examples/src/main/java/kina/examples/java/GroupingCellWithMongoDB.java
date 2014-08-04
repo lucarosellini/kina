@@ -62,14 +62,14 @@ public final class GroupingCellWithMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
         MongoKinaConfig<Cells> inputConfigEntity =
 				        MongoConfigFactory.createMongoDB().host(host).database(database).collection(inputCollection).initialize();
 
-        JavaRDD<Cells> inputRDDEntity = deepContext.mongoJavaRDD(inputConfigEntity);
+        JavaRDD<Cells> inputRDDEntity = kinaContext.mongoJavaRDD(inputConfigEntity);
 
 
         JavaRDD<String> words =inputRDDEntity.flatMap(new FlatMapFunction<Cells, String>() {
@@ -113,6 +113,6 @@ public final class GroupingCellWithMongoDB {
 
         MongoCellRDD.saveCell(outputRDD.rdd(), outputConfigEntity);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

@@ -29,7 +29,7 @@ import org.apache.cassandra.db.marshal.UTF8Type;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface DeepField {
+public @interface Field {
 
     /**
      * used to specify an alternative database name for the current property.

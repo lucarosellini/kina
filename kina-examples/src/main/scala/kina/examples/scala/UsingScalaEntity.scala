@@ -55,11 +55,11 @@ object UsingScalaEntity {
     sparkConf.setMaster(p.getCluster)
     sparkConf.setSparkHome(p.getSparkHome)
     val sc = new SparkContext(sparkConf)
-    val deepContext: CassandraKinaContext = new CassandraKinaContext(sc);
-    doMain(args, deepContext, p)
+    val kinaContext: CassandraKinaContext = new CassandraKinaContext(sc);
+    doMain(args, kinaContext, p)
   }
 
-  private def doMain(args: Array[String], deepContext: CassandraKinaContext, p: ContextProperties) = {
+  private def doMain(args: Array[String], kinaContext: CassandraKinaContext, p: ContextProperties) = {
 
     // Configuration and initialization
     val config: CassandraKinaConfig[ScalaPageEntity] = CassandraConfigFactory.create(classOf[ScalaPageEntity])
@@ -68,7 +68,7 @@ object UsingScalaEntity {
       .initialize
 
     // Creating the RDD
-    val rdd = deepContext.cassandraRDD(config)
+    val rdd = kinaContext.cassandraRDD(config)
 
     val rddCount: Long = rdd.count
 
@@ -163,7 +163,7 @@ object UsingScalaEntity {
     println("avg: " + avg)
     println("variance: " + variance)
     println("stddev: " + stddev)
-    deepContext.stop
+    kinaContext.stop
   }
 
 }

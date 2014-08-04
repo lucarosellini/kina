@@ -68,7 +68,7 @@ public final class WritingEntityToCassandra {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
 
         // --- INPUT RDD
@@ -77,7 +77,7 @@ public final class WritingEntityToCassandra {
                 .keyspace(keyspaceName).table(inputTableName)
                 .initialize();
 
-        JavaRDD<PageEntity> inputRDD = deepContext.cassandraJavaRDD(inputConfig);
+        JavaRDD<PageEntity> inputRDD = kinaContext.cassandraJavaRDD(inputConfig);
 
         JavaPairRDD<String, PageEntity> pairRDD = inputRDD.mapToPair(new PairFunction<PageEntity, String,
                 PageEntity>() {
@@ -119,6 +119,6 @@ public final class WritingEntityToCassandra {
 
         CassandraRDD.saveRDDToCassandra(outputRDD, outputConfig);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

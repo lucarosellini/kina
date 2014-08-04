@@ -51,7 +51,7 @@ public final class ReadingCellFromMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
         QueryBuilder query = QueryBuilder.start();
@@ -71,13 +71,13 @@ public final class ReadingCellFromMongoDB {
                 .filterQuery(query)
                 .sort(bsonSort).fields(bsonFields).initialize();
 
-        RDD inputRDDEntity = deepContext.mongoRDD(inputConfigEntity);
+        RDD inputRDDEntity = kinaContext.mongoRDD(inputConfigEntity);
 
 
 	    LOG.info("count : " + inputRDDEntity.count());
 	    LOG.info("prints first cell  : " + inputRDDEntity.first());
 
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

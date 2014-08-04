@@ -325,7 +325,7 @@ Figure 2: The Stratio Deep shell welcome screen
 Step 1: Creating a RDD
 ----------------------
 
-When using the Stratio Deep shell, a deepContext object has been created already and is available for use. The deepContext is created from the SparkContext and tells Stratio Deep how to access the cluster. However the RDD needs more information to access Cassandra data such as the keyspace and table names. By default, the RDD will try to connect to “localhost” on port “9160”, this can be overridden by setting the host and port properties of the configuration object: Define a configuration object for the RDD that contains the connection string for Cassandra, namely the keyspace and the table name:
+When using the Stratio Deep shell, a kinaContext object has been created already and is available for use. The kinaContext is created from the SparkContext and tells Stratio Deep how to access the cluster. However the RDD needs more information to access Cassandra data such as the keyspace and table names. By default, the RDD will try to connect to “localhost” on port “9160”, this can be overridden by setting the host and port properties of the configuration object: Define a configuration object for the RDD that contains the connection string for Cassandra, namely the keyspace and the table name:
 
 ~~~~ {.code}
 scala> val config : ICassandraDeepJobConfig[Cells] = Cfg.create().host("localhost").rpcPort(9160).keyspace("crawler").table("Page").initialize
@@ -334,7 +334,7 @@ scala> val config : ICassandraDeepJobConfig[Cells] = Cfg.create().host("localhos
 Create an RDD in the Deep context using the configuration object:
 
 ~~~~ {.code}
-scala> val rdd: CassandraRDD[Cells] = deepContext.cassandraGenericRDD(config)
+scala> val rdd: CassandraRDD[Cells] = kinaContext.cassandraGenericRDD(config)
 ~~~~
 
 Step 2: Filtering data

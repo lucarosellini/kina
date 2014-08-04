@@ -17,17 +17,17 @@
 package kina.functions;
 
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import scala.Tuple2;
 
-import static kina.rdd.CassandraRDDUtils.deepType2tuple;
+import static kina.rdd.CassandraRDDUtils.kinaType2tuple;
 
 /**
- * Function that converts an IDeepType to tuple of two Cells.<br/>
+ * Function that converts an KinaType to tuple of two Cells.<br/>
  * The first Cells element contains the list of Cell elements that represent the key (partition + cluster key). <br/>
  * The second Cells element contains all the other columns.
  */
-public class DeepType2TupleFunction<T extends IDeepType> extends AbstractSerializableFunction<T, Tuple2<Cells, Cells>> {
+public class KinaType2TupleFunction<T extends KinaType> extends AbstractSerializableFunction<T, Tuple2<Cells, Cells>> {
 
     private static final long serialVersionUID = 3701384431140105598L;
 
@@ -36,6 +36,6 @@ public class DeepType2TupleFunction<T extends IDeepType> extends AbstractSeriali
      */
     @Override
     public Tuple2<Cells, Cells> apply(T e) {
-        return deepType2tuple(e);
+        return kinaType2tuple(e);
     }
 }

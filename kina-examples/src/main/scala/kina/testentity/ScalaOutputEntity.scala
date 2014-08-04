@@ -16,8 +16,8 @@
 
 package kina.testentity
 
-import kina.annotations.{DeepField, DeepEntity}
-import kina.entity.IDeepType
+import kina.annotations.{Field, Entity}
+import kina.entity.KinaType
 import scala.beans.BeanProperty
 import org.apache.cassandra.db.marshal.Int32Type
 
@@ -26,14 +26,14 @@ import org.apache.cassandra.db.marshal.Int32Type
  * Date..: 21-mar-2014
  */
 
-@DeepEntity class ScalaOutputEntity extends IDeepType {
+@Entity class ScalaOutputEntity extends KinaType {
 
   @BeanProperty
-  @DeepField(isPartOfPartitionKey = true)
+  @Field(isPartOfPartitionKey = true)
   var key: String = _
 
   @BeanProperty
-  @DeepField(validationClass = classOf[Int32Type])
+  @Field(validationClass = classOf[Int32Type])
   var value: Integer = _
 }
 

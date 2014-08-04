@@ -16,16 +16,16 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
 /**
  * Created by rcrespo on 18/06/14.
  */
 
-public class MongoDBTestEntity implements IDeepType {
+public class MongoDBTestEntity implements KinaType {
 
-    @DeepField(fieldName = "_id")
+    @Field(fieldName = "_id")
     private String id;
 
     public String getId() {

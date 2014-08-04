@@ -68,9 +68,9 @@ public class AggregatingData {
         String keyspaceName = "test";
         String tableName = "tweets";
 
-        // Creating the Deep Context where args are Spark Master and Job Name
+        // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
         // Creating a configuration for the RDD and initialize it
         CassandraKinaConfig<TweetEntity> config = CassandraConfigFactory.create(TweetEntity.class)
@@ -79,7 +79,7 @@ public class AggregatingData {
                 .initialize();
 
         // Creating the RDD
-        JavaRDD<TweetEntity> rdd = deepContext.cassandraJavaRDD(config);
+        JavaRDD<TweetEntity> rdd = kinaContext.cassandraJavaRDD(config);
 
         // grouping to get key-value pairs
         JavaPairRDD<String, Integer> groups = rdd.groupBy(new Function<TweetEntity, String>() {
@@ -136,7 +136,7 @@ public class AggregatingData {
         LOG.info("variance: " + variance.toString());
         LOG.info("stddev: " + stddev.toString());
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 
     public static Double getAvg() {

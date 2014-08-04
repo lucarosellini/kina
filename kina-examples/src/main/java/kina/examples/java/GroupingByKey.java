@@ -66,7 +66,7 @@ public final class GroupingByKey {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
 
         // Creating a configuration for the RDD and initialize it
@@ -76,7 +76,7 @@ public final class GroupingByKey {
                 .initialize();
 
         // Creating the RDD
-        CassandraJavaRDD<TweetEntity> rdd = (CassandraJavaRDD) deepContext.cassandraJavaRDD(config);
+        CassandraJavaRDD<TweetEntity> rdd = (CassandraJavaRDD) kinaContext.cassandraJavaRDD(config);
 
         // creating a key-value pairs RDD
         JavaPairRDD<String, TweetEntity> pairsRDD = rdd.mapToPair(new PairFunction<TweetEntity, String, TweetEntity>() {
@@ -113,7 +113,7 @@ public final class GroupingByKey {
 
         LOG.info("Autores: " + authors + " total: " + total);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 
     public static List<Tuple2<String, Integer>> getResult() {

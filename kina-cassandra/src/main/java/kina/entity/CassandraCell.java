@@ -17,11 +17,10 @@
 package kina.entity;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 import com.datastax.driver.core.DataType;
-import kina.annotations.DeepField;
+import kina.annotations.Field;
 import kina.exceptions.GenericException;
 import kina.exceptions.InstantiationException;
 import org.apache.cassandra.db.marshal.AbstractType;
@@ -122,14 +121,14 @@ public class CassandraCell extends Cell {
     }
 
     /**
-     * Constructs a Cell from a {@link kina.annotations.DeepField} property.
+     * Constructs a Cell from a {@link kina.annotations.Field} property.
      *
      * @param e     instance of the testentity whose field is going to generate a Cell.
      * @param field field that will generate the Cell.
-     * @param <E>   a subclass of IDeepType.
+     * @param <E>   a subclass of KinaType.
      * @return an instance of a Cell object for the provided parameters.
      */
-    public static <E extends IDeepType> Cell create(E e, Field field) {
+    public static <E extends KinaType> Cell create(E e, java.lang.reflect.Field field) {
         return new CassandraCell(e, field);
     }
 
@@ -210,10 +209,10 @@ public class CassandraCell extends Cell {
     /**
      * Private constructor.
      */
-    private CassandraCell(IDeepType e, Field field) {
+    private CassandraCell(KinaType e, java.lang.reflect.Field field) {
 
-        DeepField annotation = field.getAnnotation(DeepField.class);
-        this.cellName = deepFieldName(field);
+        Field annotation = field.getAnnotation(Field.class);
+        this.cellName = kinaFieldName(field);
         this.cellValue = getBeanFieldValue(e, field);
         this.isClusterKey = annotation.isPartOfClusterKey();
         this.isPartitionKey = annotation.isPartOfPartitionKey();

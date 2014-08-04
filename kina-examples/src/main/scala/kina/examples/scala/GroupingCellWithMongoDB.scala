@@ -39,9 +39,9 @@ final object GroupingCellWithMongoDB {
     val inputCollection: String = "input"
     val outputCollection: String = "output"
     val p: ContextProperties = new ContextProperties(args)
-    val deepContext: MongoKinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext: MongoKinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
     val inputConfigEntity: MongoKinaConfig[Cells] = MongoConfigFactory.createMongoDB.host(host).database(database).collection(inputCollection).initialize
-    val inputRDDEntity: RDD[Cells] = deepContext.mongoRDD(inputConfigEntity)
+    val inputRDDEntity: RDD[Cells] = kinaContext.mongoRDD(inputConfigEntity)
 
 
     val words: RDD[String] = inputRDDEntity flatMap {
@@ -61,7 +61,7 @@ final object GroupingCellWithMongoDB {
 
     MongoCellRDD.saveCell(outputRDD, outputConfigEntity)
 
-    deepContext.stop
+    kinaContext.stop
   }
 }
 

@@ -16,24 +16,24 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 
 /**
  * Author: Luca Rosellini
  */
 
-@DeepEntity
-public class DomainEntity implements IDeepType {
+@Entity
+public class DomainEntity implements KinaType {
 
     private static final long serialVersionUID = 7262854550753855586L;
 
-    @DeepField(fieldName = "domain", isPartOfPartitionKey = true)
+    @Field(fieldName = "domain", isPartOfPartitionKey = true)
     private String domain;
 
-    @DeepField(fieldName = "num_pages", validationClass = Int32Type.class)
+    @Field(fieldName = "num_pages", validationClass = Int32Type.class)
     private Integer numPages;
 
     public String getDomain() {

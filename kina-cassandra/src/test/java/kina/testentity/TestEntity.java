@@ -16,28 +16,28 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
+import kina.annotations.Entity;
+import kina.annotations.Field;
 import org.apache.cassandra.db.marshal.Int32Type;
 import org.apache.cassandra.db.marshal.LongType;
 
 /**
  * Entity test class, inherits field from {@link BaseTestEntity}
  */
-@DeepEntity
+@Entity
 public class TestEntity extends BaseTestEntity {
     private static final long serialVersionUID = -6242942929275890323L;
 
-    @DeepField
+    @Field
     private String url;
 
-    @DeepField(validationClass = Int32Type.class, fieldName = "response_time")
+    @Field(validationClass = Int32Type.class, fieldName = "response_time")
     private Integer responseTime;
 
-    @DeepField(fieldName = "response_code", validationClass = Int32Type.class)
+    @Field(fieldName = "response_code", validationClass = Int32Type.class)
     private Integer responseCode;
 
-    @DeepField(validationClass = LongType.class, fieldName = "download_time")
+    @Field(validationClass = LongType.class, fieldName = "download_time")
     private Long downloadTime;
 
     private String notMappedField;

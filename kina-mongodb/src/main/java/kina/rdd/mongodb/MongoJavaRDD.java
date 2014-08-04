@@ -17,7 +17,7 @@
 package kina.rdd.mongodb;
 
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.rdd.DeepMongoRDD;
+import org.apache.spark.rdd.KinaMongoRDD;
 import scala.reflect.ClassTag;
 import scala.reflect.ClassTag$;
 
@@ -35,7 +35,7 @@ public class MongoJavaRDD<W> extends JavaRDD<W> {
      *
      * @param rdd
      */
-    public MongoJavaRDD(DeepMongoRDD<W> rdd) {
+    public MongoJavaRDD(KinaMongoRDD<W> rdd) {
         super(rdd, ClassTag$.MODULE$.<W>apply(rdd.getConf().getEntityClass()));
     }
 
@@ -44,6 +44,6 @@ public class MongoJavaRDD<W> extends JavaRDD<W> {
      */
     @Override
     public ClassTag<W> classTag() {
-        return ClassTag$.MODULE$.<W>apply(((DeepMongoRDD<W>) this.rdd()).getConf().getEntityClass());
+        return ClassTag$.MODULE$.<W>apply(((KinaMongoRDD<W>) this.rdd()).getConf().getEntityClass());
     }
 }

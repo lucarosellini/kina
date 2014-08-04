@@ -56,7 +56,7 @@ public class MongoEntityRDDTest implements Serializable {
     @Test
     public void testReadingRDD() {
         String hostConcat = MongoJavaRDDTest.HOST.concat(":").concat(MongoJavaRDDTest.PORT.toString());
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<MessageTestEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(MessageTestEntity.class)
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -76,7 +76,7 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<MessageTestEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(MessageTestEntity.class)
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -108,7 +108,7 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<BookEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(BookEntity.class)
                 .host(hostConcat).database("book").collection("input")
@@ -203,7 +203,7 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "deepSparkContextTest");
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
 
         MongoKinaConfig<BookEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(BookEntity.class)
                 .host(hostConcat).database("book").collection("input").inputColumns("metadata").initialize();

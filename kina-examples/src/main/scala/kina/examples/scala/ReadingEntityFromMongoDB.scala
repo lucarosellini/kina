@@ -17,7 +17,7 @@ package kina.examples.scala
 
 import java.util.List
 
-import kina.config.{MongoConfigFactory, MongoKinaConfig, GenericDeepJobConfigMongoDB}
+import kina.config.{MongoConfigFactory, MongoKinaConfig, GenericMongoKinaConfig}
 import kina.context.MongoKinaContext
 import kina.rdd.mongodb.MongoJavaRDD
 import kina.testentity.MessageEntity
@@ -41,15 +41,15 @@ import org.apache.spark.rdd.RDD
 
     val p: ContextProperties = new ContextProperties(args)
 
-    val deepContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     val inputConfigEntity: MongoKinaConfig[MessageEntity] = MongoConfigFactory.createMongoDB(classOf[MessageEntity]).host(host).database(database).collection(inputCollection).initialize
 
-    val inputRDDEntity: RDD[MessageEntity] = deepContext.mongoJavaRDD(inputConfigEntity)
+    val inputRDDEntity: RDD[MessageEntity] = kinaContext.mongoJavaRDD(inputConfigEntity)
 
     System.out.println("count : " + inputRDDEntity.cache.count)
 
-    deepContext.stop
+    kinaContext.stop
 
   }
 

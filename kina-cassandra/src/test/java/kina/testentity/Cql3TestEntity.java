@@ -16,44 +16,44 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 
 /**
  * Created by luca on 03/02/14.
  */
-@DeepEntity
-public class Cql3TestEntity implements IDeepType {
+@Entity
+public class Cql3TestEntity implements KinaType {
 
     /**
      *
      */
     private static final long serialVersionUID = 4248945021023974172L;
 
-    @DeepField(isPartOfPartitionKey = true)
+    @Field(isPartOfPartitionKey = true)
     private String name;
 
-    @DeepField
+    @Field
     private String password;
 
-    @DeepField
+    @Field
     private String color;
 
-    @DeepField(isPartOfPartitionKey = true)
+    @Field(isPartOfPartitionKey = true)
     private String gender;
 
-    @DeepField
+    @Field
     private String food;
 
-    @DeepField(isPartOfClusterKey = true)
+    @Field(isPartOfClusterKey = true)
     private String animal;
 
-    @DeepField
+    @Field
     private String lucene;
 
-    @DeepField(validationClass = Int32Type.class, isPartOfClusterKey = true)
+    @Field(validationClass = Int32Type.class, isPartOfClusterKey = true)
     private Integer age;
 
     public Cql3TestEntity() {

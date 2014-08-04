@@ -401,10 +401,10 @@ Then start the Stratio Deep shell:
 $ stratio-deep-shell
 ~~~~
 
-In the Stratio Deep shell, a special interpreter-aware DeepSparkContext is already created for you, in the variable called deepContext. The TweetPojo JAR has to be added to this context so the workers can use TweetEntity objects.
+In the Stratio Deep shell, a special interpreter-aware DeepSparkContext is already created for you, in the variable called kinaContext. The TweetPojo JAR has to be added to this context so the workers can use TweetEntity objects.
 
 ~~~~ {.code}
-scala> deepContext.addJar("/path/to/jars/TweetPojo-0.0.1-SNAPSHOT.jar")
+scala> kinaContext.addJar("/path/to/jars/TweetPojo-0.0.1-SNAPSHOT.jar")
 ~~~~
 
 Import the entity object:
@@ -420,7 +420,7 @@ scala> val config = Cfg.create(classOf[TweetEntity]).host("localhost").rpcPort(9
 ~~~~
 
 ~~~~ {.code}
-scala> val rdd = deepContext.cassandraEntityRDD(config)
+scala> val rdd = kinaContext.cassandraEntityRDD(config)
 ~~~~
 
 Check the number of tweet objects in the RDD:

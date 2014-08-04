@@ -16,21 +16,21 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.bson.types.ObjectId;
 
 /**
  * Created by rcrespo on 18/06/14.
  */
-@DeepEntity
-public class MessageTestEntity implements IDeepType {
+@Entity
+public class MessageTestEntity implements KinaType {
 
-    @DeepField(fieldName = "_id")
+    @Field(fieldName = "_id")
     private ObjectId id;
 
-    @DeepField
+    @Field
     private String message;
 
     public ObjectId getId() {

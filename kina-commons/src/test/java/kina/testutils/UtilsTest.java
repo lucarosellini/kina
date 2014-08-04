@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.*;
 
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.exceptions.IOException;
 import kina.testentity.CommonsTestEntity;
@@ -38,7 +38,7 @@ public class UtilsTest {
     private static final String OUTPUT_COLUMN_FAMILY = "out_test_page";
 
 
-    class NotInstantiable implements IDeepType {
+    class NotInstantiable implements KinaType {
 
         private static final long serialVersionUID = -3311345712290429412L;
     }
@@ -46,12 +46,12 @@ public class UtilsTest {
 
 
     @Test
-    public void testFilterDeepFields() {
+    public void testFilterKinaFields() {
         Field[] fields = getAllFields(CommonsTestEntity.class);
 
         assertTrue(fields.length > 6);
 
-        fields = AnnotationUtils.filterDeepFields(CommonsTestEntity.class);
+        fields = AnnotationUtils.filterKinaFields(CommonsTestEntity.class);
 
         assertEquals(fields.length, 9);
     }
@@ -211,7 +211,7 @@ public class UtilsTest {
         assertTrue(fields.length >= 11);
     }
 
-    class TestSetterClass implements IDeepType {
+    class TestSetterClass implements KinaType {
         private Integer id;
         private UUID uuid;
         private String description;

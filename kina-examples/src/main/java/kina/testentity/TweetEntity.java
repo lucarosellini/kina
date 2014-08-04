@@ -16,39 +16,39 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.*;
 
 /**
  * Author: Emmanuelle Raffenne
  */
 
-@DeepEntity
-public class TweetEntity implements IDeepType {
+@Entity
+public class TweetEntity implements KinaType {
 
     private static final long serialVersionUID = 7743109162467182820L;
 
-    @DeepField(fieldName = "tweet_id", isPartOfPartitionKey = true, validationClass = UUIDType.class)
+    @Field(fieldName = "tweet_id", isPartOfPartitionKey = true, validationClass = UUIDType.class)
     private java.util.UUID tweetID;
 
-    @DeepField(fieldName = "tweet_date", validationClass = TimestampType.class)
+    @Field(fieldName = "tweet_date", validationClass = TimestampType.class)
     private java.util.Date tweetDate;
 
-    @DeepField(validationClass = UTF8Type.class)
+    @Field(validationClass = UTF8Type.class)
     private String author;
 
-    @DeepField(validationClass = SetType.class)
+    @Field(validationClass = SetType.class)
     private java.util.Set<String> hashtags;
 
-    @DeepField(fieldName = "favorite_count", validationClass = Int32Type.class)
+    @Field(fieldName = "favorite_count", validationClass = Int32Type.class)
     private Integer favoriteCount;
 
-    @DeepField(validationClass = UTF8Type.class)
+    @Field(validationClass = UTF8Type.class)
     private String content;
 
-    @DeepField(fieldName = "truncated", validationClass = BooleanType.class)
+    @Field(fieldName = "truncated", validationClass = BooleanType.class)
     private Boolean isTruncated;
 
     public java.util.UUID getTweetID() {

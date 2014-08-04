@@ -28,8 +28,8 @@ import static org.testng.Assert.assertEquals;
 /**
  * Test for the AggregatingData standalone example.
  */
-@Test(suiteName = "deepExamplesTests", groups = {"DeepExamplesTest"})
-public class DeepExamplesTest extends AbstractDeepExamplesTest {
+@Test(suiteName = "kinaExamplesTests", groups = {"KinaExamplesTest"})
+public class KinaExamplesTest extends AbstractKinaExamplesTest {
     String[] args = new String[]{
             "-m",
             "local",

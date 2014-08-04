@@ -69,7 +69,7 @@ public final class WritingCellToCassandra {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
 
         // --- INPUT RDD
@@ -78,7 +78,7 @@ public final class WritingCellToCassandra {
                 .keyspace(keyspaceName).table(inputTableName)
                 .initialize();
 
-        JavaRDD<Cells> inputRDD = deepContext.cassandraJavaRDD(inputConfig);
+        JavaRDD<Cells> inputRDD = kinaContext.cassandraJavaRDD(inputConfig);
 
         JavaPairRDD<String, Cells> pairRDD = inputRDD.mapToPair(new PairFunction<Cells, String, Cells>() {
             @Override
@@ -122,6 +122,6 @@ public final class WritingCellToCassandra {
 
         CassandraRDD.saveRDDToCassandra(outputRDD, outputConfig);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

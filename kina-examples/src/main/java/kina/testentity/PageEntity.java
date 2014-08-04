@@ -16,9 +16,9 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.IntegerType;
 import org.apache.cassandra.db.marshal.LongType;
 
@@ -28,36 +28,36 @@ import java.math.BigInteger;
  * Author: Luca Rosellini
  */
 
-@DeepEntity
-public class PageEntity implements IDeepType {
+@Entity
+public class PageEntity implements KinaType {
 
     private static final long serialVersionUID = -9213306241759793383L;
 
-    @DeepField(fieldName = "key", isPartOfPartitionKey = true)
+    @Field(fieldName = "key", isPartOfPartitionKey = true)
     private String id;
 
-    @DeepField(fieldName = "domainName")
+    @Field(fieldName = "domainName")
     private String domainName;
 
-    @DeepField
+    @Field
     private String url;
 
-    @DeepField
+    @Field
     private String charset;
 
-    @DeepField
+    @Field
     private String content;
 
-    @DeepField(fieldName = "downloadTime", validationClass = LongType.class)
+    @Field(fieldName = "downloadTime", validationClass = LongType.class)
     private Long downloadTime;
 
-    @DeepField(fieldName = "firstDownloadTime", validationClass = LongType.class)
+    @Field(fieldName = "firstDownloadTime", validationClass = LongType.class)
     private Long firstDownloadTime;
 
-    @DeepField(fieldName = "responseCode", validationClass = IntegerType.class)
+    @Field(fieldName = "responseCode", validationClass = IntegerType.class)
     private BigInteger responseCode;
 
-    @DeepField(fieldName = "responseTime", validationClass = LongType.class)
+    @Field(fieldName = "responseTime", validationClass = LongType.class)
     private Long responseTime;
 
     public String getCharset() {

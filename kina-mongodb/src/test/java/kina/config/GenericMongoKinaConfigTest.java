@@ -16,13 +16,13 @@
 
 package kina.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kina.entity.Cells;
 import kina.testentity.MessageTestEntity;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
@@ -31,7 +31,7 @@ import static org.testng.Assert.fail;
  * Created by rcrespo on 18/06/14.
  */
 @Test
-public class GenericConfigFactoryMongoDBTest {
+public class GenericMongoKinaConfigTest {
 
     private static final String DATATABASE_TEST = "test";
 

@@ -68,7 +68,7 @@ public final class ReadingEntityFromMongoDBReplicaSet {
         ContextProperties p = new ContextProperties(args);
 
         // creates Kina Spark Context (spark context wrapper)
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
@@ -78,12 +78,12 @@ public final class ReadingEntityFromMongoDBReplicaSet {
 
 
         // MongoJavaRDD
-        JavaRDD<MessageEntity> inputRDDEntity = deepContext.mongoJavaRDD(inputConfigEntity);
+        JavaRDD<MessageEntity> inputRDDEntity = kinaContext.mongoJavaRDD(inputConfigEntity);
 
 
         LOG.info("count : " + inputRDDEntity.cache().count());
 
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

@@ -52,16 +52,16 @@ object UsingScalaCollectionEntity {
     sparkConf.setMaster(p.getCluster)
     sparkConf.setSparkHome(p.getSparkHome)
     val sc = new SparkContext(sparkConf)
-    val deepContext = new CassandraKinaContext(sc);
+    val kinaContext = new CassandraKinaContext(sc);
 
     try {
-      doMain(args, deepContext, p)
+      doMain(args, kinaContext, p)
     } finally {
-      deepContext.stop
+      kinaContext.stop
     }
   }
 
-  private def doMain(args: Array[String], deepContext: CassandraKinaContext, p: ContextProperties) = {
+  private def doMain(args: Array[String], kinaContext: CassandraKinaContext, p: ContextProperties) = {
 
     // Configuration and initialization
     val config: CassandraKinaConfig[ScalaCollectionEntity] = CassandraConfigFactory.create(classOf[ScalaCollectionEntity])
@@ -70,7 +70,7 @@ object UsingScalaCollectionEntity {
       .initialize
 
     // Creating the RDD
-    val rdd = deepContext.cassandraRDD(config)
+    val rdd = kinaContext.cassandraRDD(config)
 
     val rddCount: Long = rdd.count
 

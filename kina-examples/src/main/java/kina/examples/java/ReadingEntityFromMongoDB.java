@@ -53,19 +53,19 @@ public final class ReadingEntityFromMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
         MongoKinaConfig<MessageEntity> inputConfigEntity =
 				        MongoConfigFactory.createMongoDB(MessageEntity.class).host(host).database(database).collection(inputCollection).initialize();
 
-        JavaRDD<MessageEntity> inputRDDEntity = deepContext.mongoJavaRDD(inputConfigEntity);
+        JavaRDD<MessageEntity> inputRDDEntity = kinaContext.mongoJavaRDD(inputConfigEntity);
 
 
 	    LOG.info("count : " + inputRDDEntity.cache().count());
 
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

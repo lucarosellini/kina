@@ -9,7 +9,7 @@ In the examples below, generic names have been used for the following objects:
 
 Replace them with your own object names before using these snippets.
 
--   [Creating a Deep Context](#creatingDeepContext)
+-   [Creating a Deep Context](#creatingKinaContext)
 -   [Creating a Cassandra RDD](#creatingCassandraRDD)
 -   [Grouping Tuples](#groupingTuples)
 -   [Map and Reduce](#mapReduce)
@@ -30,7 +30,7 @@ val job = "myjobname"
 val sparkHome = "/path/to/StratioDeep"
 val jarList = Array("/path/to/myfirstjar.jar", "/path/to/mysecondjar.jar")
 
-val deepContext: DeepSparkContext = new DeepSparkContext(cluster, job, sparkHome, jarList)
+val kinaContext: DeepSparkContext = new DeepSparkContext(cluster, job, sparkHome, jarList)
 ~~~~
 
 Java
@@ -42,7 +42,7 @@ String sparkHome = "/path/to/StratioDeep";
 String[] jarList = {"/path/to/myfirstjar.jar","/path/to/mysecondjar.jar"};
 
 // Creating the Deep Context where args are Spark Master and Job Name
-DeepSparkContext deepContext = new DeepSparkContext(cluster, job, sparkHome, jarList);
+DeepSparkContext kinaContext = new DeepSparkContext(cluster, job, sparkHome, jarList);
 ~~~~
 
 Cluster context
@@ -54,10 +54,10 @@ Scala
 val cluster = "spark://hostname:port"
 val job = "myjobname"
 
-val deepContext: DeepSparkContext = new DeepSparkContext(cluster, job)
+val kinaContext: DeepSparkContext = new DeepSparkContext(cluster, job)
 
 // Add jars to the context
-deepContext.addJar("/path/to/jarfile.jar")
+kinaContext.addJar("/path/to/jarfile.jar")
 ~~~~
 
 Java
@@ -67,10 +67,10 @@ String cluster = "spark://hostname:port";
 String job = "myJobName";
 
 // Creating the Deep Context where args are Spark Master and Job Name
-DeepSparkContext deepContext = new DeepSparkContext(cluster, job);
+DeepSparkContext kinaContext = new DeepSparkContext(cluster, job);
 
 // Add jars to the context
-deepContext.addJar("/path/to/jarfile.jar")
+kinaContext.addJar("/path/to/jarfile.jar")
 ~~~~
 
 Creating a Cassandra RDD
@@ -85,7 +85,7 @@ Scala
 
 ~~~~ {.prettyprint .lang-java}
 // Creating the Deep Context
-val deepContext: DeepSparkContext = new DeepSparkContext(cluster, job)
+val kinaContext: DeepSparkContext = new DeepSparkContext(cluster, job)
 
 // Configuration and initialization
 val config: ICassandraDeepJobConfig[Cells] = DeepJobConfigFactory.create()
@@ -94,14 +94,14 @@ val config: ICassandraDeepJobConfig[Cells] = DeepJobConfigFactory.create()
     .initialize
 
 // Creating the RDD
-val rdd: CassandraRDD[Cells] = deepContext.cassandraGenericRDD(config)
+val rdd: CassandraRDD[Cells] = kinaContext.cassandraGenericRDD(config)
 ~~~~
 
 Java
 
 ~~~~ {.prettyprint .lang-java}
 // Creating the Deep Context
-DeepSparkContext deepContext = new DeepSparkContext(cluster, job, sparkHome, jarList);
+DeepSparkContext kinaContext = new DeepSparkContext(cluster, job, sparkHome, jarList);
 
 // Configuration and initialization
 ICassandraDeepJobConfig<Cells> config = DeepJobConfigFactory.create()
@@ -110,7 +110,7 @@ ICassandraDeepJobConfig<Cells> config = DeepJobConfigFactory.create()
         .initialize();
 
 // Creating the RDD
-CassandraJavaRDD rdd = deepContext.cassandraJavaRDD(config);
+CassandraJavaRDD rdd = kinaContext.cassandraJavaRDD(config);
 ~~~~
 
 Entity RDD
@@ -122,7 +122,7 @@ Scala
 
 ~~~~ {.prettyprint .lang-java}
 // Create the Deep Context
-val deepContext: DeepSparkContext = new DeepSparkContext(cluster, job)
+val kinaContext: DeepSparkContext = new DeepSparkContext(cluster, job)
 
 // Configure and initialize the RDD
 val config = DeepJobConfigFactory.create(classOf[TableEntity])
@@ -131,14 +131,14 @@ val config = DeepJobConfigFactory.create(classOf[TableEntity])
                 .initialize
 
 // Create the RDD
-val rdd: CassandraRDD[TableEntity] = deepContext.cassandraEntityRDD(config)
+val rdd: CassandraRDD[TableEntity] = kinaContext.cassandraEntityRDD(config)
 ~~~~
 
 Java
 
 ~~~~ {.prettyprint .lang-java}
 // Creating the Deep Context
-DeepSparkContext deepContext = new DeepSparkContext(cluster, job);
+DeepSparkContext kinaContext = new DeepSparkContext(cluster, job);
 
 // Create a configuration for the RDD and initialize it
 ICassandraDeepJobConfig<TableEntity> config = DeepJobConfigFactory.create(TableEntity.class)
@@ -147,7 +147,7 @@ ICassandraDeepJobConfig<TableEntity> config = DeepJobConfigFactory.create(TableE
         .initialize();
 
 // Creating the RDD
-CassandraJavaRDD rdd = deepContext.cassandraJavaRDD(config);
+CassandraJavaRDD rdd = kinaContext.cassandraJavaRDD(config);
 ~~~~
 
 Grouping Tuples
@@ -304,7 +304,7 @@ val inputConfig = DeepJobConfigFactory.create()
     .keyspace(inputKeyspaceName).table(inputTableName)
     .initialize
 
-val inputRDD: CassandraRDD[Cells] = deepContext.cassandraGenericRDD(inputConfig)
+val inputRDD: CassandraRDD[Cells] = kinaContext.cassandraGenericRDD(inputConfig)
 
 val pairRDD: RDD[(String, Cells)] = inputRDD map {
     c:Cells => (c.getCellByName("columnName").getCellValue.asInstanceOf[String], c)
@@ -339,7 +339,7 @@ ICassandraDeepJobConfig<Cells> inputConfig = DeepJobConfigFactory.create()
         .keyspace(keyspaceName).table(inputTableName)
         .initialize();
 
-CassandraJavaRDD<Cells> inputRDD = deepContext.cassandraJavaRDD(inputConfig);
+CassandraJavaRDD<Cells> inputRDD = kinaContext.cassandraJavaRDD(inputConfig);
 
 JavaPairRDD<String,Cells> pairRDD = inputRDD.mapToPair(new PairFunction<Cells,String,Cells>() {
     @Override
@@ -390,7 +390,7 @@ val inputConfig = DeepJobConfigFactory.create(classOf[InputTableEntity])
     .keyspace(inputKeyspaceName).table(inputTableName)
     .initialize
 
-val inputRDD: CassandraRDD[InputTableEntity] = deepContext.cassandraEntityRDD(inputConfig)
+val inputRDD: CassandraRDD[InputTableEntity] = kinaContext.cassandraEntityRDD(inputConfig)
 
 val pairRDD: RDD[(String, InputTableEntity)] = inputRDD map {e:IntputTableEntity => (e.getKey, e)}
 
@@ -420,7 +420,7 @@ ICassandraDeepJobConfig<InputEntity> inputConfig = DeepJobConfigFactory.create(I
         .keyspace(keyspaceName).table(inputTableName)
         .initialize();
 
-CassandraJavaRDD<InputEntity> inputRDD = deepContext.cassandraJavaRDD(inputConfig);
+CassandraJavaRDD<InputEntity> inputRDD = kinaContext.cassandraJavaRDD(inputConfig);
 
 JavaPairRDD<String,InputEntity> pairRDD = inputRDD.mapToPair(new PairFunction<InputEntity,String,InputEntity>() {
     @Override

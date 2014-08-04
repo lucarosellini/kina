@@ -43,11 +43,11 @@ final object GroupingEntityWithMongoDB {
 
     val p: ContextProperties = new ContextProperties(args)
 
-    val deepContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     val inputConfigEntity: MongoKinaConfig[BookEntity] = MongoConfigFactory.createMongoDB(classOf[BookEntity]).host(host).database(database).collection(inputCollection).initialize
 
-    val inputRDDEntity: RDD[BookEntity] = deepContext.mongoRDD(inputConfigEntity)
+    val inputRDDEntity: RDD[BookEntity] = kinaContext.mongoRDD(inputConfigEntity)
 
     val words: RDD[String] = inputRDDEntity flatMap {
       e: BookEntity => (for (canto <- e.getCantoEntities) yield canto.getText.split(" ")).flatten
@@ -64,7 +64,7 @@ final object GroupingEntityWithMongoDB {
 
     MongoEntityRDD.saveEntity(outputRDD, outputConfigEntity)
 
-    deepContext.stop
+    kinaContext.stop
   }
 
 }

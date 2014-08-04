@@ -16,13 +16,13 @@
 
 package kina.partition.impl;
 
-import kina.cql.DeepTokenRange;
+import kina.cql.Range;
 import org.apache.spark.Partition;
 
 /**
  * Object that carries spark's partition information.
  */
-public class DeepPartition implements Partition {
+public class KinaPartition implements Partition {
 
     private static final int MAGIC_NUMBER = 41;
 
@@ -43,7 +43,7 @@ public class DeepPartition implements Partition {
      * the start and end token of the cassandra split mapped
      * by this partition and its list of replicas.
      */
-    private final DeepTokenRange splitWrapper;
+    private final Range splitWrapper;
 
     /**
      * Public constructor.
@@ -52,7 +52,7 @@ public class DeepPartition implements Partition {
      * @param idx   the index of the new partition (relative to the provided rdd id).
      * @param range the token range to wrap.
      */
-    public DeepPartition(int rddId, int idx, DeepTokenRange range) {
+    public KinaPartition(int rddId, int idx, Range range) {
 
         this.splitWrapper = range;
         this.rddId = rddId;
@@ -71,7 +71,7 @@ public class DeepPartition implements Partition {
             return false;
         }
 
-        DeepPartition that = (DeepPartition) o;
+        KinaPartition that = (KinaPartition) o;
 
         return idx == that.idx && rddId == that.rddId;
 
@@ -100,7 +100,7 @@ public class DeepPartition implements Partition {
      *
      * @return the wrapped token range.
      */
-    public DeepTokenRange splitWrapper() {
+    public Range splitWrapper() {
         return this.splitWrapper;
     }
 
@@ -109,7 +109,7 @@ public class DeepPartition implements Partition {
      */
     @Override
     public String toString() {
-        return "DeepPartition{" +
+        return "KinaPartition{" +
                 "rddId=" + rddId +
                 ", idx=" + idx +
                 ", splitWrapper=" + splitWrapper +

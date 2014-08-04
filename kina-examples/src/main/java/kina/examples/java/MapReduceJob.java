@@ -64,7 +64,7 @@ public final class MapReduceJob {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
 
         // Creating a configuration for the RDD and initialize it
@@ -74,7 +74,7 @@ public final class MapReduceJob {
                 .initialize();
 
         // Creating the RDD
-        JavaRDD<TweetEntity> rdd = deepContext.cassandraJavaRDD(config);
+        JavaRDD<TweetEntity> rdd = kinaContext.cassandraJavaRDD(config);
 
         // Map stage: Getting key-value pairs from the RDD
         JavaPairRDD<String, Integer> pairsRDD = rdd.mapToPair(new PairFunction<TweetEntity, String, Integer>() {
@@ -99,6 +99,6 @@ public final class MapReduceJob {
             LOG.info(t._1() + ": " + t._2().toString());
         }
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

@@ -16,30 +16,30 @@
 
 package kina.config;
 
-
 import kina.entity.Cells;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 /**
- * Created by rcrespo on 16/07/14.
+ * Cell-based configuration object.
+ *
+ * @author Luca Rosellini <luca.rosellini@gmail.com>
  */
-@Test
-public class CellDeepJobConfigMongoDBTest {
+public final class CellCassandraKinaConfig extends GenericCassandraKinaConfig<Cells> {
 
+    private static final long serialVersionUID = -598862509865396541L;
+    private Cells dummyCells;
 
-    @Test
-    public void createTest() {
-
-        GenericDeepJobConfigMongoDB<Cells> cellDeepJobConfigMongoDB = new CellDeepJobConfigMongoDB();
-
-        assertNotNull(cellDeepJobConfigMongoDB);
-
-        assertEquals(cellDeepJobConfigMongoDB.getEntityClass(), Cells.class);
-
+    public CellCassandraKinaConfig(Boolean isWriteConfig) {
+        this.isWriteConfig = isWriteConfig;
     }
 
+    {
+        dummyCells = new Cells("dummyCellsTable");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<Cells> getEntityClass() {
+        return (Class<Cells>) dummyCells.getClass();
+    }
 
 }

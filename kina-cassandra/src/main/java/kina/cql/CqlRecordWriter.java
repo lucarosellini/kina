@@ -52,9 +52,9 @@ import static kina.utils.Utils.quote;
 /**
  * Handles the distributed write to cassandra in batch.
  */
-public class DeepCqlRecordWriter implements AutoCloseable {
+public class CqlRecordWriter implements AutoCloseable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DeepCqlRecordWriter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CqlRecordWriter.class);
 
     // handles for clients for each range exhausted in the threadpool
     private final Map<Token, RangeClient> clients;
@@ -73,7 +73,7 @@ public class DeepCqlRecordWriter implements AutoCloseable {
      * @param context
      * @param writeConfig
      */
-    public DeepCqlRecordWriter(TaskContext context, CassandraKinaConfig writeConfig) {
+    public CqlRecordWriter(TaskContext context, CassandraKinaConfig writeConfig) {
         this.clients = new HashMap<>();
         this.removedClients = new HashMap<>();
         this.writeConfig = writeConfig;

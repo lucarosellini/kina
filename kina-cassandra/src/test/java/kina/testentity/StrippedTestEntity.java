@@ -16,23 +16,23 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 
-@DeepEntity
-public class StrippedTestEntity implements IDeepType {
+@Entity
+public class StrippedTestEntity implements KinaType {
 
     private static final long serialVersionUID = -7394476231513436262L;
 
-    @DeepField
+    @Field
     private String id;
 
-    @DeepField
+    @Field
     private String url;
 
-    @DeepField(validationClass = Int32Type.class, fieldName = "response_time")
+    @Field(validationClass = Int32Type.class, fieldName = "response_time")
     private Integer responseTime;
 
     public StrippedTestEntity(TestEntity te) {

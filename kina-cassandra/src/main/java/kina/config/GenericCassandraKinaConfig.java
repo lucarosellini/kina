@@ -44,8 +44,8 @@ import static kina.utils.Utils.quote;
  * Base class for all config implementations providing default implementations for methods
  * defined in {@link KinaConfig}.
  */
-public abstract class GenericDeepJobConfig<T> implements CassandraKinaConfig<T>, AutoCloseable {
-    private static final Logger LOG = Logger.getLogger("kina.config.GenericDeepJobConfig");
+public abstract class GenericCassandraKinaConfig<T> implements CassandraKinaConfig<T>, AutoCloseable {
+    private static final Logger LOG = Logger.getLogger("kina.config.GenericCassandraKinaConfig");
     private static final long serialVersionUID = -7179376653643603038L;
     private String partitionerClassName = "org.apache.cassandra.dht.Murmur3Partitioner";
 
@@ -183,7 +183,7 @@ public abstract class GenericDeepJobConfig<T> implements CassandraKinaConfig<T>,
      */
     protected void checkInitialized() {
         if (!isInitialized) {
-            throw new IllegalAccessException("DeepJobConfig has not been initialized!");
+            throw new IllegalAccessException("KinaConfig has not been initialized!");
         }
     }
 

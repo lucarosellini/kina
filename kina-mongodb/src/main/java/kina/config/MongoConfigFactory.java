@@ -17,7 +17,7 @@
 package kina.config;
 
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,17 +36,17 @@ public class MongoConfigFactory {
      * @return a new cell-based MongoDB job configuration object.
      */
     public static MongoKinaConfig<Cells> createMongoDB() {
-        return new CellDeepJobConfigMongoDB();
+        return new CellMongoKinaConfig();
     }
 
     /**
      * Creates a new entity-based MongoDB job configuration object.
      *
      * @param entityClass the class instance of the entity class that will be used to map db objects to Java objects.
-     * @param <T>         the generic type of the entity object implementing IDeepType.
+     * @param <T>         the generic type of the entity object implementing KinaType.
      * @return a new entity-based MongoDB job configuration object.
      */
-    public static <T extends IDeepType> MongoKinaConfig<T> createMongoDB(Class<T> entityClass) {
-        return new EntityDeepJobConfigMongoDB<>(entityClass);
+    public static <T extends KinaType> MongoKinaConfig<T> createMongoDB(Class<T> entityClass) {
+        return new EntityMongoKinaConfig<>(entityClass);
     }
 }

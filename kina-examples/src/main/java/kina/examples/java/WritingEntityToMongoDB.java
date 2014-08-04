@@ -60,14 +60,14 @@ public final class WritingEntityToMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
         MongoKinaConfig<MessageEntity> inputConfigEntity =
 				        MongoConfigFactory.createMongoDB(MessageEntity.class).host(host).database(database).collection(inputCollection).readPreference(readPreference).initialize();
 
-        RDD<MessageEntity> inputRDDEntity = deepContext.mongoRDD(inputConfigEntity);
+        RDD<MessageEntity> inputRDDEntity = kinaContext.mongoRDD(inputConfigEntity);
 
 
         MongoKinaConfig<MessageEntity> outputConfigEntityPruebaGuardado =
@@ -77,7 +77,7 @@ public final class WritingEntityToMongoDB {
         MongoEntityRDD.saveEntity(inputRDDEntity, outputConfigEntityPruebaGuardado);
 
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 
 

@@ -18,10 +18,10 @@ package kina.config;
 
 import java.lang.annotation.AnnotationTypeMismatchException;
 
-import kina.context.AbstractDeepSparkContextTest;
+import kina.context.AbstractKinaContextAwareTest;
 import kina.embedded.CassandraServer;
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.exceptions.IllegalAccessException;
 import kina.exceptions.NoSuchFieldException;
 import kina.testentity.TestEntity;
@@ -33,10 +33,10 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.fail;
 
-@Test(suiteName = "cassandraRddTests", groups = {"GenericDeepJobConfigTest"},
+@Test(suiteName = "cassandraRddTests", groups = {"GenericConfigFactoryTest"},
         dependsOnGroups = {"CassandraJavaRDDTest"})
-public class GenericConfigFactoryTest extends AbstractDeepSparkContextTest {
-    class NotAnnotatedTestEntity implements IDeepType {
+public class GenericConfigFactoryTest extends AbstractKinaContextAwareTest {
+    class NotAnnotatedTestEntity implements KinaType {
         private static final long serialVersionUID = -2603126590709315326L;
     }
 

@@ -19,7 +19,7 @@ package kina.config;
 import java.io.Serializable;
 
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,7 +45,7 @@ public final class CassandraConfigFactory implements Serializable {
      * @return a new cell-based job configuration object.
      */
     public static CassandraKinaConfig<Cells> create() {
-        return new CellDeepJobConfig(false);
+        return new CellCassandraKinaConfig(false);
     }
 
     /**
@@ -54,18 +54,18 @@ public final class CassandraConfigFactory implements Serializable {
      * @return a new cell-based write suitable job configuration object.
      */
     public static CassandraKinaConfig<Cells> createWriteConfig() {
-	    return new CellDeepJobConfig(true);
+	    return new CellCassandraKinaConfig(true);
     }
 
     /**
      * Creates an entity-based configuration object.
      *
      * @param entityClass the class instance of the entity class that will be used to map db objects to Java objects.
-     * @param <T> the generic type of the entity object implementing IDeepType.
+     * @param <T> the generic type of the entity object implementing KinaType.
      * @return a new an entity-based configuration object.
      */
-    public static <T extends IDeepType> CassandraKinaConfig<T> create(Class<T> entityClass) {
-        return new EntityDeepJobConfig<>(entityClass, false);
+    public static <T extends KinaType> CassandraKinaConfig<T> create(Class<T> entityClass) {
+        return new EntityCassandraKinaConfig<>(entityClass, false);
     }
 
     /**
@@ -73,8 +73,8 @@ public final class CassandraConfigFactory implements Serializable {
      *
      * @return an entity-based write configuration object.
      */
-    public static <T extends IDeepType> CassandraKinaConfig<T> createWriteConfig(Class<T> entityClass) {
-	    return new EntityDeepJobConfig<>(entityClass, true);
+    public static <T extends KinaType> CassandraKinaConfig<T> createWriteConfig(Class<T> entityClass) {
+	    return new EntityCassandraKinaConfig<>(entityClass, true);
     }
 
 

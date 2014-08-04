@@ -43,7 +43,7 @@ object WritingCellToCassandra {
 
     // Creating the Kina Context where args are Spark Master and Job Name
     val p = new ContextProperties(args)
-    val deepContext: CassandraKinaContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext: CassandraKinaContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     // --- INPUT RDD
     val inputConfig = CassandraConfigFactory.create()
@@ -51,7 +51,7 @@ object WritingCellToCassandra {
       .keyspace(inputKeyspaceName).table(inputTableName)
       .initialize
 
-    val inputRDD: RDD[Cells] = deepContext.cassandraRDD(inputConfig)
+    val inputRDD: RDD[Cells] = kinaContext.cassandraRDD(inputConfig)
 
     val pairRDD: RDD[(String, Cells)] = inputRDD map {
       c: Cells => (c.getCellByName("domainName").getCellValue.asInstanceOf[String], c)

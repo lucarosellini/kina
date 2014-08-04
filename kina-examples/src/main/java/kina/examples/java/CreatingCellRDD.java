@@ -73,7 +73,7 @@ public final class CreatingCellRDD {
         LOG.info("spark.serializer: " + System.getProperty("spark.serializer"));
         LOG.info("spark.kryo.registrator: " + System.getProperty("spark.kryo.registrator"));
 
-	    CassandraKinaContext deepContext = new CassandraKinaContext(sc);
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(sc);
 
         // Configuration and initialization
         CassandraKinaConfig<Cells> config = CassandraConfigFactory.create()
@@ -85,13 +85,13 @@ public final class CreatingCellRDD {
                 .initialize();
 
         // Creating the RDD
-        CassandraJavaRDD rdd = (CassandraJavaRDD) deepContext.cassandraJavaRDD(config);
+        CassandraJavaRDD rdd = (CassandraJavaRDD) kinaContext.cassandraJavaRDD(config);
 
         counts = rdd.count();
 
         LOG.info("Num of rows: " + counts);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 
     public static Long getCounts() {

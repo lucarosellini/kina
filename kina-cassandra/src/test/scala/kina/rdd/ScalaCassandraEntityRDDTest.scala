@@ -17,9 +17,9 @@
 package kina.rdd
 
 import com.datastax.driver.core.{Cluster, ResultSet, Row, Session}
-import kina.testentity.DeepScalaPageEntity
+import kina.testentity.KinaScalaPageEntity
 import kina.config.{CassandraConfigFactory, CassandraKinaConfig}
-import kina.context.AbstractDeepSparkContextTest
+import kina.context.AbstractKinaContextAwareTest
 import kina.embedded.CassandraServer
 import kina.utils.{Utils, Constants}
 import org.apache.spark.Partition
@@ -30,10 +30,10 @@ import org.testng.annotations.{BeforeClass, Test}
  * Created by luca on 20/03/14.
  */
 @Test(suiteName = "cassandraRddTests", dependsOnGroups = Array("CassandraJavaRDDTest"), groups = Array("ScalaCassandraEntityRDDTest"))
-class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
-  private var rdd: CassandraRDD[DeepScalaPageEntity] = _
-  private var rddConfig: CassandraKinaConfig[DeepScalaPageEntity] = _
-  private var writeConfig: CassandraKinaConfig[DeepScalaPageEntity] = _
+class ScalaCassandraEntityRDDTest extends AbstractKinaContextAwareTest {
+  private var rdd: CassandraRDD[KinaScalaPageEntity] = _
+  private var rddConfig: CassandraKinaConfig[KinaScalaPageEntity] = _
+  private var writeConfig: CassandraKinaConfig[KinaScalaPageEntity] = _
   private val OUTPUT_COLUMN_FAMILY: String = "out_scalatest_page"
 
   @BeforeClass
@@ -47,7 +47,7 @@ class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
   def testCompute {
     val obj: AnyRef = rdd.collect
     assertNotNull(obj)
-    val entities: Array[DeepScalaPageEntity] = obj.asInstanceOf[Array[DeepScalaPageEntity]]
+    val entities: Array[KinaScalaPageEntity] = obj.asInstanceOf[Array[KinaScalaPageEntity]]
     checkComputedData(entities)
   }
 
@@ -76,8 +76,8 @@ class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
   def testSimpleSaveToCassandra(): Unit = {
 
     try {
-      AbstractDeepSparkContextTest.executeCustomCQL("DROP TABLE " +
-        Utils.quote(AbstractDeepSparkContextTest.OUTPUT_KEYSPACE_NAME) + "." + Utils.quote(OUTPUT_COLUMN_FAMILY))
+      AbstractKinaContextAwareTest.executeCustomCQL("DROP TABLE " +
+        Utils.quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME) + "." + Utils.quote(OUTPUT_COLUMN_FAMILY))
     }
     catch {
       case e: Exception =>
@@ -88,15 +88,15 @@ class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
     checkSimpleTestData()
   }
 
-  private def initWriteConfig(): CassandraKinaConfig[DeepScalaPageEntity] = {
+  private def initWriteConfig(): CassandraKinaConfig[KinaScalaPageEntity] = {
 
     writeConfig =
       CassandraConfigFactory
-        .createWriteConfig(classOf[DeepScalaPageEntity])
+        .createWriteConfig(classOf[KinaScalaPageEntity])
         .host(Constants.DEFAULT_CASSANDRA_HOST)
         .rpcPort(CassandraServer.CASSANDRA_THRIFT_PORT)
         .cqlPort(CassandraServer.CASSANDRA_CQL_PORT)
-        .keyspace(AbstractDeepSparkContextTest.OUTPUT_KEYSPACE_NAME)
+        .keyspace(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME)
         .columnFamily(OUTPUT_COLUMN_FAMILY)
         .batchSize(2)
         .createTableOnWrite(true)
@@ -104,35 +104,35 @@ class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
     writeConfig.initialize
   }
 
-  private def initReadConfig(): CassandraKinaConfig[DeepScalaPageEntity] = {
+  private def initReadConfig(): CassandraKinaConfig[KinaScalaPageEntity] = {
     rddConfig =
       CassandraConfigFactory
-        .create(classOf[DeepScalaPageEntity])
+        .create(classOf[KinaScalaPageEntity])
         .host(Constants.DEFAULT_CASSANDRA_HOST)
         .rpcPort(CassandraServer.CASSANDRA_THRIFT_PORT)
         .cqlPort(CassandraServer.CASSANDRA_CQL_PORT)
-        .keyspace(AbstractDeepSparkContextTest.KEYSPACE_NAME)
-        .columnFamily(AbstractDeepSparkContextTest.COLUMN_FAMILY)
+        .keyspace(AbstractKinaContextAwareTest.KEYSPACE_NAME)
+        .columnFamily(AbstractKinaContextAwareTest.COLUMN_FAMILY)
 
     rddConfig.initialize()
   }
 
-  private def initRDD(): CassandraRDD[DeepScalaPageEntity] = {
+  private def initRDD(): CassandraRDD[KinaScalaPageEntity] = {
 
-    super.getContext.cassandraRDD(rddConfig).asInstanceOf[CassandraRDD[DeepScalaPageEntity]]
+    super.getContext.cassandraRDD(rddConfig).asInstanceOf[CassandraRDD[KinaScalaPageEntity]]
   }
 
   private def checkSimpleTestData(): Unit = {
     val cluster: Cluster = Cluster.builder.withPort(CassandraServer.CASSANDRA_CQL_PORT).addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build
     val session: Session = cluster.connect
     var command: String = "select count(*) from " +
-      Utils.quote(AbstractDeepSparkContextTest.OUTPUT_KEYSPACE_NAME) + "." +
-      Utils.quote(AbstractDeepSparkContextTest.OUTPUT_COLUMN_FAMILY) + ";"
+      Utils.quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME) + "." +
+      Utils.quote(AbstractKinaContextAwareTest.OUTPUT_COLUMN_FAMILY) + ";"
     var rs: ResultSet = session.execute(command)
-    assertEquals(rs.one.getLong(0), AbstractDeepSparkContextTest.entityTestDataSize)
+    assertEquals(rs.one.getLong(0), AbstractKinaContextAwareTest.entityTestDataSize)
     command = "select * from " +
-      Utils.quote(AbstractDeepSparkContextTest.OUTPUT_KEYSPACE_NAME) + "." +
-        Utils.quote(AbstractDeepSparkContextTest.OUTPUT_COLUMN_FAMILY) + " WHERE \"id\" = 'e71aa3103bb4a63b9e7d3aa081c1dc5ddef85fa7';"
+      Utils.quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME) + "." +
+        Utils.quote(AbstractKinaContextAwareTest.OUTPUT_COLUMN_FAMILY) + " WHERE \"id\" = 'e71aa3103bb4a63b9e7d3aa081c1dc5ddef85fa7';"
     rs = session.execute(command)
     val row: Row = rs.one
     assertEquals(row.getString("domain_name"), "11870.com")
@@ -142,7 +142,7 @@ class ScalaCassandraEntityRDDTest extends AbstractDeepSparkContextTest {
     session.close
   }
 
-  private def checkComputedData(entities: Array[DeepScalaPageEntity]): Unit = {
+  private def checkComputedData(entities: Array[KinaScalaPageEntity]): Unit = {
 
   }
 }

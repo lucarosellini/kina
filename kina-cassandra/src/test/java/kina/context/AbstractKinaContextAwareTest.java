@@ -41,7 +41,7 @@ import static org.testng.Assert.assertNotNull;
 /**
  * Base class for all Kina's integration tests.
  */
-public abstract class AbstractDeepSparkContextTest {
+public abstract class AbstractKinaContextAwareTest {
 
     private Logger logger = Logger.getLogger(getClass());
     protected static CassandraKinaContext context;
@@ -217,7 +217,7 @@ public abstract class AbstractDeepSparkContextTest {
     @BeforeSuite
     protected void initContextAndServer() throws ConfigurationException, IOException, InterruptedException {
         logger.info("instantiating context");
-        context = new CassandraKinaContext("local", "deepSparkContextTest");
+        context = new CassandraKinaContext("local", "kinaContextTest");
 
         String createKeyspace = "CREATE KEYSPACE " + quote(KEYSPACE_NAME)
                 + " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1 };";

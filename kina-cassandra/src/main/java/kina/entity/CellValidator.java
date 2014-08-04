@@ -17,7 +17,6 @@
 package kina.entity;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Inet4Address;
@@ -29,7 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.datastax.driver.core.DataType;
-import kina.annotations.DeepField;
+import kina.annotations.Field;
 import kina.exceptions.*;
 import kina.rdd.CassandraRDDUtils;
 import kina.utils.AnnotationUtils;
@@ -192,12 +191,12 @@ public class CellValidator implements Serializable {
     private DataType.Name cqlTypeName;
 
     /**
-     * Factory method that builds a CellValidator from an IDeepType field.
+     * Factory method that builds a CellValidator from an KinaType field.
      *
-     * @param field the IDeepType field.
+     * @param field the KinaType field.
      * @return a new CellValidator associated to the provided object.
      */
-    public static CellValidator cellValidator(Field field) {
+    public static CellValidator cellValidator(java.lang.reflect.Field field) {
         return new CellValidator(field);
     }
 
@@ -254,9 +253,9 @@ public class CellValidator implements Serializable {
     /**
      * private constructor.
      */
-    private CellValidator(Field field) {
+    private CellValidator(java.lang.reflect.Field field) {
         Class<?>[] types = AnnotationUtils.getGenericTypes(field);
-        DeepField annotation = field.getAnnotation(DeepField.class);
+        Field annotation = field.getAnnotation(Field.class);
 
         Class<? extends AbstractType> clazz = annotation.validationClass();
 

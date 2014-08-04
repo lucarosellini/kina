@@ -21,18 +21,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
+import kina.annotations.Entity;
+import kina.annotations.Field;
 import org.apache.cassandra.db.marshal.*;
 
-@DeepEntity
+@Entity
 public class CommonsTestEntity extends CommonsBaseTestEntity {
     private static final long serialVersionUID = -6242942929275890323L;
 
-    @DeepField
+    @Field
     private String url;
 
-    @DeepField(validationClass = Int32Type.class, fieldName = "response_time")
+    @Field(validationClass = Int32Type.class, fieldName = "response_time")
     private Integer responseTime;
 
     public static long getSerialVersionUID() {
@@ -63,21 +63,21 @@ public class CommonsTestEntity extends CommonsBaseTestEntity {
         this.uuid2id = uuid2id;
     }
 
-    @DeepField(fieldName = "response_code", validationClass = Int32Type.class)
+    @Field(fieldName = "response_code", validationClass = Int32Type.class)
     private Integer responseCode;
 
-    @DeepField(validationClass = LongType.class, fieldName = "download_time")
+    @Field(validationClass = LongType.class, fieldName = "download_time")
     private Long downloadTime;
 
     private String notMappedField;
 
-    @DeepField(validationClass = SetType.class)
+    @Field(validationClass = SetType.class)
     private Set<String> emails;
 
-    @DeepField(validationClass = ListType.class)
+    @Field(validationClass = ListType.class)
     private List<String> phones;
 
-    @DeepField(validationClass = MapType.class)
+    @Field(validationClass = MapType.class)
     private Map<UUID, Integer> uuid2id;
 
     public CommonsTestEntity() {

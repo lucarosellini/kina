@@ -21,8 +21,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.CharacterCodingException;
 
 import kina.config.CassandraKinaConfig;
-import kina.context.AbstractDeepSparkContextTest;
-import kina.rdd.CassandraRDD;
+import kina.context.AbstractKinaContextAwareTest;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.log4j.Logger;
 import org.apache.spark.Partition;
@@ -39,7 +38,7 @@ import static org.testng.Assert.assertNotNull;
  *
  * @param <W>
  */
-public abstract class CassandraRDDTest<W> extends AbstractDeepSparkContextTest {
+public abstract class CassandraRDDTest<W> extends AbstractKinaContextAwareTest {
     private Logger logger = Logger.getLogger(getClass());
 
     protected CassandraRDD<W> rdd;

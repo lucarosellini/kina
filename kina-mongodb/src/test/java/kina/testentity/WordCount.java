@@ -16,20 +16,20 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
 /**
  * Created by rcrespo on 25/06/14.
  */
-@DeepEntity
-public class WordCount implements IDeepType {
+@Entity
+public class WordCount implements KinaType {
 
-    @DeepField
+    @Field
     private String word;
 
-    @DeepField
+    @Field
     private Integer count;
 
     public WordCount() {

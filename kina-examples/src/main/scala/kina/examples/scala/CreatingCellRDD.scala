@@ -40,7 +40,7 @@ object CreatingCellRDD {
 
     // Creating the Kina Context where args are Spark Master and Job Name
     val p = new ContextProperties(args)
-    val deepContext = new CassandraKinaContext(p.getCluster, job)
+    val kinaContext = new CassandraKinaContext(p.getCluster, job)
 
     // Configuration and initialization
     val config: CassandraKinaConfig[Cells] = CassandraConfigFactory.create()
@@ -49,7 +49,7 @@ object CreatingCellRDD {
       .initialize
 
     // Creating the RDD
-    val rdd: RDD[Cells] = deepContext.cassandraRDD(config)
+    val rdd: RDD[Cells] = kinaContext.cassandraRDD(config)
 
     val counts = rdd.count()
 

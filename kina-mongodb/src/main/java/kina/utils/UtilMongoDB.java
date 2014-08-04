@@ -16,15 +16,15 @@
 
 package kina.utils;
 
+import java.lang.reflect.*;
+import java.util.*;
+
 import kina.entity.Cell;
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.entity.MongoCell;
 import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
-
-import java.lang.reflect.*;
-import java.util.*;
 
 /**
  * Several utilities to work used in the Spark <=> MongoDB integration.
@@ -41,7 +41,7 @@ public final class UtilMongoDB {
     }
 
     /**
-     * converts from BsonObject to an entity class with deep's anotations
+     * converts from BsonObject to an entity class with kina's anotations
      *
      * @param classEntity the entity name.
      * @param bsonObject  the instance of the BSONObjet to convert.
@@ -54,7 +54,7 @@ public final class UtilMongoDB {
     public static <T> T getObjectFromBson(Class<T> classEntity, BSONObject bsonObject) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         T t = classEntity.newInstance();
 
-        Field[] fields = AnnotationUtils.filterDeepFields(classEntity);
+        Field[] fields = AnnotationUtils.filterKinaFields(classEntity);
 
         Object insert;
 
@@ -63,18 +63,18 @@ public final class UtilMongoDB {
 
             Class<?> classField = field.getType();
 
-            Object currentBson = bsonObject.get(AnnotationUtils.deepFieldName(field));
+            Object currentBson = bsonObject.get(AnnotationUtils.kinaFieldName(field));
             if (currentBson != null) {
 
                 if (Iterable.class.isAssignableFrom(classField)) {
                     Type type = field.getGenericType();
 
-                    insert = subDocumentListCase(type, (List) bsonObject.get(AnnotationUtils.deepFieldName(field)));
+                    insert = subDocumentListCase(type, (List) bsonObject.get(AnnotationUtils.kinaFieldName(field)));
 
 
-                } else if (IDeepType.class.isAssignableFrom(classField)) {
-                    insert = getObjectFromBson(classField, (BSONObject) bsonObject.get(AnnotationUtils.deepFieldName
-                            (field)));
+                } else if (KinaType.class.isAssignableFrom(classField)) {
+                    insert = getObjectFromBson(classField, (BSONObject) bsonObject.get(AnnotationUtils.kinaFieldName
+				                    (field)));
                 } else {
                     insert = currentBson;
                 }
@@ -103,7 +103,7 @@ public final class UtilMongoDB {
 
 
     /**
-     * converts from an entity class with deep's anotations to BsonObject.
+     * converts from an entity class with kina's anotations to BsonObject.
      *
      * @param t   an instance of an object of type T to convert to BSONObject.
      * @param <T> the type of the object to convert.
@@ -112,8 +112,8 @@ public final class UtilMongoDB {
      * @throws InstantiationException
      * @throws InvocationTargetException
      */
-    public static <T extends IDeepType> BSONObject getBsonFromObject(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Field[] fields = AnnotationUtils.filterDeepFields(t.getClass());
+    public static <T extends KinaType> BSONObject getBsonFromObject(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        Field[] fields = AnnotationUtils.filterKinaFields(t.getClass());
 
         BSONObject bson = new BasicBSONObject();
 
@@ -127,13 +127,13 @@ public final class UtilMongoDB {
                     List<BSONObject> innerBsonList = new ArrayList<>();
 
                     while (iterator.hasNext()) {
-                        innerBsonList.add(getBsonFromObject((IDeepType) iterator.next()));
+                        innerBsonList.add(getBsonFromObject((KinaType) iterator.next()));
                     }
-                    bson.put(AnnotationUtils.deepFieldName(field), innerBsonList);
-                } else if (IDeepType.class.isAssignableFrom(field.getType())) {
-                    bson.put(AnnotationUtils.deepFieldName(field), getBsonFromObject((IDeepType) object));
+                    bson.put(AnnotationUtils.kinaFieldName(field), innerBsonList);
+                } else if (KinaType.class.isAssignableFrom(field.getType())) {
+                    bson.put(AnnotationUtils.kinaFieldName(field), getBsonFromObject((KinaType) object));
                 } else {
-                    bson.put(AnnotationUtils.deepFieldName(field), object);
+                    bson.put(AnnotationUtils.kinaFieldName(field), object);
                 }
             }
         }
@@ -142,7 +142,7 @@ public final class UtilMongoDB {
     }
 
     /**
-     * returns the id value annotated with @DeepField(fieldName = "_id")
+     * returns the id value annotated with @Field(fieldName = "_id")
      *
      * @param t   an instance of an object of type T to convert to BSONObject.
      * @param <T> the type of the object to convert.
@@ -151,11 +151,11 @@ public final class UtilMongoDB {
      * @throws InstantiationException
      * @throws InvocationTargetException
      */
-    public static <T extends IDeepType> Object getId(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Field[] fields = AnnotationUtils.filterDeepFields(t.getClass());
+    public static <T extends KinaType> Object getId(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        Field[] fields = AnnotationUtils.filterKinaFields(t.getClass());
 
         for (Field field : fields) {
-            if (MONGO_DEFAULT_ID.equals(AnnotationUtils.deepFieldName(field))) {
+            if (MONGO_DEFAULT_ID.equals(AnnotationUtils.kinaFieldName(field))) {
                 return Utils.findGetter(field.getName(), t.getClass()).invoke(t);
             }
 
@@ -166,7 +166,7 @@ public final class UtilMongoDB {
 
 
     /**
-     * converts from BsonObject to cell class with deep's anotations
+     * converts from BsonObject to cell class with kina's anotations
      *
      * @param bsonObject
      * @return
@@ -204,7 +204,7 @@ public final class UtilMongoDB {
 
 
     /**
-     * converts from and entity class with deep's anotations to BsonObject
+     * converts from and entity class with kina's anotations to BsonObject
      *
      * @return
      * @throws IllegalAccessException

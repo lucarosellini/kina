@@ -16,35 +16,35 @@
 
 package kina.testentity
 
-import kina.annotations.{DeepField, DeepEntity}
-import kina.entity.IDeepType
+import kina.annotations.{Field, Entity}
+import kina.entity.KinaType
 import org.apache.cassandra.db.marshal.{Int32Type, LongType}
 
 import scala.beans.BeanProperty
 
-@DeepEntity class DeepScalaPageEntity extends IDeepType {
+@Entity class KinaScalaPageEntity extends KinaType {
 
   @BeanProperty
-  @DeepField(isPartOfPartitionKey = true)
+  @Field(isPartOfPartitionKey = true)
   var id: String = null
 
   @BeanProperty
-  @DeepField(fieldName = "domain_name")
+  @Field(fieldName = "domain_name")
   var domain: String = null
 
   @BeanProperty
-  @DeepField
+  @Field
   var url: String = null
 
   @BeanProperty
-  @DeepField(validationClass = classOf[Int32Type], fieldName = "response_time")
+  @Field(validationClass = classOf[Int32Type], fieldName = "response_time")
   var responseTime: Integer = _
 
   @BeanProperty
-  @DeepField(fieldName = "response_code", validationClass = classOf[Int32Type])
+  @Field(fieldName = "response_code", validationClass = classOf[Int32Type])
   var responseCode: Integer = _
 
   @BeanProperty
-  @DeepField(validationClass = classOf[LongType], fieldName = "download_time")
+  @Field(validationClass = classOf[LongType], fieldName = "download_time")
   var downloadTime: java.lang.Long = _
 }

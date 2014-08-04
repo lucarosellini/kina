@@ -16,13 +16,13 @@
 
 package kina.config;
 
-import kina.entity.IDeepType;
-import kina.utils.AnnotationUtils;
-
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import kina.entity.KinaType;
+import kina.utils.AnnotationUtils;
 
 /**
  * Class containing the appropriate configuration for a MongoEntityRDD.
@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * @param <T>
  */
-public final class EntityDeepJobConfigMongoDB<T extends IDeepType> extends GenericDeepJobConfigMongoDB<T> {
+public final class EntityMongoKinaConfig<T extends KinaType> extends GenericMongoKinaConfig<T> {
 
     private static final long serialVersionUID = 123;
 
@@ -44,7 +44,7 @@ public final class EntityDeepJobConfigMongoDB<T extends IDeepType> extends Gener
     /**
      * @param entityClass
      */
-    public EntityDeepJobConfigMongoDB(Class<T> entityClass) {
+    public EntityMongoKinaConfig(Class<T> entityClass) {
         super();
         this.entityClass = entityClass;
     }
@@ -53,15 +53,15 @@ public final class EntityDeepJobConfigMongoDB<T extends IDeepType> extends Gener
      * {@inheritDoc}
      */
     @Override
-    public GenericDeepJobConfigMongoDB<T> initialize() {
+    public GenericMongoKinaConfig<T> initialize() {
         super.initialize();
 
         Map<String, String> tmpMap = new HashMap<>();
 
-        Field[] deepFields = AnnotationUtils.filterDeepFields(entityClass);
+        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
 
-        for (Field f : deepFields) {
-            String dbName = AnnotationUtils.deepFieldName(f);
+        for (Field f : kinaFields) {
+            String dbName = AnnotationUtils.kinaFieldName(f);
             String beanFieldName = f.getName();
 
             tmpMap.put(dbName, beanFieldName);

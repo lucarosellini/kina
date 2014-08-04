@@ -29,20 +29,20 @@ import static org.testng.Assert.fail;
  * Created by luca on 09/04/14.
  */
 @Test
-public class DeepPartitionLocationComparatorTest {
+public class KinaPartitionLocationComparatorTest {
 
 
     public void testComparator() throws UnknownHostException {
-        DeepPartitionLocationComparator comparator = null;
+        KinaPartitionLocationComparator comparator = null;
         try {
-            comparator = new DeepPartitionLocationComparator("not_existent_hostname");
+            comparator = new KinaPartitionLocationComparator("not_existent_hostname");
 
             fail();
         } catch (kina.exceptions.InstantiationException e) {
             // ok
         }
 
-        comparator = new DeepPartitionLocationComparator("localhost");
+        comparator = new KinaPartitionLocationComparator("localhost");
 
         String[] locations = new String[]{"google.com", "localhost", "edition.cnn.com"};
 
@@ -50,20 +50,20 @@ public class DeepPartitionLocationComparatorTest {
 
         assertArrayEquals(new String[]{"localhost", "google.com", "edition.cnn.com"}, locations);
 
-        comparator = new DeepPartitionLocationComparator("edition.cnn.com");
+        comparator = new KinaPartitionLocationComparator("edition.cnn.com");
 
         Arrays.sort(locations, comparator);
 
         assertArrayEquals(new String[]{"localhost", "edition.cnn.com", "google.com"}, locations);
 
-        comparator = new DeepPartitionLocationComparator("edition.cnn.com");
+        comparator = new KinaPartitionLocationComparator("edition.cnn.com");
 
         locations = new String[]{"google.com", "edition.cnn.com", "localhost"};
         Arrays.sort(locations, comparator);
 
         assertArrayEquals(new String[]{"localhost", "edition.cnn.com", "google.com"}, locations);
 
-        comparator = new DeepPartitionLocationComparator();
+        comparator = new KinaPartitionLocationComparator();
 
         String hostname = InetAddress.getLocalHost().getHostName();
         locations = new String[]{"google.com", "edition.cnn.com", hostname};

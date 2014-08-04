@@ -51,13 +51,13 @@ public final class WritingCellToMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
         MongoKinaConfig inputConfigEntity = MongoConfigFactory.createMongoDB().host(host).database(database).collection(inputCollection).initialize();
 
-        RDD inputRDDCell = deepContext.mongoRDD(inputConfigEntity);
+        RDD inputRDDCell = kinaContext.mongoRDD(inputConfigEntity);
 
 
 	    LOG.info("count : " + inputRDDCell.count());
@@ -69,11 +69,11 @@ public final class WritingCellToMongoDB {
         MongoCellRDD.saveCell(inputRDDCell, outputConfigEntity);
 
 
-        RDD outputRDDCell = deepContext.mongoRDD(outputConfigEntity);
+        RDD outputRDDCell = kinaContext.mongoRDD(outputConfigEntity);
 
         LOG.info("count output : " + outputRDDCell.count());
 	    LOG.info("prints first output cell: " + outputRDDCell.first());
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

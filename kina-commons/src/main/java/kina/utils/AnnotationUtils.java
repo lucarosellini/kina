@@ -17,7 +17,6 @@
 package kina.utils;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -33,13 +32,13 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import kina.exceptions.IOException;
 import org.apache.cassandra.db.marshal.*;
 
 /**
- * Common utility methods to manipulate beans and fields annotated with @DeepEntity and @DeepField.
+ * Common utility methods to manipulate beans and fields annotated with @Entity and @Field.
  */
 public final class AnnotationUtils {
     /**
@@ -111,16 +110,16 @@ public final class AnnotationUtils {
                     .build();
 
     /**
-     * Returns the field name as known by the datastore. If the provided field object DeepField annotation
+     * Returns the field name as known by the datastore. If the provided field object Field annotation
      * specifies the fieldName property, the value of this property will be returned, otherwise the java field name
      * will be returned.
      *
      * @param field the Field object associated to the property for which we want to resolve the name.
      * @return the field name.
      */
-    public static String deepFieldName(Field field) {
+    public static String kinaFieldName(java.lang.reflect.Field field) {
 
-        DeepField annotation = field.getAnnotation(DeepField.class);
+        Field annotation = field.getAnnotation(Field.class);
         if (StringUtils.isNotEmpty(annotation.fieldName())) {
             return annotation.fieldName();
         } else {
@@ -130,20 +129,20 @@ public final class AnnotationUtils {
 
     /**
      * Utility method that filters out all the fields _not_ annotated
-     * with the {@link kina.annotations.DeepField} annotation.
+     * with the {@link kina.annotations.Field} annotation.
      *
      * @param clazz the Class object for which we want to resolve kina fields.
      * @return an array of kina Field(s).
      */
-    public static Field[] filterDeepFields(Class clazz) {
-        Field[] fields = Utils.getAllFields(clazz);
-        List<Field> filtered = new ArrayList<>();
-        for (Field f : fields) {
-            if (f.isAnnotationPresent(DeepField.class)) {
+    public static java.lang.reflect.Field[] filterKinaFields(Class clazz) {
+        java.lang.reflect.Field[] fields = Utils.getAllFields(clazz);
+        List<java.lang.reflect.Field> filtered = new ArrayList<>();
+        for (java.lang.reflect.Field f : fields) {
+            if (f.isAnnotationPresent(Field.class)) {
                 filtered.add(f);
             }
         }
-        return filtered.toArray(new Field[filtered.size()]);
+        return filtered.toArray(new java.lang.reflect.Field[filtered.size()]);
     }
 
     /**
@@ -154,20 +153,20 @@ public final class AnnotationUtils {
      * @param clazz the Class object
      * @return a pair object whose first element contains key fields, and whose second element contains all other columns.
      */
-    public static Pair<Field[], Field[]> filterKeyFields(Class clazz) {
-        Field[] filtered = filterDeepFields(clazz);
-        List<Field> keys = new ArrayList<>();
-        List<Field> others = new ArrayList<>();
+    public static Pair<java.lang.reflect.Field[], java.lang.reflect.Field[]> filterKeyFields(Class clazz) {
+        java.lang.reflect.Field[] filtered = filterKinaFields(clazz);
+        List<java.lang.reflect.Field> keys = new ArrayList<>();
+        List<java.lang.reflect.Field> others = new ArrayList<>();
 
-        for (Field field : filtered) {
-            if (isKey(field.getAnnotation(DeepField.class))) {
+        for (java.lang.reflect.Field field : filtered) {
+            if (isKey(field.getAnnotation(Field.class))) {
                 keys.add(field);
             } else {
                 others.add(field);
             }
         }
 
-        return Pair.create(keys.toArray(new Field[keys.size()]), others.toArray(new Field[others.size()]));
+        return Pair.create(keys.toArray(new java.lang.reflect.Field[keys.size()]), others.toArray(new java.lang.reflect.Field[others.size()]));
     }
 
     /**
@@ -176,20 +175,20 @@ public final class AnnotationUtils {
      * @param field the Field object we want to process.
      * @return true if the field is part of the cluster key or the partition key, false otherwise.
      */
-    public static boolean isKey(DeepField field) {
+    public static boolean isKey(Field field) {
         return field.isPartOfClusterKey() || field.isPartOfPartitionKey();
     }
 
     /**
-     * Returns the value of the fields <i>deepField</i> in the instance <i>entity</i> of type T.
+     * Returns the value of the fields <i>kinaField</i> in the instance <i>entity</i> of type T.
      *
      * @param entity    the entity to process.
-     * @param deepField the Field to process belonging to <i>entity</i>
+     * @param kinaField the Field to process belonging to <i>entity</i>
      * @return the property value.
      */
-    public static Serializable getBeanFieldValue(IDeepType entity, Field deepField) {
+    public static Serializable getBeanFieldValue(KinaType entity, java.lang.reflect.Field kinaField) {
         try {
-            return (Serializable) PropertyUtils.getProperty(entity, deepField.getName());
+            return (Serializable) PropertyUtils.getProperty(entity, kinaField.getName());
 
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e1) {
             throw new IOException(e1);
@@ -203,7 +202,7 @@ public final class AnnotationUtils {
      * @param field the field instance to process.
      * @return the list of generic types associated to the provided field (if any).
      */
-    public static Class[] getGenericTypes(Field field) {
+    public static Class[] getGenericTypes(java.lang.reflect.Field field) {
         try {
             ParameterizedType type = (ParameterizedType) field.getGenericType();
             Type[] types = type.getActualTypeArguments();

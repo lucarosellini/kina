@@ -16,8 +16,8 @@
 
 package kina.testentity
 
-import kina.annotations.{DeepField, DeepEntity}
-import kina.entity.IDeepType
+import kina.annotations.{Field, Entity}
+import kina.entity.KinaType
 
 import scala.beans.BeanProperty
 import org.apache.cassandra.db.marshal.{MapType, ListType, SetType}
@@ -26,29 +26,29 @@ import java.util.UUID
 /**
  * Created by luca on 27/03/14.
  */
-@DeepEntity class ScalaCollectionEntity extends IDeepType {
+@Entity class ScalaCollectionEntity extends KinaType {
   @BeanProperty
-  @DeepField(isPartOfPartitionKey = true)
+  @Field(isPartOfPartitionKey = true)
   var id: Integer = _
 
   @BeanProperty
-  @DeepField(fieldName = "first_name")
+  @Field(fieldName = "first_name")
   var firstName: String = _
 
   @BeanProperty
-  @DeepField(fieldName = "last_name")
+  @Field(fieldName = "last_name")
   var lastName: String = _
 
   @BeanProperty
-  @DeepField(validationClass = classOf[SetType[_]])
+  @Field(validationClass = classOf[SetType[_]])
   var emails: java.util.Set[String] = _
 
   @BeanProperty
-  @DeepField(validationClass = classOf[ListType[_]])
+  @Field(validationClass = classOf[ListType[_]])
   var phones: java.util.List[String] = _
 
   @BeanProperty
-  @DeepField(validationClass = classOf[MapType[_, _]])
+  @Field(validationClass = classOf[MapType[_, _]])
   var uuid2id: java.util.Map[UUID, Integer] = _
 
 }

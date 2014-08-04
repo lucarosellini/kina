@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-package kina.utils;
+package kina.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created by rcrespo on 10/07/14.
+ * Annotation to be used whenever we want to define an object to be used as an entity in Kina.
  */
-public enum DeepRDD {
-
-
-    MONGODB_JAVA("kina.rdd.mongodb.MongoJavaRDD"),
-    MONGODB_ENTITY("kina.rdd.mongodb.MongoEntityRDD"),
-    MONGODB_CELL("kina.rdd.mongodb.MongoCellRDD"),
-    CASSANDRA_JAVA("kina.rdd.CassandraJavaRDD"),
-    CASSANDRA_ENTITY("kina.rdd.CassandraEntityRDD"),
-    CASSANDRA_CELL("kina.rdd.CassandraCellRDD");
-
-    private String className;
-
-    private DeepRDD(String className) {
-        this.className = className;
-    }
-
-    public String getClassName(){
-        return className;
-    }
-
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Entity {
 
 }

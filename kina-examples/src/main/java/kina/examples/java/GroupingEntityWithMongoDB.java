@@ -64,14 +64,14 @@ public final class GroupingEntityWithMongoDB {
 
         // Creating the Kina Context where args are Spark Master and Job Name
         ContextProperties p = new ContextProperties(args);
-	    MongoKinaContext deepContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
+	    MongoKinaContext kinaContext = new MongoKinaContext(p.getCluster(), job, p.getSparkHome(),
                 p.getJars());
 
 
         MongoKinaConfig<BookEntity> inputConfigEntity =
 				        MongoConfigFactory.createMongoDB(BookEntity.class).host(host).database(database).collection(inputCollection).initialize();
 
-        MongoJavaRDD<BookEntity> inputRDDEntity = (MongoJavaRDD) deepContext.mongoJavaRDD(inputConfigEntity);
+        MongoJavaRDD<BookEntity> inputRDDEntity = (MongoJavaRDD) kinaContext.mongoJavaRDD(inputConfigEntity);
         JavaRDD<String> words =inputRDDEntity.flatMap(new FlatMapFunction<BookEntity, String>() {
             @Override
             public Iterable<String> call(BookEntity bookEntity) throws Exception {
@@ -113,6 +113,6 @@ public final class GroupingEntityWithMongoDB {
 
         MongoEntityRDD.saveEntity(outputRDD.rdd(),outputConfigEntity);
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 }

@@ -83,7 +83,7 @@ Figure 1: The Stratio Deep shell welcome screen
 Step 1: Creating a RDD
 ----------------------
 
-When using the Stratio Deep shell, a deepContext object has been created already and is available for use. The deepContext is created from the SparkContext and tells Stratio Deep how to access the cluster. However the RDD needs more information to access MongoDB data such as the database and collection names. By default, the RDD will try to connect to “localhost” on port “27017”, this can be overridden by setting the host and port properties of the configuration object: Define a configuration object for the RDD that contains the connection string for MongoDB, namely the database and the collection name:
+When using the Stratio Deep shell, a kinaContext object has been created already and is available for use. The kinaContext is created from the SparkContext and tells Stratio Deep how to access the cluster. However the RDD needs more information to access MongoDB data such as the database and collection names. By default, the RDD will try to connect to “localhost” on port “27017”, this can be overridden by setting the host and port properties of the configuration object: Define a configuration object for the RDD that contains the connection string for MongoDB, namely the database and the collection name:
 
 ~~~~ {.code}
 scala> import org.apache.spark.rdd._
@@ -95,7 +95,7 @@ scala> val inputConfigEntity: IMongoDeepJobConfig[BookEntity] = Cfg.createMongoD
 Create a RDD in the Deep context using the configuration object:
 
 ~~~~ {.code}
-scala> val inputRDDEntity: MongoEntityRDD[BookEntity] = deepContext.mongoEntityRDD(inputConfigEntity)
+scala> val inputRDDEntity: MongoEntityRDD[BookEntity] = kinaContext.mongoEntityRDD(inputConfigEntity)
 ~~~~
 
 Step 2: Word Count

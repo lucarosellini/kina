@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Wrapper class holding information of a computed token range.
  */
-public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable {
+public class Range implements Comparable<Range>, Serializable {
     private Comparable startToken;
     private Comparable endToken;
     private List<String> replicas;
@@ -33,7 +33,7 @@ public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable 
      * @param startToken first token of this range.
      * @param endToken   last token of this range.
      */
-    public DeepTokenRange(Comparable startToken, Comparable endToken) {
+    public Range(Comparable startToken, Comparable endToken) {
         this.startToken = startToken;
         this.endToken = endToken;
     }
@@ -45,7 +45,7 @@ public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable 
      * @param endToken   last token of this range.
      * @param replicas   the list of replica machines holding this range of tokens.
      */
-    public DeepTokenRange(Comparable startToken, Comparable endToken, List<String> replicas) {
+    public Range(Comparable startToken, Comparable endToken, List<String> replicas) {
         this.startToken = startToken;
         this.endToken = endToken;
         this.replicas = replicas;
@@ -56,7 +56,7 @@ public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable 
      */
     @Override
     public String toString() {
-        return "DeepTokenRange{" +
+        return "Range{" +
                 "startToken=" + startToken +
                 ", endToken=" + endToken +
                 ", replicas=" + replicas +
@@ -75,7 +75,7 @@ public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable 
             return false;
         }
 
-        DeepTokenRange that = (DeepTokenRange) o;
+        Range that = (Range) o;
 
         if (!endToken.equals(that.endToken)) {
             return false;
@@ -121,7 +121,7 @@ public class DeepTokenRange implements Comparable<DeepTokenRange>, Serializable 
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(DeepTokenRange o) {
+    public int compareTo(Range o) {
         return startToken.compareTo(o.startToken);
     }
 }

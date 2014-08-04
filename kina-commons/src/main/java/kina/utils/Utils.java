@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 
 import kina.entity.Cell;
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.exceptions.IOException;
 import scala.Tuple2;
@@ -51,7 +51,7 @@ public final class Utils {
      * @param clazz the class object for which a new instance should be created.
      * @return the new instance of class clazz.
      */
-    public static <T extends IDeepType> T newTypeInstance(Class<T> clazz) {
+    public static <T extends KinaType> T newTypeInstance(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

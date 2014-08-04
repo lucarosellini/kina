@@ -16,23 +16,23 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
-@DeepEntity
-public class WronglyMappedTestEntity implements IDeepType {
+@Entity
+public class WronglyMappedTestEntity implements KinaType {
 
-    @DeepField(isPartOfPartitionKey = true)
+    @Field(isPartOfPartitionKey = true)
     private String id;
 
-    @DeepField(fieldName = "domain_name")
+    @Field(fieldName = "domain_name")
     private String domain;
 
-    @DeepField
+    @Field
     private String url;
 
-    @DeepField(fieldName = "not_existent_field")
+    @Field(fieldName = "not_existent_field")
     private String wronglyMappedField;
 
     public String getId() {

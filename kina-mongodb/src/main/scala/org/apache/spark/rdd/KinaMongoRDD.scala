@@ -49,10 +49,10 @@ class NewHadoopPartition(
  * [[org.apache.spark.SparkContext.newAPIHadoopRDD( )]]
  *
  * @param sc The SparkContext to associate the RDD with.
- * @param config The Deep MongoDB configuration.
+ * @param config The Kina MongoDB configuration.
  */
 @DeveloperApi
-abstract class DeepMongoRDD[T: ClassTag](sc: SparkContext,
+abstract class KinaMongoRDD[T: ClassTag](sc: SparkContext,
                                          @transient config: MongoKinaConfig[T])
   extends RDD[T](sc, Nil)
   with SparkHadoopMapReduceUtil

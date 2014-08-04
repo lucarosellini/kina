@@ -25,13 +25,13 @@ import org.apache.commons.lang.StringUtils;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import kina.config.GenericDeepJobConfig;
+import kina.config.GenericCassandraKinaConfig;
 import kina.config.CassandraKinaConfig;
-import kina.cql.DeepCqlRecordWriter;
+import kina.cql.CqlRecordWriter;
 import kina.entity.CassandraCell;
 import kina.entity.Cell;
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.functions.AbstractSerializableFunction2;
 import kina.utils.AnnotationUtils;
@@ -72,7 +72,7 @@ public class CassandraRDDUtils {
         RDD<Tuple2<Cells, Cells>> mappedRDD = rdd.map(transformer,
                 ClassTag$.MODULE$.<Tuple2<Cells, Cells>>apply(tuple.getClass()));
 
-        ((GenericDeepJobConfig) writeConfig).createOutputTableIfNeeded(mappedRDD);
+        ((GenericCassandraKinaConfig) writeConfig).createOutputTableIfNeeded(mappedRDD);
 
         final int pageSize = writeConfig.getBatchSize();
         int offset = 0;
@@ -117,7 +117,7 @@ public class CassandraRDDUtils {
         final RDD<Tuple2<Cells, Cells>> mappedRDD = rdd.map(transformer,
                 ClassTag$.MODULE$.<Tuple2<Cells, Cells>>apply(tuple.getClass()));
 
-        ((GenericDeepJobConfig) writeConfig).createOutputTableIfNeeded(mappedRDD);
+        ((GenericCassandraKinaConfig) writeConfig).createOutputTableIfNeeded(mappedRDD);
 
         ClassTag<Integer> uClassTag = ClassTag$.MODULE$.apply(Integer.class);
 
@@ -127,7 +127,7 @@ public class CassandraRDDUtils {
                     @Override
                     public Integer apply(TaskContext context, Iterator<Tuple2<Cells, Cells>> rows) {
 
-                        try (DeepCqlRecordWriter writer = new DeepCqlRecordWriter(context, writeConfig)) {
+                        try (CqlRecordWriter writer = new CqlRecordWriter(context, writeConfig)) {
                             while (rows.hasNext()) {
                                 Tuple2<Cells, Cells> row = rows.next();
                                 writer.write(row._1(), row._2());
@@ -172,7 +172,7 @@ public class CassandraRDDUtils {
 	}
 
 	/**
-	 * Generates the update query for the provided IDeepType.
+	 * Generates the update query for the provided KinaType.
 	 * The UPDATE query takes into account all the columns of the testentity, even those containing the null value.
 	 * We do not generate the key part of the update query. The provided query will be concatenated with the key part
 	 * by CqlRecordWriter.
@@ -322,7 +322,7 @@ public class CassandraRDDUtils {
 	 * @param <T> the entity object generic type.
 	 * @return a pair whose first element is a Cells object containing key Cell(s) and whose second element contains all of the other Cell(s).
 	 */
-	public static <T extends IDeepType> Tuple2<Cells, Cells> deepType2tuple(T e) {
+	public static <T extends KinaType> Tuple2<Cells, Cells> kinaType2tuple(T e) {
 
 		Pair<Field[], Field[]> fields = AnnotationUtils.filterKeyFields(e.getClass());
 

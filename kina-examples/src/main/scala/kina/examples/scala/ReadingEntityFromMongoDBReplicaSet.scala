@@ -43,14 +43,14 @@ final object ReadingEntityFromMongoDBReplicaSet {
 
     val p: ContextProperties = new ContextProperties(args)
 
-    val deepContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext = new MongoKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     val inputConfigEntity: MongoKinaConfig[MessageEntity] = MongoConfigFactory.createMongoDB(classOf[MessageEntity]).host(host1).host(host2).host(host3).database(database).collection(inputCollection).replicaSet(replicaSet).readPreference(readPreference).initialize
 
-    val inputRDDEntity: RDD[MessageEntity] = deepContext.mongoJavaRDD(inputConfigEntity)
+    val inputRDDEntity: RDD[MessageEntity] = kinaContext.mongoJavaRDD(inputConfigEntity)
 
     System.out.println("count : " + inputRDDEntity.cache.count)
-    deepContext.stop
+    kinaContext.stop
   }
 
 

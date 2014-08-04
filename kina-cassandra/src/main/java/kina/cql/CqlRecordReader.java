@@ -29,13 +29,13 @@ import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.exceptions.NoHostAvailableException;
-import kina.config.GenericDeepJobConfig;
+import kina.config.GenericCassandraKinaConfig;
 import kina.config.CassandraKinaConfig;
 import kina.entity.CassandraCell;
 import kina.exceptions.GenericException;
 import kina.exceptions.IOException;
 import kina.exceptions.IllegalAccessException;
-import kina.partition.impl.DeepPartitionLocationComparator;
+import kina.partition.impl.KinaPartitionLocationComparator;
 import kina.utils.Pair;
 import kina.utils.Utils;
 import org.apache.cassandra.db.marshal.AbstractType;
@@ -53,10 +53,10 @@ import static kina.utils.Utils.additionalFilterGenerator;
  *
  * @author Luca Rosellini <luca@strat.io>
  */
-public class DeepRecordReader {
-    private static final Logger LOG = LoggerFactory.getLogger(DeepRecordReader.class);
+public class CqlRecordReader {
+    private static final Logger LOG = LoggerFactory.getLogger(CqlRecordReader.class);
 
-    private DeepTokenRange split;
+    private Range split;
     private RowIterator rowIterator;
 
     private String cfName;
@@ -87,7 +87,7 @@ public class DeepRecordReader {
      * @param config the Kina configuration object.
      * @param split  the token range on which the new reader will be based.
      */
-    public DeepRecordReader(CassandraKinaConfig config, DeepTokenRange split) {
+    public CqlRecordReader(CassandraKinaConfig config, Range split) {
         this.config = config;
         this.split = split;
 	    this.pageSize = config.getPageSize();
@@ -127,7 +127,7 @@ public class DeepRecordReader {
 
         /* reorder locations */
         List<String> locations = Lists.newArrayList(split.getReplicas());
-        Collections.sort(locations, new DeepPartitionLocationComparator());
+        Collections.sort(locations, new KinaPartitionLocationComparator());
 
         Exception lastException = null;
 
@@ -200,7 +200,7 @@ public class DeepRecordReader {
 
         private void initColumns(Map<String, ByteBuffer> valueColumns, Map<String, ByteBuffer> keyColumns) {
             Row row = rows.next();
-            TableMetadata tableMetadata = ((GenericDeepJobConfig) config).fetchTableMetadata();
+            TableMetadata tableMetadata = ((GenericCassandraKinaConfig) config).fetchTableMetadata();
 
             List<ColumnMetadata> partitionKeys = tableMetadata.getPartitionKey();
             List<ColumnMetadata> clusteringKeys = tableMetadata.getClusteringColumns();
@@ -395,7 +395,7 @@ public class DeepRecordReader {
      * retrieve the partition keys and cluster keys from system.schema_columnfamilies table
      */
     private void retrieveKeys() {
-        TableMetadata tableMetadata = ((GenericDeepJobConfig) config).fetchTableMetadata();
+        TableMetadata tableMetadata = ((GenericCassandraKinaConfig) config).fetchTableMetadata();
 
         List<ColumnMetadata> partitionKeys = tableMetadata.getPartitionKey();
         List<ColumnMetadata> clusteringKeys = tableMetadata.getClusteringColumns();
@@ -477,7 +477,7 @@ public class DeepRecordReader {
      */
     public Pair<Map<String, ByteBuffer>, Map<String, ByteBuffer>> next() {
         if (!this.hasNext()) {
-            throw new IllegalAccessException("DeepRecordReader exhausted");
+            throw new IllegalAccessException("CqlRecordReader exhausted");
         }
         return rowIterator.next();
     }

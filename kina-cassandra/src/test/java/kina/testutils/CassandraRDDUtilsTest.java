@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 import scala.Tuple2;
 
 import static kina.rdd.CassandraRDDUtils.createTableQueryGenerator;
-import static kina.rdd.CassandraRDDUtils.deepType2tuple;
+import static kina.rdd.CassandraRDDUtils.kinaType2tuple;
 import static kina.rdd.CassandraRDDUtils.updateQueryGenerator;
 import static kina.utils.Utils.prepareTuple4CqlDriver;
 import static org.testng.Assert.assertEquals;
@@ -42,14 +42,14 @@ public class CassandraRDDUtilsTest {
 	private static final String OUTPUT_COLUMN_FAMILY = "out_test_page";
 
 	@Test
-	public void testDeepType2Pair() {
+	public void testKinaType2Pair() {
 
 		CommonsTestEntity te = new CommonsTestEntity();
 		te.setDomain("abc.es");
 		te.setId("43274632");
 		te.setResponseCode(312);
 
-		Tuple2<Cells, Cells> pair = deepType2tuple(te);
+		Tuple2<Cells, Cells> pair = kinaType2tuple(te);
 
 		assertNotNull(pair);
 		assertNotNull(pair._1());

@@ -16,21 +16,21 @@
 
 package kina.config;
 
-import kina.annotations.DeepEntity;
-import kina.entity.CassandraCell;
-import kina.entity.Cell;
-import kina.entity.IDeepType;
-import kina.exceptions.GenericException;
-import kina.exceptions.NoSuchFieldException;
-import kina.utils.AnnotationUtils;
-import kina.utils.Utils;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.lang.annotation.AnnotationTypeMismatchException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+
+import org.apache.commons.lang.StringUtils;
+
+import kina.annotations.Entity;
+import kina.entity.CassandraCell;
+import kina.entity.Cell;
+import kina.entity.KinaType;
+import kina.exceptions.GenericException;
+import kina.exceptions.NoSuchFieldException;
+import kina.utils.AnnotationUtils;
+import kina.utils.Utils;
 
 /**
  * Class containing the appropiate configuration for a CassandraEntityRDD.
@@ -40,7 +40,7 @@ import java.util.*;
  *
  * @author Luca Rosellini <luca@strat.io>
  */
-public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJobConfig<T> {
+public final class EntityCassandraKinaConfig<T extends KinaType> extends GenericCassandraKinaConfig<T> {
 
     private static final long serialVersionUID = 4490719746563473495L;
 
@@ -57,10 +57,10 @@ public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJ
 
         Map<String, String> tmpMap = new HashMap<>();
 
-        Field[] deepFields = AnnotationUtils.filterDeepFields(entityClass);
+        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
 
-        for (Field f : deepFields) {
-            String dbName = AnnotationUtils.deepFieldName(f);
+        for (Field f : kinaFields) {
+            String dbName = AnnotationUtils.kinaFieldName(f);
             String beanFieldName = f.getName();
 
             tmpMap.put(dbName, beanFieldName);
@@ -74,10 +74,10 @@ public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJ
     /**
      * Public constructor. Constructs a job object with the specified entity class.
      *
-     * @param entityClass   IDeepType entity Class object
+     * @param entityClass   KinaType entity Class object
      * @param isWriteConfig boolean specifing if the constructed object is suitable for writes.
      */
-    public EntityDeepJobConfig(Class<T> entityClass, Boolean isWriteConfig) {
+    public EntityCassandraKinaConfig(Class<T> entityClass, Boolean isWriteConfig) {
         super();
         this.entityClass = entityClass;
         this.isWriteConfig = isWriteConfig;
@@ -102,14 +102,14 @@ public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJ
             throw new IllegalArgumentException("testentity class cannot be null");
         }
 
-        if (!entityClass.isAnnotationPresent(DeepEntity.class)) {
+        if (!entityClass.isAnnotationPresent(Entity.class)) {
             throw new AnnotationTypeMismatchException(null, entityClass.getCanonicalName());
         }
 
         super.validate();
 
-        /* let's validate fieldNames in @DeepField annotations */
-        Field[] deepFields = AnnotationUtils.filterDeepFields(entityClass);
+        /* let's validate fieldNames in @Field annotations */
+        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
 
         Map<String, Cell> colDefs = super.columnDefinitions();
 
@@ -119,13 +119,13 @@ public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJ
             return;
         }
 
-        for (Field field : deepFields) {
-            String annotationFieldName = AnnotationUtils.deepFieldName(field);
+        for (Field field : kinaFields) {
+            String annotationFieldName = AnnotationUtils.kinaFieldName(field);
 
             if (!colDefs.containsKey(annotationFieldName)) {
                 throw new NoSuchFieldException("Unknown column name \'" + annotationFieldName + "\' specified for" +
                         " field " + entityClass.getCanonicalName() + "#" + field.getName() + ". Please, " +
-                        "make sure the field name you specify in @DeepField annotation matches _exactly_ the column " +
+                        "make sure the field name you specify in @Field annotation matches _exactly_ the column " +
                         "name " +
                         "in the database");
             }
@@ -136,8 +136,8 @@ public final class EntityDeepJobConfig<T extends IDeepType> extends GenericDeepJ
      * Given an instance of the generic object mapped to this configurtion object,
      * sets the instance property whose name is the name specified by dbName.
      * Since the provided dbName is the name of the field in the database, we first try
-     * to resolve the property name using the fieldName property of the DeepField annotation.
-     * If we don't find any property whose DeepField.fieldName.equals(dbName) we fallback to the
+     * to resolve the property name using the fieldName property of the Field annotation.
+     * If we don't find any property whose Field.fieldName.equals(dbName) we fallback to the
      * name of the Java property.
      *
      * @param instance instance object.

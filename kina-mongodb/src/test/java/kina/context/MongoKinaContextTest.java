@@ -16,9 +16,12 @@
 
 package kina.context;
 
-import kina.config.CellDeepJobConfigMongoDB;
-import kina.config.EntityDeepJobConfigMongoDB;
-import kina.config.GenericDeepJobConfigMongoDB;
+import java.util.HashMap;
+import java.util.Map;
+
+import kina.config.CellMongoKinaConfig;
+import kina.config.EntityMongoKinaConfig;
+import kina.config.GenericMongoKinaConfig;
 import kina.entity.Cells;
 import kina.exceptions.GenericException;
 import kina.rdd.mongodb.MongoCellRDD;
@@ -29,11 +32,8 @@ import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.rdd.DeepMongoRDD;
+import org.apache.spark.rdd.KinaMongoRDD;
 import org.testng.annotations.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.testng.Assert.*;
 
@@ -50,21 +50,21 @@ public class MongoKinaContextTest {
     public void mongoRDDTest() {
         MongoKinaContext sc = new MongoKinaContext("local", "MongoKinaContextTest");
 
-        DeepMongoRDD deepMongoRDD = sc.mongoRDD(new CellDeepJobConfigMongoDB());
+        KinaMongoRDD rdd = sc.mongoRDD(new CellMongoKinaConfig());
 
-        assertTrue(deepMongoRDD instanceof MongoCellRDD);
+        assertTrue(rdd instanceof MongoCellRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoEntityRDD);
-
-
-        deepMongoRDD = sc.mongoRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
-
-        assertTrue(deepMongoRDD instanceof MongoEntityRDD);
-
-        assertFalse(deepMongoRDD instanceof MongoCellRDD);
+        assertFalse(rdd instanceof MongoEntityRDD);
 
 
-        JavaRDD<Cells> javaRDDCells = sc.mongoJavaRDD(new CellDeepJobConfigMongoDB());
+        rdd = sc.mongoRDD(new EntityMongoKinaConfig(BookEntity.class));
+
+        assertTrue(rdd instanceof MongoEntityRDD);
+
+        assertFalse(rdd instanceof MongoCellRDD);
+
+
+        JavaRDD<Cells> javaRDDCells = sc.mongoJavaRDD(new CellMongoKinaConfig());
 
         assertNotNull(javaRDDCells);
 
@@ -73,7 +73,7 @@ public class MongoKinaContextTest {
         assertTrue(javaRDDCells instanceof MongoJavaRDD);
 
 
-        JavaRDD<BookEntity> javaRDDEntity = sc.mongoJavaRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
+        JavaRDD<BookEntity> javaRDDEntity = sc.mongoJavaRDD(new EntityMongoKinaConfig(BookEntity.class));
 
         assertNotNull(javaRDDEntity);
 
@@ -82,7 +82,7 @@ public class MongoKinaContextTest {
         assertTrue(javaRDDEntity instanceof MongoJavaRDD);
 
         try {
-            DeepMongoRDD failRDD = sc.mongoRDD(new GenericDeepJobConfigMongoDB());
+            KinaMongoRDD failRDD = sc.mongoRDD(new GenericMongoKinaConfig());
             fail();
         } catch (GenericException e) {
             log.info("Correctly catched GenericException: " + e.getLocalizedMessage());
@@ -100,18 +100,18 @@ public class MongoKinaContextTest {
 
         assertNotNull(sc);
 
-        DeepMongoRDD deepMongoRDD = sc.mongoRDD(new CellDeepJobConfigMongoDB());
+        KinaMongoRDD rdd = sc.mongoRDD(new CellMongoKinaConfig());
 
-        assertTrue(deepMongoRDD instanceof MongoCellRDD);
+        assertTrue(rdd instanceof MongoCellRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoEntityRDD);
+        assertFalse(rdd instanceof MongoEntityRDD);
 
 
-        deepMongoRDD = sc.mongoRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
+        rdd = sc.mongoRDD(new EntityMongoKinaConfig(BookEntity.class));
 
-        assertTrue(deepMongoRDD instanceof MongoEntityRDD);
+        assertTrue(rdd instanceof MongoEntityRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoCellRDD);
+        assertFalse(rdd instanceof MongoCellRDD);
 
         sc.stop();
     }
@@ -121,18 +121,18 @@ public class MongoKinaContextTest {
         MongoKinaContext sc = new MongoKinaContext("local", "myapp1", "/tmp", "");
         assertNotNull(sc);
 
-        DeepMongoRDD deepMongoRDD = sc.mongoRDD(new CellDeepJobConfigMongoDB());
+        KinaMongoRDD rdd = sc.mongoRDD(new CellMongoKinaConfig());
 
-        assertTrue(deepMongoRDD instanceof MongoCellRDD);
+        assertTrue(rdd instanceof MongoCellRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoEntityRDD);
+        assertFalse(rdd instanceof MongoEntityRDD);
 
 
-        deepMongoRDD = sc.mongoRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
+        rdd = sc.mongoRDD(new EntityMongoKinaConfig(BookEntity.class));
 
-        assertTrue(deepMongoRDD instanceof MongoEntityRDD);
+        assertTrue(rdd instanceof MongoEntityRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoCellRDD);
+        assertFalse(rdd instanceof MongoCellRDD);
 
         sc.stop();
     }
@@ -142,18 +142,18 @@ public class MongoKinaContextTest {
         MongoKinaContext sc = new MongoKinaContext("local", "myapp1", "/tmp", new String[]{"", ""});
         assertNotNull(sc);
 
-        DeepMongoRDD deepMongoRDD = sc.mongoRDD(new CellDeepJobConfigMongoDB());
+        KinaMongoRDD rdd = sc.mongoRDD(new CellMongoKinaConfig());
 
-        assertTrue(deepMongoRDD instanceof MongoCellRDD);
+        assertTrue(rdd instanceof MongoCellRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoEntityRDD);
+        assertFalse(rdd instanceof MongoEntityRDD);
 
 
-        deepMongoRDD = sc.mongoRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
+        rdd = sc.mongoRDD(new EntityMongoKinaConfig(BookEntity.class));
 
-        assertTrue(deepMongoRDD instanceof MongoEntityRDD);
+        assertTrue(rdd instanceof MongoEntityRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoCellRDD);
+        assertFalse(rdd instanceof MongoCellRDD);
 
         sc.stop();
     }
@@ -165,18 +165,18 @@ public class MongoKinaContextTest {
         MongoKinaContext sc = new MongoKinaContext("local", "myapp1", "/tmp", new String[]{"", ""}, env);
 
         assertNotNull(sc);
-        DeepMongoRDD deepMongoRDD = sc.mongoRDD(new CellDeepJobConfigMongoDB());
+        KinaMongoRDD rdd = sc.mongoRDD(new CellMongoKinaConfig());
 
-        assertTrue(deepMongoRDD instanceof MongoCellRDD);
+        assertTrue(rdd instanceof MongoCellRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoEntityRDD);
+        assertFalse(rdd instanceof MongoEntityRDD);
 
 
-        deepMongoRDD = sc.mongoRDD(new EntityDeepJobConfigMongoDB(BookEntity.class));
+        rdd = sc.mongoRDD(new EntityMongoKinaConfig(BookEntity.class));
 
-        assertTrue(deepMongoRDD instanceof MongoEntityRDD);
+        assertTrue(rdd instanceof MongoEntityRDD);
 
-        assertFalse(deepMongoRDD instanceof MongoCellRDD);
+        assertFalse(rdd instanceof MongoCellRDD);
 
 
         sc.stop();

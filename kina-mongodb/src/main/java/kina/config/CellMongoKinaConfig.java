@@ -18,22 +18,17 @@ package kina.config;
 
 import kina.entity.Cells;
 
-/**
- * Cell-based configuration object.
- *
- * @author Luca Rosellini <luca.rosellini@gmail.com>
- */
-public final class CellDeepJobConfig extends GenericDeepJobConfig<Cells> {
+
+public class CellMongoKinaConfig extends GenericMongoKinaConfig<Cells> {
 
     private static final long serialVersionUID = -598862509865396541L;
     private Cells dummyCells;
 
-    public CellDeepJobConfig(Boolean isWriteConfig) {
-        this.isWriteConfig = isWriteConfig;
+    public CellMongoKinaConfig() {
     }
 
     {
-        dummyCells = new Cells("dummyCellsTable");
+        dummyCells = new Cells();
     }
 
     @SuppressWarnings("unchecked")

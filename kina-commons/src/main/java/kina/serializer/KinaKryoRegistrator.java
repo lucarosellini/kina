@@ -19,7 +19,7 @@ package kina.serializer;
 import com.esotericsoftware.kryo.Kryo;
 import kina.entity.Cell;
 import kina.entity.Cells;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import de.javakaffee.kryoserializers.UnmodifiableCollectionsSerializer;
 import org.apache.spark.serializer.KryoRegistrator;
 
@@ -34,7 +34,7 @@ public class KinaKryoRegistrator implements KryoRegistrator {
     public void registerClasses(Kryo kryo) {
         kryo.register(Cell.class);
         kryo.register(Cells.class);
-        kryo.register(IDeepType.class);
+        kryo.register(KinaType.class);
         UnmodifiableCollectionsSerializer.registerSerializers(kryo);
     }
 }

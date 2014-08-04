@@ -16,6 +16,9 @@
 
 package kina.rdd.mongodb;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mongodb.hadoop.MongoOutputFormat;
 import kina.config.MongoKinaConfig;
 import kina.entity.Cells;
@@ -24,18 +27,16 @@ import kina.utils.UtilMongoDB;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.rdd.DeepMongoRDD;
+import org.apache.spark.rdd.KinaMongoRDD;
 import org.apache.spark.rdd.RDD;
 import org.bson.BSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import scala.Tuple2;
 import scala.reflect.ClassTag$;
 
 /**
  * CellRDD to interact with mongoDB
  */
-public final class MongoCellRDD extends DeepMongoRDD<Cells> {
+public final class MongoCellRDD extends KinaMongoRDD<Cells> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MongoCellRDD.class);
     private static final long serialVersionUID = -3208994171892747470L;
@@ -45,7 +46,7 @@ public final class MongoCellRDD extends DeepMongoRDD<Cells> {
      * Public constructor that builds a new MongoCellRDD RDD given the context and the configuration file.
      *
      * @param sc     the spark context to which the RDD will be bound to.
-     * @param config the deep configuration object.
+     * @param config the kina configuration object.
      */
     @SuppressWarnings("unchecked")
     public MongoCellRDD(SparkContext sc, MongoKinaConfig<Cells> config) {

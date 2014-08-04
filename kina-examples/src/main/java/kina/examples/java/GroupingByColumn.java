@@ -70,7 +70,7 @@ public final class GroupingByColumn {
 
         // Creating the Kina Context
         ContextProperties p = new ContextProperties(args);
-	    CassandraKinaContext deepContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
+	    CassandraKinaContext kinaContext = new CassandraKinaContext(p.getCluster(), job, p.getSparkHome(), p.getJars());
 
 // Create a configuration for the RDD and initialize it
         CassandraKinaConfig<TweetEntity> config = CassandraConfigFactory.create(TweetEntity.class)
@@ -79,7 +79,7 @@ public final class GroupingByColumn {
                 .initialize();
 
 // Creating the RDD
-        CassandraJavaRDD<TweetEntity> rdd = (CassandraJavaRDD) deepContext.cassandraJavaRDD(config);
+        CassandraJavaRDD<TweetEntity> rdd = (CassandraJavaRDD) kinaContext.cassandraJavaRDD(config);
 
         // grouping
         JavaPairRDD<String, Iterable<TweetEntity>> groups = rdd.groupBy(new Function<TweetEntity, String>() {
@@ -107,7 +107,7 @@ public final class GroupingByColumn {
             LOG.info(t._1() + ": " + t._2().toString());
         }
 
-        deepContext.stop();
+        kinaContext.stop();
     }
 
     public static List<Tuple2<String, Integer>> getResults() {

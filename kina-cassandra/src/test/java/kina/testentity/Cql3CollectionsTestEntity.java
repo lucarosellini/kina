@@ -16,9 +16,9 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 import org.apache.cassandra.db.marshal.ListType;
 import org.apache.cassandra.db.marshal.MapType;
@@ -32,25 +32,25 @@ import java.util.UUID;
 /**
  * Created by luca on 24/03/14.
  */
-@DeepEntity
-public class Cql3CollectionsTestEntity implements IDeepType {
+@Entity
+public class Cql3CollectionsTestEntity implements KinaType {
 
-    @DeepField(validationClass = Int32Type.class, isPartOfPartitionKey = true)
+    @Field(validationClass = Int32Type.class, isPartOfPartitionKey = true)
     private Integer id;
 
-    @DeepField(fieldName = "first_name")
+    @Field(fieldName = "first_name")
     private String firstName;
 
-    @DeepField(fieldName = "last_name")
+    @Field(fieldName = "last_name")
     private String lastName;
 
-    @DeepField(validationClass = SetType.class)
+    @Field(validationClass = SetType.class)
     private Set<String> emails;
 
-    @DeepField(validationClass = ListType.class)
+    @Field(validationClass = ListType.class)
     private List<String> phones;
 
-    @DeepField(validationClass = MapType.class)
+    @Field(validationClass = MapType.class)
     private Map<UUID, Integer> uuid2id;
 
     public Integer getId() {

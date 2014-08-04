@@ -33,8 +33,8 @@ package kina.context;/*
 import java.util.Map;
 
 import kina.config.CassandraKinaConfig;
-import kina.config.CellDeepJobConfig;
-import kina.config.EntityDeepJobConfig;
+import kina.config.CellCassandraKinaConfig;
+import kina.config.EntityCassandraKinaConfig;
 import kina.entity.Cells;
 import kina.exceptions.GenericException;
 import kina.rdd.CassandraCellRDD;
@@ -100,11 +100,11 @@ public class CassandraKinaContext extends KinaContext {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> CassandraRDD<T> cassandraRDD(CassandraKinaConfig<T> config) {
-		if (config.getClass().isAssignableFrom(EntityDeepJobConfig.class)) {
+		if (config.getClass().isAssignableFrom(EntityCassandraKinaConfig.class)) {
 			return new CassandraEntityRDD(sc(), config);
 		}
 
-		if (config.getClass().isAssignableFrom(CellDeepJobConfig.class)) {
+		if (config.getClass().isAssignableFrom(CellCassandraKinaConfig.class)) {
 			return (CassandraRDD<T>) new CassandraCellRDD(sc(), (CassandraKinaConfig<Cells>) config);
 		}
 

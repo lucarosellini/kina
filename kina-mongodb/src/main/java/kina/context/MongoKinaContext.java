@@ -16,8 +16,8 @@
 
 package kina.context;
 
-import kina.config.CellDeepJobConfigMongoDB;
-import kina.config.EntityDeepJobConfigMongoDB;
+import kina.config.CellMongoKinaConfig;
+import kina.config.EntityMongoKinaConfig;
 import kina.config.MongoKinaConfig;
 import kina.entity.Cells;
 import kina.exceptions.GenericException;
@@ -27,7 +27,7 @@ import kina.rdd.mongodb.MongoJavaRDD;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.rdd.DeepMongoRDD;
+import org.apache.spark.rdd.KinaMongoRDD;
 
 import java.util.Map;
 
@@ -91,13 +91,13 @@ public class MongoKinaContext extends KinaContext {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> DeepMongoRDD<T> mongoRDD(MongoKinaConfig<T> config) {
-        if (EntityDeepJobConfigMongoDB.class.isAssignableFrom(config.getClass())) {
+    public <T> KinaMongoRDD<T> mongoRDD(MongoKinaConfig<T> config) {
+        if (EntityMongoKinaConfig.class.isAssignableFrom(config.getClass())) {
             return new MongoEntityRDD(sc(), config);
         }
 
-        if (CellDeepJobConfigMongoDB.class.isAssignableFrom(config.getClass())) {
-            return (DeepMongoRDD<T>) new MongoCellRDD(sc(), (MongoKinaConfig<Cells>) config);
+        if (CellMongoKinaConfig.class.isAssignableFrom(config.getClass())) {
+            return (KinaMongoRDD<T>) new MongoCellRDD(sc(), (MongoKinaConfig<Cells>) config);
         }
 
         throw new GenericException("not recognized config type");

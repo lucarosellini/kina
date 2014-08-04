@@ -45,7 +45,7 @@ object WritingEntityToCassandra {
 
     // Creating the Kina Context where args are Spark Master and Job Name
     val p = new ContextProperties(args)
-    val deepContext: CassandraKinaContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
+    val kinaContext: CassandraKinaContext = new CassandraKinaContext(p.getCluster, job, p.getSparkHome, p.getJars)
 
     // --- INPUT RDD
     val inputConfig = CassandraConfigFactory.create(classOf[PageEntity])
@@ -53,7 +53,7 @@ object WritingEntityToCassandra {
       .keyspace(inputKeyspaceName).table(inputTableName)
       .initialize
 
-    val inputRDD: RDD[PageEntity] = deepContext.cassandraRDD(inputConfig)
+    val inputRDD: RDD[PageEntity] = kinaContext.cassandraRDD(inputConfig)
 
     val pairRDD: RDD[(String, PageEntity)] = inputRDD map {
       e: PageEntity => (e.getDomainName, e)
@@ -79,7 +79,7 @@ object WritingEntityToCassandra {
 
     CassandraRDD.saveRDDToCassandra(outputRDD, outputConfig)
 
-    deepContext.stop
+    kinaContext.stop
   }
 
 }

@@ -14,15 +14,29 @@
  * limitations under the License.
  */
 
-package kina.entity;
+package kina.config;
 
-import java.io.Serializable;
+
+import kina.entity.Cells;
+import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 /**
- * Marker interface that should be implemented by all those
- * beans that need to be used with Kina.
- *
- * @author Luca Rosellini <luca.rosellini@gmail.com>
+ * Created by rcrespo on 16/07/14.
  */
-public interface IDeepType extends Serializable {
+@Test
+public class CellMongoKinaConfigTest {
+
+    @Test
+    public void createTest() {
+
+        GenericMongoKinaConfig<Cells> config = new CellMongoKinaConfig();
+        assertNotNull(config);
+        assertEquals(config.getEntityClass(), Cells.class);
+
+    }
+
+
 }

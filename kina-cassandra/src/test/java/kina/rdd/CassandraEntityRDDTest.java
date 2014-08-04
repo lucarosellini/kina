@@ -191,7 +191,7 @@ public class CassandraEntityRDDTest extends CassandraRDDTest<TestEntity> {
         assertEquals(entities.length, 2);
 
         /*
-        config = DeepJobConfigFactory
+        config = KinaConfigFactory
                 .create(TestEntity.class)
                 .host(Constants.DEFAULT_CASSANDRA_HOST)
                 .rpcPort(CassandraServer.CASSANDRA_THRIFT_PORT)

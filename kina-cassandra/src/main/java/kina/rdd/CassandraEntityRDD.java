@@ -20,10 +20,10 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import kina.config.CassandraKinaConfig;
-import kina.config.EntityDeepJobConfig;
+import kina.config.EntityCassandraKinaConfig;
 import kina.entity.CassandraCell;
 import kina.entity.Cell;
-import kina.entity.IDeepType;
+import kina.entity.KinaType;
 import kina.exceptions.NoSuchFieldException;
 import kina.utils.Pair;
 import kina.utils.Utils;
@@ -39,7 +39,7 @@ import org.apache.spark.SparkContext;
  *
  * @author Luca Rosellini <luca@strat.io>
  */
-public final class CassandraEntityRDD<T extends IDeepType> extends CassandraRDD<T> {
+public final class CassandraEntityRDD<T extends KinaType> extends CassandraRDD<T> {
 
     private static final long serialVersionUID = -3208994171892747470L;
 
@@ -63,7 +63,7 @@ public final class CassandraEntityRDD<T extends IDeepType> extends CassandraRDD<
 
         Class<T> entityClass = config.value().getEntityClass();
 
-        EntityDeepJobConfig<T> edjc = (EntityDeepJobConfig<T>) config.value();
+        EntityCassandraKinaConfig<T> edjc = (EntityCassandraKinaConfig<T>) config.value();
         T instance = Utils.newTypeInstance(entityClass);
 
         for (Map.Entry<String, ByteBuffer> entry : elem.left.entrySet()) {

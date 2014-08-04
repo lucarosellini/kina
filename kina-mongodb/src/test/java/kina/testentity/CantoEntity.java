@@ -16,20 +16,20 @@
 
 package kina.testentity;
 
-import kina.annotations.DeepEntity;
-import kina.annotations.DeepField;
-import kina.entity.IDeepType;
+import kina.annotations.Entity;
+import kina.annotations.Field;
+import kina.entity.KinaType;
 
 /**
  * Created by rcrespo on 25/06/14.
  */
-@DeepEntity
-public class CantoEntity implements IDeepType {
+@Entity
+public class CantoEntity implements KinaType {
 
-    @DeepField(fieldName = "canto")
+    @Field(fieldName = "canto")
     private String number;
 
-    @DeepField
+    @Field
     private String text;
 
     public String getNumber() {

@@ -16,6 +16,10 @@
 
 package kina.config;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.mongodb.QueryBuilder;
 import com.mongodb.hadoop.util.MongoConfigUtil;
 import kina.entity.Cell;
@@ -23,15 +27,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 
 /**
  * @param <T>
  */
-public class GenericDeepJobConfigMongoDB<T> implements MongoKinaConfig<T> {
+public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
     private static final long serialVersionUID = -7179376653643603038L;
 
 
@@ -126,7 +126,7 @@ public class GenericDeepJobConfigMongoDB<T> implements MongoKinaConfig<T> {
     /**
      * Default constructor
      */
-    public GenericDeepJobConfigMongoDB() {
+    public GenericMongoKinaConfig() {
 
     }
 
@@ -384,7 +384,7 @@ public class GenericDeepJobConfigMongoDB<T> implements MongoKinaConfig<T> {
      * {@inheritDoc}
      */
     @Override
-    public GenericDeepJobConfigMongoDB<T> initialize() {
+    public GenericMongoKinaConfig<T> initialize() {
         validate();
         configHadoop = new Configuration();
         StringBuilder connection = new StringBuilder();
