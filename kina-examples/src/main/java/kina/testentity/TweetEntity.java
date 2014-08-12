@@ -18,6 +18,7 @@ package kina.testentity;
 
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.PartitionKey;
 import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.*;
 
@@ -30,7 +31,7 @@ public class TweetEntity implements KinaType {
 
     private static final long serialVersionUID = 7743109162467182820L;
 
-    @Field(fieldName = "tweet_id", isPartOfPartitionKey = true, validationClass = UUIDType.class)
+    @PartitionKey(fieldName = "tweet_id",validationClass = UUIDType.class)
     private java.util.UUID tweetID;
 
     @Field(fieldName = "tweet_date", validationClass = TimestampType.class)

@@ -20,12 +20,13 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 import com.datastax.driver.core.DataType;
-import kina.annotations.Field;
 import kina.exceptions.GenericException;
 import kina.exceptions.InstantiationException;
+import kina.utils.CassandraUtils;
 import org.apache.cassandra.db.marshal.AbstractType;
 
-import static kina.utils.AnnotationUtils.*;
+import static kina.utils.AnnotationUtils.MAP_ABSTRACT_TYPE_CLASSNAME_TO_JAVA_TYPE;
+import static kina.utils.AnnotationUtils.getBeanFieldValue;
 
 
 /**
@@ -210,12 +211,10 @@ public class CassandraCell extends Cell {
      * Private constructor.
      */
     private CassandraCell(KinaType e, java.lang.reflect.Field field) {
-
-        Field annotation = field.getAnnotation(Field.class);
-        this.cellName = kinaFieldName(field);
+        this.cellName = CassandraUtils.kinaFieldName(field);
         this.cellValue = getBeanFieldValue(e, field);
-        this.isClusterKey = annotation.isPartOfClusterKey();
-        this.isPartitionKey = annotation.isPartOfPartitionKey();
+        this.isClusterKey = CassandraUtils.isClusterKey(field);
+        this.isPartitionKey = CassandraUtils.isPartitionKey(field);
         this.cellValidator = CellValidator.cellValidator(field);
     }
 

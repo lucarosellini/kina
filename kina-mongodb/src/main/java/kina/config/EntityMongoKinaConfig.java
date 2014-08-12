@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import kina.entity.KinaType;
-import kina.utils.AnnotationUtils;
+import kina.utils.UtilMongoDB;
 
 /**
  * Class containing the appropriate configuration for a MongoEntityRDD.
@@ -58,10 +58,10 @@ public final class EntityMongoKinaConfig<T extends KinaType> extends GenericMong
 
         Map<String, String> tmpMap = new HashMap<>();
 
-        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
+        Field[] kinaFields = UtilMongoDB.filterKinaFields(entityClass);
 
         for (Field f : kinaFields) {
-            String dbName = AnnotationUtils.kinaFieldName(f);
+            String dbName = UtilMongoDB.kinaFieldName(f);
             String beanFieldName = f.getName();
 
             tmpMap.put(dbName, beanFieldName);

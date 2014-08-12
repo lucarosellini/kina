@@ -17,6 +17,7 @@
 package kina.testentity;
 
 import kina.annotations.Field;
+import kina.annotations.PartitionKey;
 import kina.entity.KinaType;
 
 /**
@@ -27,7 +28,7 @@ import kina.entity.KinaType;
 public abstract class BaseTestEntity implements KinaType {
     @Field(fieldName = "domain_name")
     protected String domain;
-    @Field(isPartOfPartitionKey = true)
+    @PartitionKey
     private String id;
 
     public BaseTestEntity(String domain) {

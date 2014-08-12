@@ -16,8 +16,10 @@
 
 package kina.testentity;
 
+import kina.annotations.ClusterKey;
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.PartitionKey;
 import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 
@@ -32,7 +34,7 @@ public class Cql3TestEntity implements KinaType {
      */
     private static final long serialVersionUID = 4248945021023974172L;
 
-    @Field(isPartOfPartitionKey = true)
+    @PartitionKey
     private String name;
 
     @Field
@@ -41,19 +43,19 @@ public class Cql3TestEntity implements KinaType {
     @Field
     private String color;
 
-    @Field(isPartOfPartitionKey = true)
+    @PartitionKey
     private String gender;
 
     @Field
     private String food;
 
-    @Field(isPartOfClusterKey = true)
+	@ClusterKey
     private String animal;
 
     @Field
     private String lucene;
 
-    @Field(validationClass = Int32Type.class, isPartOfClusterKey = true)
+    @ClusterKey(validationClass = Int32Type.class)
     private Integer age;
 
     public Cql3TestEntity() {

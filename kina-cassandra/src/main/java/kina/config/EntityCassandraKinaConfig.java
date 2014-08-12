@@ -29,7 +29,7 @@ import kina.entity.Cell;
 import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.exceptions.NoSuchFieldException;
-import kina.utils.AnnotationUtils;
+import kina.utils.CassandraUtils;
 import kina.utils.Utils;
 
 /**
@@ -57,10 +57,10 @@ public final class EntityCassandraKinaConfig<T extends KinaType> extends Generic
 
         Map<String, String> tmpMap = new HashMap<>();
 
-        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
+        Field[] kinaFields = CassandraUtils.filterKinaFields(entityClass);
 
         for (Field f : kinaFields) {
-            String dbName = AnnotationUtils.kinaFieldName(f);
+            String dbName = CassandraUtils.kinaFieldName(f);
             String beanFieldName = f.getName();
 
             tmpMap.put(dbName, beanFieldName);
@@ -109,7 +109,7 @@ public final class EntityCassandraKinaConfig<T extends KinaType> extends Generic
         super.validate();
 
         /* let's validate fieldNames in @Field annotations */
-        Field[] kinaFields = AnnotationUtils.filterKinaFields(entityClass);
+        Field[] kinaFields = CassandraUtils.filterKinaFields(entityClass);
 
         Map<String, Cell> colDefs = super.columnDefinitions();
 
@@ -120,7 +120,7 @@ public final class EntityCassandraKinaConfig<T extends KinaType> extends Generic
         }
 
         for (Field field : kinaFields) {
-            String annotationFieldName = AnnotationUtils.kinaFieldName(field);
+            String annotationFieldName = CassandraUtils.kinaFieldName(field);
 
             if (!colDefs.containsKey(annotationFieldName)) {
                 throw new NoSuchFieldException("Unknown column name \'" + annotationFieldName + "\' specified for" +

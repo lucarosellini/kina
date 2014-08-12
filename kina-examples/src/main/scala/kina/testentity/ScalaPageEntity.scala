@@ -16,7 +16,7 @@
 
 package kina.testentity
 
-import kina.annotations.{Field, Entity}
+import kina.annotations.{Key, PartitionKey, Field, Entity}
 import kina.entity.KinaType
 import org.apache.cassandra.db.marshal._
 import scala.beans.BeanProperty
@@ -28,7 +28,7 @@ import scala.beans.BeanProperty
 @Entity class ScalaPageEntity extends KinaType {
 
   @BeanProperty
-  @Field(isPartOfPartitionKey = true, fieldName = "key")
+  @Key(fieldName = "key")
   var id: String = _
 
   @BeanProperty

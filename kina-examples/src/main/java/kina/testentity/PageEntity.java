@@ -16,13 +16,14 @@
 
 package kina.testentity;
 
+import java.math.BigInteger;
+
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.Key;
 import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.IntegerType;
 import org.apache.cassandra.db.marshal.LongType;
-
-import java.math.BigInteger;
 
 /**
  * Author: Luca Rosellini
@@ -33,7 +34,7 @@ public class PageEntity implements KinaType {
 
     private static final long serialVersionUID = -9213306241759793383L;
 
-    @Field(fieldName = "key", isPartOfPartitionKey = true)
+    @Key(fieldName = "key")
     private String id;
 
     @Field(fieldName = "domainName")

@@ -18,12 +18,13 @@ package kina.testentity;
 
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.PartitionKey;
 import kina.entity.KinaType;
 
 @Entity
 public class WronglyMappedTestEntity implements KinaType {
 
-    @Field(isPartOfPartitionKey = true)
+    @PartitionKey
     private String id;
 
     @Field(fieldName = "domain_name")

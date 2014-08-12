@@ -18,6 +18,7 @@ package kina.testentity;
 
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.Key;
 import kina.entity.KinaType;
 import org.bson.types.ObjectId;
 
@@ -27,7 +28,7 @@ public class MessageEntity implements KinaType {
 
     private static final long serialVersionUID = 7262854550753855586L;
 
-    @Field(fieldName = "_id", isPartOfPartitionKey = true)
+    @Key(fieldName = "_id")
     private ObjectId id;
 
 

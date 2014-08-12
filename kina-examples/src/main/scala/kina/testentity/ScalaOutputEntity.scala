@@ -16,7 +16,7 @@
 
 package kina.testentity
 
-import kina.annotations.{Field, Entity}
+import kina.annotations.{PartitionKey, Field, Entity}
 import kina.entity.KinaType
 import scala.beans.BeanProperty
 import org.apache.cassandra.db.marshal.Int32Type
@@ -29,7 +29,7 @@ import org.apache.cassandra.db.marshal.Int32Type
 @Entity class ScalaOutputEntity extends KinaType {
 
   @BeanProperty
-  @Field(isPartOfPartitionKey = true)
+  @PartitionKey
   var key: String = _
 
   @BeanProperty

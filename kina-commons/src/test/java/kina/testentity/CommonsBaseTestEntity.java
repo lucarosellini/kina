@@ -17,13 +17,14 @@
 package kina.testentity;
 
 import kina.annotations.Field;
+import kina.annotations.Key;
 import kina.entity.KinaType;
 
 /**
  * Created by luca on 23/04/14.
  */
 public class CommonsBaseTestEntity implements KinaType {
-    @Field(isPartOfPartitionKey = true)
+    @Key
     protected String id;
     @Field(fieldName = "domain_name")
     protected String domain;

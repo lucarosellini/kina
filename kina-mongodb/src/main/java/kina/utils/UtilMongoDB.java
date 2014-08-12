@@ -17,8 +17,12 @@
 package kina.utils;
 
 import java.lang.reflect.*;
+import java.lang.reflect.Field;
 import java.util.*;
 
+import org.apache.commons.lang.StringUtils;
+
+import kina.annotations.*;
 import kina.entity.Cell;
 import kina.entity.Cells;
 import kina.entity.KinaType;
@@ -54,7 +58,7 @@ public final class UtilMongoDB {
     public static <T> T getObjectFromBson(Class<T> classEntity, BSONObject bsonObject) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         T t = classEntity.newInstance();
 
-        Field[] fields = AnnotationUtils.filterKinaFields(classEntity);
+        Field[] fields = filterKinaFields(classEntity);
 
         Object insert;
 
@@ -63,17 +67,17 @@ public final class UtilMongoDB {
 
             Class<?> classField = field.getType();
 
-            Object currentBson = bsonObject.get(AnnotationUtils.kinaFieldName(field));
+            Object currentBson = bsonObject.get(kinaFieldName(field));
             if (currentBson != null) {
 
                 if (Iterable.class.isAssignableFrom(classField)) {
                     Type type = field.getGenericType();
 
-                    insert = subDocumentListCase(type, (List) bsonObject.get(AnnotationUtils.kinaFieldName(field)));
+                    insert = subDocumentListCase(type, (List) bsonObject.get(kinaFieldName(field)));
 
 
                 } else if (KinaType.class.isAssignableFrom(classField)) {
-                    insert = getObjectFromBson(classField, (BSONObject) bsonObject.get(AnnotationUtils.kinaFieldName
+                    insert = getObjectFromBson(classField, (BSONObject) bsonObject.get(kinaFieldName
 				                    (field)));
                 } else {
                     insert = currentBson;
@@ -85,6 +89,26 @@ public final class UtilMongoDB {
 
         return t;
     }
+
+	/**
+	 * Utility method that filters out all the fields _not_ annotated
+	 * with the {@link kina.annotations.Field} annotation.
+	 *
+	 * @param clazz the Class object for which we want to resolve kina fields.
+	 * @return an array of kina Field(s).
+	 */
+	public static java.lang.reflect.Field[] filterKinaFields(Class clazz) {
+		java.lang.reflect.Field[] fields = Utils.getAllFields(clazz);
+		List<java.lang.reflect.Field> filtered = new ArrayList<>();
+		for (java.lang.reflect.Field f : fields) {
+			if (f.isAnnotationPresent(kina.annotations.Field.class) ||
+							f.isAnnotationPresent(Key.class)) {
+
+				filtered.add(f);
+			}
+		}
+		return filtered.toArray(new java.lang.reflect.Field[filtered.size()]);
+	}
 
 
     private static <T> Object subDocumentListCase(Type type, List<T> bsonOject) throws IllegalAccessException, InstantiationException, InvocationTargetException {
@@ -113,7 +137,7 @@ public final class UtilMongoDB {
      * @throws InvocationTargetException
      */
     public static <T extends KinaType> BSONObject getBsonFromObject(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Field[] fields = AnnotationUtils.filterKinaFields(t.getClass());
+        Field[] fields = filterKinaFields(t.getClass());
 
         BSONObject bson = new BasicBSONObject();
 
@@ -129,11 +153,11 @@ public final class UtilMongoDB {
                     while (iterator.hasNext()) {
                         innerBsonList.add(getBsonFromObject((KinaType) iterator.next()));
                     }
-                    bson.put(AnnotationUtils.kinaFieldName(field), innerBsonList);
+                    bson.put(kinaFieldName(field), innerBsonList);
                 } else if (KinaType.class.isAssignableFrom(field.getType())) {
-                    bson.put(AnnotationUtils.kinaFieldName(field), getBsonFromObject((KinaType) object));
+                    bson.put(kinaFieldName(field), getBsonFromObject((KinaType) object));
                 } else {
-                    bson.put(AnnotationUtils.kinaFieldName(field), object);
+                    bson.put(kinaFieldName(field), object);
                 }
             }
         }
@@ -152,10 +176,10 @@ public final class UtilMongoDB {
      * @throws InvocationTargetException
      */
     public static <T extends KinaType> Object getId(T t) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Field[] fields = AnnotationUtils.filterKinaFields(t.getClass());
+        Field[] fields = filterKinaFields(t.getClass());
 
         for (Field field : fields) {
-            if (MONGO_DEFAULT_ID.equals(AnnotationUtils.kinaFieldName(field))) {
+            if (MONGO_DEFAULT_ID.equals(kinaFieldName(field))) {
                 return Utils.findGetter(field.getName(), t.getClass()).invoke(t);
             }
 
@@ -237,4 +261,30 @@ public final class UtilMongoDB {
         return bson;
     }
 
+	/**
+	 * Returns the field name as known by the datastore. If the provided field object Field annotation
+	 * specifies the fieldName property, the value of this property will be returned, otherwise the java field name
+	 * will be returned.
+	 *
+	 * @param field the Field object associated to the property for which we want to resolve the name.
+	 * @return the field name.
+	 */
+	public static String kinaFieldName(java.lang.reflect.Field field) {
+
+		kina.annotations.Field fieldAnnotation = field.getAnnotation(kina.annotations.Field.class);
+		Key genericKeyAnnotation = field.getAnnotation(Key.class);
+		String fieldName = null;
+
+		if (fieldAnnotation != null){
+			fieldName = fieldAnnotation.fieldName();
+		} else if (genericKeyAnnotation != null){
+			fieldName = genericKeyAnnotation.fieldName();
+		}
+
+		if (StringUtils.isNotEmpty(fieldName)) {
+			return fieldName;
+		} else {
+			return field.getName();
+		}
+	}
 }

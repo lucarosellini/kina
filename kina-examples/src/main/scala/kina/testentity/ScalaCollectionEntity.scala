@@ -16,7 +16,7 @@
 
 package kina.testentity
 
-import kina.annotations.{Field, Entity}
+import kina.annotations.{PartitionKey, Field, Entity}
 import kina.entity.KinaType
 
 import scala.beans.BeanProperty
@@ -28,7 +28,7 @@ import java.util.UUID
  */
 @Entity class ScalaCollectionEntity extends KinaType {
   @BeanProperty
-  @Field(isPartOfPartitionKey = true)
+  @PartitionKey
   var id: Integer = _
 
   @BeanProperty

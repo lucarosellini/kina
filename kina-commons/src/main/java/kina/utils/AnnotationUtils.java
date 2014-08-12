@@ -30,9 +30,7 @@ import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
 
-import kina.annotations.Field;
 import kina.entity.KinaType;
 import kina.exceptions.IOException;
 import org.apache.cassandra.db.marshal.*;
@@ -108,76 +106,6 @@ public final class AnnotationUtils {
                     .put(TimeUUIDType.class, TimeUUIDType.instance)
                     .put(BytesType.class, BytesType.instance)
                     .build();
-
-    /**
-     * Returns the field name as known by the datastore. If the provided field object Field annotation
-     * specifies the fieldName property, the value of this property will be returned, otherwise the java field name
-     * will be returned.
-     *
-     * @param field the Field object associated to the property for which we want to resolve the name.
-     * @return the field name.
-     */
-    public static String kinaFieldName(java.lang.reflect.Field field) {
-
-        Field annotation = field.getAnnotation(Field.class);
-        if (StringUtils.isNotEmpty(annotation.fieldName())) {
-            return annotation.fieldName();
-        } else {
-            return field.getName();
-        }
-    }
-
-    /**
-     * Utility method that filters out all the fields _not_ annotated
-     * with the {@link kina.annotations.Field} annotation.
-     *
-     * @param clazz the Class object for which we want to resolve kina fields.
-     * @return an array of kina Field(s).
-     */
-    public static java.lang.reflect.Field[] filterKinaFields(Class clazz) {
-        java.lang.reflect.Field[] fields = Utils.getAllFields(clazz);
-        List<java.lang.reflect.Field> filtered = new ArrayList<>();
-        for (java.lang.reflect.Field f : fields) {
-            if (f.isAnnotationPresent(Field.class)) {
-                filtered.add(f);
-            }
-        }
-        return filtered.toArray(new java.lang.reflect.Field[filtered.size()]);
-    }
-
-    /**
-     * Return a pair of Field[] whose left element is
-     * the array of keys fields.
-     * The right element contains the array of all other non-key fields.
-     *
-     * @param clazz the Class object
-     * @return a pair object whose first element contains key fields, and whose second element contains all other columns.
-     */
-    public static Pair<java.lang.reflect.Field[], java.lang.reflect.Field[]> filterKeyFields(Class clazz) {
-        java.lang.reflect.Field[] filtered = filterKinaFields(clazz);
-        List<java.lang.reflect.Field> keys = new ArrayList<>();
-        List<java.lang.reflect.Field> others = new ArrayList<>();
-
-        for (java.lang.reflect.Field field : filtered) {
-            if (isKey(field.getAnnotation(Field.class))) {
-                keys.add(field);
-            } else {
-                others.add(field);
-            }
-        }
-
-        return Pair.create(keys.toArray(new java.lang.reflect.Field[keys.size()]), others.toArray(new java.lang.reflect.Field[others.size()]));
-    }
-
-    /**
-     * Returns true is given field is part of the table key.
-     *
-     * @param field the Field object we want to process.
-     * @return true if the field is part of the cluster key or the partition key, false otherwise.
-     */
-    public static boolean isKey(Field field) {
-        return field.isPartOfClusterKey() || field.isPartOfPartitionKey();
-    }
 
     /**
      * Returns the value of the fields <i>kinaField</i> in the instance <i>entity</i> of type T.

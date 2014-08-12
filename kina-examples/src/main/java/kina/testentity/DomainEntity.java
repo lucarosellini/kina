@@ -18,6 +18,7 @@ package kina.testentity;
 
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.Key;
 import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 
@@ -30,7 +31,7 @@ public class DomainEntity implements KinaType {
 
     private static final long serialVersionUID = 7262854550753855586L;
 
-    @Field(fieldName = "domain", isPartOfPartitionKey = true)
+    @Key(fieldName = "domain")
     private String domain;
 
     @Field(fieldName = "num_pages", validationClass = Int32Type.class)

@@ -25,22 +25,20 @@ import org.apache.cassandra.db.marshal.AbstractType;
 import org.apache.cassandra.db.marshal.UTF8Type;
 
 /**
- * Maps an object property to a Database column.
+ * Created by luca on 12/08/14.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Field {
+public @interface PartitionKey {
+	/**
+	 * used to specify an alternative database name for the current property.
+	 * If omitted the property name will be used to resolve the database column name.
+	 */
+	String fieldName() default "";
 
-    /**
-     * used to specify an alternative database name for the current property.
-     * If omitted the property name will be used to resolve the database column name.
-     */
-    String fieldName() default "";
-
-    /**
-     * Specifies the cassandra validator class to be used to marshall/unmarshall the field value to the database.
-     * Defaults to org.apache.cassandra.db.marshal.UTF8Type.class
-     */
-    Class<? extends AbstractType> validationClass() default UTF8Type.class;
-
+	/**
+	 * Specifies the cassandra validator class to be used to marshall/unmarshall the field value to the database.
+	 * Defaults to org.apache.cassandra.db.marshal.UTF8Type.class
+	 */
+	Class<? extends AbstractType> validationClass() default UTF8Type.class;
 }

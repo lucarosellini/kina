@@ -25,8 +25,8 @@ import org.apache.commons.lang.StringUtils;
 import com.datastax.driver.core.querybuilder.Batch;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import kina.config.GenericCassandraKinaConfig;
 import kina.config.CassandraKinaConfig;
+import kina.config.GenericCassandraKinaConfig;
 import kina.cql.CqlRecordWriter;
 import kina.entity.CassandraCell;
 import kina.entity.Cell;
@@ -34,7 +34,7 @@ import kina.entity.Cells;
 import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.functions.AbstractSerializableFunction2;
-import kina.utils.AnnotationUtils;
+import kina.utils.CassandraUtils;
 import kina.utils.Pair;
 import kina.utils.Utils;
 import org.apache.cassandra.db.marshal.AbstractType;
@@ -324,7 +324,7 @@ public class CassandraRDDUtils {
 	 */
 	public static <T extends KinaType> Tuple2<Cells, Cells> kinaType2tuple(T e) {
 
-		Pair<Field[], Field[]> fields = AnnotationUtils.filterKeyFields(e.getClass());
+		Pair<Field[], Field[]> fields = CassandraUtils.filterKeyFields(e.getClass());
 
 		Field[] keyFields = fields.left;
 		Field[] otherFields = fields.right;

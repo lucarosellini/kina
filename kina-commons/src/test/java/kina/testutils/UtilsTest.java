@@ -25,8 +25,6 @@ import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.exceptions.IOException;
 import kina.testentity.CommonsTestEntity;
-import kina.utils.AnnotationUtils;
-import kina.utils.Pair;
 import kina.utils.Utils;
 import org.testng.annotations.Test;
 
@@ -45,30 +43,6 @@ public class UtilsTest {
 
 
 
-    @Test
-    public void testFilterKinaFields() {
-        Field[] fields = getAllFields(CommonsTestEntity.class);
-
-        assertTrue(fields.length > 6);
-
-        fields = AnnotationUtils.filterKinaFields(CommonsTestEntity.class);
-
-        assertEquals(fields.length, 9);
-    }
-
-    @Test
-    public void testFilterKeyFields() {
-        Pair<Field[], Field[]> keyFields =
-                AnnotationUtils.filterKeyFields(CommonsTestEntity.class);
-
-        assertNotNull(keyFields);
-        assertNotNull(keyFields.left);
-        assertNotNull(keyFields.right);
-        assertTrue(keyFields.left.length == 1);
-        assertTrue(keyFields.right.length == 8);
-
-        assertTrue(keyFields.left[0].getName().equals("id"));
-    }
 
     @Test
     public void testAdditionalFilters() {

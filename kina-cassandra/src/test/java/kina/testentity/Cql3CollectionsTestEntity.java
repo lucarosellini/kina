@@ -16,18 +16,19 @@
 
 package kina.testentity;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import kina.annotations.Entity;
 import kina.annotations.Field;
+import kina.annotations.PartitionKey;
 import kina.entity.KinaType;
 import org.apache.cassandra.db.marshal.Int32Type;
 import org.apache.cassandra.db.marshal.ListType;
 import org.apache.cassandra.db.marshal.MapType;
 import org.apache.cassandra.db.marshal.SetType;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Created by luca on 24/03/14.
@@ -35,7 +36,7 @@ import java.util.UUID;
 @Entity
 public class Cql3CollectionsTestEntity implements KinaType {
 
-    @Field(validationClass = Int32Type.class, isPartOfPartitionKey = true)
+    @PartitionKey(validationClass = Int32Type.class)
     private Integer id;
 
     @Field(fieldName = "first_name")

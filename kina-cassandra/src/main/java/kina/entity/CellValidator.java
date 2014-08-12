@@ -28,10 +28,10 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.datastax.driver.core.DataType;
-import kina.annotations.Field;
-import kina.exceptions.*;
+import kina.exceptions.GenericException;
 import kina.rdd.CassandraRDDUtils;
 import kina.utils.AnnotationUtils;
+import kina.utils.CassandraUtils;
 import org.apache.cassandra.cql3.CQL3Type;
 import org.apache.cassandra.db.marshal.*;
 
@@ -255,11 +255,10 @@ public class CellValidator implements Serializable {
      */
     private CellValidator(java.lang.reflect.Field field) {
         Class<?>[] types = AnnotationUtils.getGenericTypes(field);
-        Field annotation = field.getAnnotation(Field.class);
 
-        Class<? extends AbstractType> clazz = annotation.validationClass();
+        Class<? extends AbstractType> clazz = CassandraUtils.validationClass(field);
 
-        this.validatorClassName = annotation.validationClass().getCanonicalName();
+        this.validatorClassName = clazz.getCanonicalName();
         this.validatorKind = Kind.validatorClassToKind(clazz);
         cqlTypeName = MAP_JAVA_TYPE_TO_DATA_TYPE_NAME.get(this.validatorClassName);
 
