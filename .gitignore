@@ -4,7 +4,7 @@
 */.project
 */.settings
 */.cache
-spark-deep-distribution*
+spark-kina-distribution*
 */*.versionsBackup
 target/
 *GitIgnored*

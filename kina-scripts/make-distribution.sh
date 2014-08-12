@@ -44,7 +44,7 @@ echo "LOCAL_DIR=$LOCAL_DIR"
 
 mvn -version >/dev/null || { echo "Cannot find Maven in path, aborting"; exit 1; }
 
-cd ../deep-parent
+cd ..
 RELEASE_VER=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version 2>/dev/null | grep -v '\[') || { echo "Cannot obtain project version, aborting"; exit 1; }
 echo "RELEASE_VER: ${RELEASE_VER}"
 
@@ -52,13 +52,13 @@ if [ "$RELEASE_VER" = "" ]; then
    echo "Release version empty, aborting"; exit 1;
 fi
 
-#### Create Deep jars from github (master tag) through maven release plugin
+#### Create Kina jars from github (master tag) through maven release plugin
 
 echo "################################################"
-echo "Compiling Deep"
+echo "Compiling Kina"
 echo "################################################"
 echo "$(pwd)"
-mvn clean package -DskipTests || { echo "Cannot build Deep project, aborting"; exit 1; }
+mvn clean package -DskipTests || { echo "Cannot build Kina project, aborting"; exit 1; }
 
 mkdir -p ${TMPDIR}/lib || { echo "Cannot create output lib directory"; exit 1; }
 
@@ -93,7 +93,7 @@ chmod +x bin/kina-shell
 
 cd ..
 
-DISTDIR=spark-deep-distribution-${RELEASE_VER}
+DISTDIR=kina-distribution-${RELEASE_VER}
 DISTFILENAME=${DISTDIR}.tgz
 
 cp ${TMPDIR}/lib/*.jar ${SPARKDIR}/dist/lib/

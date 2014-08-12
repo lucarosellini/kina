@@ -50,7 +50,7 @@ Running an example
 
   java -cp $CLASSPATH ExampleClassOrObject
 
-Where CLASSPATH should contain all the jars from DEEP_HOME/jars/ and the kina-examples one.
+Where CLASSPATH should contain all the jars from KINA_HOME/jars/ and the kina-examples one.
 
 
 List of Examples

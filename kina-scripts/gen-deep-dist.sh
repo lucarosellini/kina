@@ -42,15 +42,14 @@ mkdir -p ${TMPDIR_SPARK}
 
 mvn -version >/dev/null || { echo "Cannot find Maven in path, aborting"; exit 1; }
 
-#### Create Deep jars from github (master tag) through maven release plugin
+#### Create Kina jars from github (master tag) through maven release plugin
 
-# Clone Deep (master tag) from github
-git clone ${KINA_REPO} ${TMPDIR} || { echo "Cannot clone deep project"; exit 1; }
+# Clone Kina (master tag) from github
+git clone ${KINA_REPO} ${TMPDIR} || { echo "Cannot clone kina project"; exit 1; }
 cd ${TMPDIR}
 
 git checkout develop
 
-cd deep-parent
 echo "Generating version number"
 RELEASE_VER=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version 2>/dev/null | grep -v '\[' | sed s/\-SNAPSHOT//) || { echo "Cannot generate next version number"; exit 1; }
 
@@ -62,7 +61,7 @@ git flow release start version-$RELEASE_VER || { echo "Cannot create $RELEASE_VE
 git status
 
 echo "Updating pom version numbers"
-cd ${TMPDIR}/deep-parent/
+cd ${TMPDIR}/
 mvn versions:set -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
 
 cd ..
@@ -73,8 +72,6 @@ git commit -a -m "[kina release prepare] preparing for version ${RELEASE_VER}"  
 
 echo " >>> Uploading new release branch to remote repository"
 git flow release publish version-$RELEASE_VER || { echo "Cannot publish $RELEASE_VER branch"; exit 1; }
-
-cd deep-parent
 
 mvn clean package || { echo "Cannot deploy $RELEASE_VER of Kina"; exit 1; }
 
@@ -121,8 +118,6 @@ git push origin || { echo "Cannot push to master"; exit 1; }
 
 git checkout develop
 
-cd deep-parent
-
 echo "Setting new snapshot version"
 mvn versions:set -DnewVersion=${next_version} || { echo "Cannot set new version: ${next_version}"; exit 1; }
 cd ..
@@ -149,7 +144,7 @@ echo " >>> Executing make distribution script"
 ##  --skip-java-test has been added to Spark 1.0.0, avoids prompting the user about not having JDK 6 installed
 ./make-distribution.sh --skip-java-test --hadoop 2.4.0 --with-yarn || { echo "Cannot make Spark distribution"; exit 1; }
 
-DISTDIR=spark-deep-distribution-${RELEASE_VER}
+DISTDIR=kina-distribution-${RELEASE_VER}
 DISTFILENAME=${DISTDIR}.tgz
 
 cp ${TMPDIR}/lib/*.jar ${TMPDIR_SPARK}/dist/lib/
@@ -159,7 +154,7 @@ rm -f ${TMPDIR_SPARK}/dist/lib/*-tests.jar
 
 mv ${TMPDIR_SPARK}/dist/ ${DISTDIR}
 cp ${TMPDIR_SPARK}/LICENSE ${DISTDIR}
-cp ${TMPDIR}/deep-parent/ChangeLog.txt ${DISTDIR}/
+cp ${TMPDIR}/ChangeLog.txt ${DISTDIR}/
 
 echo "DISTFILENAME: ${DISTFILENAME}"
 
