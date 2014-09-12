@@ -62,8 +62,8 @@ mvn clean package -DskipTests || { echo "Cannot build Kina project, aborting"; e
 
 mkdir -p ${TMPDIR}/lib || { echo "Cannot create output lib directory"; exit 1; }
 
-cp -u ../*/target/*.jar ${TMPDIR}/lib || { echo "Cannot copy target jars to output lib directory, aborting"; exit 1; }
-cp -u ../*/target/alternateLocation/*.jar ${TMPDIR}/lib || { echo "Cannot copy alternate jars to output lib directory, aborting"; exit 1; }
+cp -u ./*/target/*.jar ${TMPDIR}/lib || { echo "Cannot copy target jars to output lib directory, aborting"; exit 1; }
+cp -u ./*/target/alternateLocation/*.jar ${TMPDIR}/lib || { echo "Cannot copy alternate jars to output lib directory, aborting"; exit 1; }
 
 git fetch --tags
 latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -115,7 +115,3 @@ echo "Finishing process"
 echo "################################################"
 cd ${LOCAL_DIR}
 rm -rf ${TMPDIR}
-
-
-
-
