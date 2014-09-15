@@ -48,6 +48,54 @@ public class CellsTest {
 
     }
 
+    @Test
+    public void testGetCellValueAs(){
+        Cells keys = new Cells("defaultTable",CassandraCell.create("id1", "payload1", true, false), CassandraCell.create("id2", "payload2", false,
+                true), CassandraCell.create("amount", 37.4f),CassandraCell.create("enabled", false), CassandraCell.create("nullval") );
+
+        assertNull(keys.getCellValueAs("not_existant", Integer.class));
+        assertNull(keys.getCellValueAs("nullval", Integer.class));
+
+        try {
+            keys.getCellValueAs("enabled", Integer.class);
+
+            fail();
+        } catch (GenericException ge){
+            // ok
+        }
+
+        try {
+            keys.getCellValueAs("amount", Integer.class);
+
+            fail();
+        } catch (GenericException ge){
+            // ok
+        }
+
+        Float res = keys.getCellValueAs("amount", Float.class);
+
+        assertNotNull(res);
+        assertEquals(37.4f, res.floatValue());
+    }
+
+    @Test
+    public void testCompareCellToValue(){
+        Cells keys = new Cells("defaultTable",CassandraCell.create("id1", "payload1", true, false), CassandraCell.create("id2", "payload2", false,
+                true), CassandraCell.create("amount", 37.4f),CassandraCell.create("enabled", false), CassandraCell.create("nullval") );
+
+        assertFalse(keys.compareCellToValue("not_existant", "a"));
+        assertFalse(keys.compareCellToValue("id1", null));
+        assertTrue(keys.compareCellToValue("nullval", null));
+        assertFalse(keys.compareCellToValue("nullval", "a"));
+        assertFalse(keys.compareCellToValue("amount", false));
+
+        assertTrue(keys.compareCellToValue("id1", "payload1"));
+        assertTrue(keys.compareCellToValue("amount", 37.4f));
+        assertFalse(keys.compareCellToValue("amount", 37.5f));
+        assertTrue(keys.compareCellToValue("enabled", false));
+        assertFalse(keys.compareCellToValue("enabled", true));
+    }
+
 	@Test
 	public void testInstantiationForTable() {
 		try {

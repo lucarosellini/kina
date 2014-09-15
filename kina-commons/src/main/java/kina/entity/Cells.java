@@ -276,6 +276,62 @@ public class Cells implements Iterable<Cell>, Serializable {
   }
 
   /**
+   * Compare the value of the cell whose name is <i>cellName</i> to the referenceValue provided.
+   *
+   * @param cellName the name of the cell to compare.
+   * @param referenceValue the reference value that will be compared to the vale of the cell named 'cellName'.
+   * @return true if the cell value equals to the referenceValue, false otherwise.
+   */
+  public boolean compareCellToValue(String cellName, Object referenceValue){
+
+      Cell c = getCellByName(cellName);
+
+      if (c == null){
+          return false;
+      }
+
+      if (c.getCellValue() == null && referenceValue == null){
+          return true;
+      }
+
+      if (referenceValue == null){
+          return false;
+      }
+
+      if (c.getCellValue() == null || !c.getCellValue().getClass().equals(referenceValue.getClass()) ){
+          return false;
+      }
+
+      return referenceValue.equals(c.getCellValue());
+  }
+
+    /**
+     * Retrieves the cell whose name is <i>cellName</i> and returns its value as an object of type <i>K</i>
+     * @param cellName the name of the cell.
+     * @param clazz the class object of the returning type.
+     * @param <K> the parametric type of the object.
+     * @return the cell value casted to <i>K</i>
+     */
+  public <K> K getCellValueAs(String cellName, Class<K> clazz){
+
+      Cell c = getCellByName(cellName);
+
+      if (c == null){
+          return null;
+      }
+
+      if (c.getCellValue() == null){
+          return null;
+      }
+
+      if (!c.getCellValue().getClass().equals(clazz)){
+          throw new GenericException(String.format("Value for cell %s is of class %s, not %s",cellName, c.getCellValue().getClass().getName(), clazz.getName()) );
+      }
+
+      return (K)c.getCellValue();
+  }
+
+  /**
    * Returns the cell at position idx in the list of Cell object associated to the default table.
    * 
    * @param idx the index position of the Cell we want to retrieve.
