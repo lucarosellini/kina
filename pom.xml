@@ -27,8 +27,8 @@
 
     <properties>
         <!-- Cassandra -->
-        <cassandra.version>2.0.8</cassandra.version>
-        <datastax.driver.version>2.0.3</datastax.driver.version>
+        <cassandra.version>2.1.1</cassandra.version>
+        <datastax.driver.version>2.1.2-EX</datastax.driver.version>
 
         <!-- Spark version -->
         <spark.version>1.0.1</spark.version>
@@ -134,8 +134,32 @@
             <groupId>org.apache.cassandra</groupId>
             <artifactId>cassandra-all</artifactId>
             <version>${cassandra.version}</version>
-
+			<exclusions>
+                <exclusion>
+                    <artifactId>logback-classic</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+                
+            </exclusions>
         </dependency>
+        
+        <dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+			<version>${datastax.driver.version}</version>
+			
+			<exclusions>
+                <exclusion>
+                    <artifactId>netty</artifactId>
+                    <groupId>io.netty</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
+		</dependency>
+		<!-- 
         <dependency>
             <groupId>com.stratio.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
@@ -151,7 +175,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+		-->
         <!-- spark artifact -->
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -204,13 +228,13 @@
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
             <scope>test</scope>
-            <exclusions>
+            <!-- exclusions>
                 <exclusion>
                     <artifactId>snakeyaml</artifactId>
                     <groupId>org.yaml</groupId>
 
                 </exclusion>
-            </exclusions>
+            </exclusions-->
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

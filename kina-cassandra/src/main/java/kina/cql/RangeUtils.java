@@ -17,22 +17,24 @@
 package kina.cql;
 
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-
 import com.datastax.driver.core.*;
+
 import kina.config.CassandraKinaConfig;
 import kina.exceptions.GenericException;
 import kina.utils.Pair;
 import kina.utils.Utils;
+
 import javax.annotation.Nullable;
+
 import org.apache.cassandra.db.marshal.AbstractType;
 import org.apache.cassandra.dht.IPartitioner;
 import org.apache.cassandra.dht.Token;
-import org.apache.cassandra.hadoop.cql3.CqlPagingRecordReader;
 
 import static com.google.common.collect.Iterables.*;
 import static kina.utils.Utils.quote;

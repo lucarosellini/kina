@@ -58,7 +58,7 @@ public class CassandraServer {
     public static final int CASSANDRA_CQL_PORT = 9242;
     private static final Logger logger = Logger.getLogger(CassandraServer.class);
 
-    private static final int WAIT_SECONDS = 3;
+    private static final int WAIT_SECONDS = 10;
 
     private static void cleanup() throws IOException {
 
@@ -205,9 +205,9 @@ public class CassandraServer {
             logger.error("Cannot copy log4j.properties");
         }
         System.setProperty("cassandra.config", "file:" + dirPath + yamlFilePath);
-        System.setProperty("log4j.configuration", "file:" + dirPath + "/log4j.properties");
+        //System.setProperty("log4j.configuration", "file:" + dirPath + "/log4j.xml");
         System.setProperty("cassandra-foreground", "true");
-        System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "0");
+        System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "1");
 
         cleanupAndLeaveDirs();
 
