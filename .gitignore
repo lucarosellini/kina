@@ -10,3 +10,6 @@ target/
 *GitIgnored*
 *.asc
 *.gpg
+.project
+.settings/
+test-output/
