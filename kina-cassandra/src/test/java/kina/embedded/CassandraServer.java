@@ -18,6 +18,8 @@ package kina.embedded;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -26,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import kina.exceptions.GenericException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.datastax.driver.core.Cluster;
@@ -47,9 +51,24 @@ public class CassandraServer {
     private class CassandraRunner implements Runnable {
         @Override
         public void run() {
-            cassandraDaemon = new CassandraDaemon();
-            cassandraDaemon.activate();
-            cassandraDaemon.start();
+            File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "embeddedcassandra.lock");
+            FileChannel channel = null;
+            try {
+                channel = new RandomAccessFile(file, "rw").getChannel();
+            } catch (FileNotFoundException e) {
+                throw new GenericException(e);
+            }
+
+            logger.info("!!!! Trying to acquire lock");
+            try (FileLock lock = channel.lock()) {
+                logger.info(">>>> lock ACQUIRED");
+
+                cassandraDaemon = new CassandraDaemon();
+                cassandraDaemon.activate();
+                cassandraDaemon.start();
+            } catch (IOException e){
+                throw new GenericException(e);
+            }
         }
     }
 
@@ -188,6 +207,12 @@ public class CassandraServer {
      */
     public void start() throws IOException, InterruptedException, ConfigurationException {
 
+
+        doStart();
+
+    }
+
+    private boolean doStart() throws IOException {
         File dir = Files.createTempDir();
         String dirPath = dir.getAbsolutePath();
         System.out.println("Storing Cassandra files in " + dirPath);
@@ -215,7 +240,7 @@ public class CassandraServer {
             executor.execute(new CassandraRunner());
         } catch (RejectedExecutionException e) {
             logger.error(e);
-            return;
+            return true;
         }
 
         try {
@@ -226,5 +251,6 @@ public class CassandraServer {
         }
 
         initKeySpace();
+        return false;
     }
 }

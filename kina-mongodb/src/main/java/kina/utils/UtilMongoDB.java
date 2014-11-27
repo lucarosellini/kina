@@ -29,6 +29,7 @@ import kina.entity.KinaType;
 import kina.entity.MongoCell;
 import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
+import org.bson.types.BasicBSONList;
 
 /**
  * Several utilities to work used in the Spark <=> MongoDB integration.
@@ -118,7 +119,12 @@ public final class UtilMongoDB {
 
         List list = new ArrayList();
         for (T t : bsonOject) {
-            list.add(getObjectFromBson(listClass, (BSONObject) t));
+
+            if (BSONObject.class.isAssignableFrom(t.getClass())){
+                list.add(getObjectFromBson(listClass, (BSONObject) t));
+            } else {
+                list.add(t);
+            }
         }
 
 
@@ -202,14 +208,34 @@ public final class UtilMongoDB {
 
         Cells cells = new Cells();
 
-
         Map<String, Object> map = bsonObject.toMap();
 
         Set<Map.Entry<String, Object>> entryBson = map.entrySet();
 
         for (Map.Entry<String, Object> entry : entryBson) {
 
-            if (List.class.isAssignableFrom(entry.getValue().getClass())) {
+            if (entry.getValue() == null){
+                cells.add(MongoCell.create(entry.getKey(), null));
+            }else if (BasicBSONList.class.isAssignableFrom(entry.getValue().getClass())) {
+                BasicBSONList basicBSONList = (BasicBSONList)entry.getValue();
+
+                List<Cells> innerCell = new ArrayList<>();
+
+                Set<String> keySet = basicBSONList.keySet();
+
+                for (String key : keySet) {
+                    Object obj = basicBSONList.get(key);
+                    BSONObject innerBson = null;
+                    if (BSONObject.class.isAssignableFrom(obj.getClass())){
+                        innerBson = (BSONObject)obj;
+                    } else {
+                        innerBson = new BasicBSONObject(key,obj);
+                    }
+                    innerCell.add(getCellFromBson(innerBson));
+                }
+
+                cells.add(MongoCell.create(entry.getKey(), innerCell));
+            } else if (List.class.isAssignableFrom(entry.getValue().getClass())) {
                 List<Cells> innerCell = new ArrayList<>();
                 for (BSONObject innerBson : (List<BSONObject>) entry.getValue()) {
                     innerCell.add(getCellFromBson(innerBson));

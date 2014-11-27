@@ -16,14 +16,25 @@
 
 package kina.config;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.mongodb.QueryBuilder;
+import com.mongodb.hadoop.MongoInputFormat;
 import com.mongodb.hadoop.util.MongoConfigUtil;
+
 import kina.entity.Cell;
+
+import kina.rdd.mongodb.KinaBSONFileInputFormat;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
+import org.apache.hadoop.mapreduce.InputFormat;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
 
@@ -45,6 +56,12 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
      */
     private List<String> hostList = new ArrayList<>();
 
+    /**
+     * A local or HDFS path containing bson dump files to process
+     */
+    private String bsonFile;
+
+    private Boolean recursiveBsonFileDiscovery;
 
     /**
      * MongoDB username
@@ -90,6 +107,8 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
 
     private String[] inputColumns;
 
+    private static String[] bsonFilesExcludePatterns;
+
     /**
      * OPTIONAL
      * filter query
@@ -122,6 +141,8 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
 
 
     private boolean splitsUseChunks = true;
+
+    private Class<? extends InputFormat<Object, BSONObject>> inputFormatClass;
 
     /**
      * Default constructor
@@ -341,6 +362,23 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MongoKinaConfig<T> bsonFile(String bsonFile, Boolean recursive){
+        this.bsonFile = bsonFile;
+        this.recursiveBsonFileDiscovery = recursive != null ? recursive : Boolean.FALSE;
+        return this;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MongoKinaConfig<T> bsonFilesExcludePatterns(String[] bsonFilesExcludePatterns){
+        this.bsonFilesExcludePatterns = bsonFilesExcludePatterns;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -380,20 +418,10 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GenericMongoKinaConfig<T> initialize() {
-        validate();
-        configHadoop = new Configuration();
+    private void initRealClusterConfig(){
         StringBuilder connection = new StringBuilder();
 
         connection.append("mongodb").append(":").append("//");
-
-        if (username != null && password != null) {
-            connection.append(username).append(":").append(password).append("@");
-        }
 
         boolean firstHost = true;
         for (String host : hostList) {
@@ -402,6 +430,11 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
             }
             connection.append(host);
             firstHost = false;
+        }
+
+
+        if (username != null && password != null) {
+            connection.append(username).append(":").append(password).append("@");
         }
 
         connection.append("/").append(database).append(".").append(collection);
@@ -427,21 +460,65 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
         connection.append(options);
 
         configHadoop.set(MongoConfigUtil.INPUT_URI, connection.toString());
-
         configHadoop.set(MongoConfigUtil.OUTPUT_URI, connection.toString());
-
+        if (username != null && password != null) {
+            configHadoop.set(MongoConfigUtil.AUTH_URI, connection.toString());
+        }
 
         if (inputKey != null) {
             configHadoop.set(MongoConfigUtil.INPUT_KEY, inputKey);
         }
 
 
+        inputFormatClass = MongoInputFormat.class;
         configHadoop.set(MongoConfigUtil.SPLITS_USE_SHARDS, String.valueOf(useShards));
-
         configHadoop.set(MongoConfigUtil.CREATE_INPUT_SPLITS, String.valueOf(createInputSplit));
-
         configHadoop.set(MongoConfigUtil.SPLITS_USE_CHUNKS, String.valueOf(splitsUseChunks));
 
+    }
+
+    private void initBSONDumpConfig(){
+        inputFormatClass = KinaBSONFileInputFormat.class;
+
+        Path path = new Path(bsonFile);
+        try {
+            path = path.getFileSystem(configHadoop).makeQualified(path);
+            if (!path.getFileSystem(configHadoop).exists(path)){
+                throw new IOException(new FileNotFoundException(path.getName()));
+            }
+
+            String dirStr = org.apache.hadoop.util.StringUtils.escapeString(path.toString());
+            String dirs = configHadoop.get(FileInputFormat.INPUT_DIR);
+            configHadoop.set(FileInputFormat.INPUT_DIR, dirs == null ? dirStr : dirs + "," + dirStr);
+            configHadoop.set(FileInputFormat.INPUT_DIR_RECURSIVE, recursiveBsonFileDiscovery.toString());
+
+            configHadoop.setClass(FileInputFormat.PATHFILTER_CLASS, KinaMongoPathFilter.class,
+                    PathFilter.class);
+
+            if (bsonFilesExcludePatterns != null){
+                configHadoop.setStrings(KinaMongoPathFilter.PATH_FILTER_CONF, bsonFilesExcludePatterns);
+            }
+
+        } catch (IOException e) {
+            throw new kina.exceptions.IOException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GenericMongoKinaConfig<T> initialize() {
+        validate();
+        configHadoop = new Configuration();
+
+        if (StringUtils.isEmpty(bsonFile)){
+            initRealClusterConfig();
+        } else {
+            initBSONDumpConfig();
+        }
+
+        configHadoop.set(MongoConfigUtil.JOB_INPUT_FORMAT, inputFormatClass.getCanonicalName());
 
         if (query != null) {
             configHadoop.set(MongoConfigUtil.INPUT_QUERY, query);
@@ -456,10 +533,6 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
             configHadoop.set(MongoConfigUtil.INPUT_SORT, sort);
         }
 
-        if (username != null && password != null) {
-            configHadoop.set(MongoConfigUtil.AUTH_URI, connection.toString());
-        }
-
         return this;
     }
 
@@ -467,14 +540,17 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
      * validates connection parameters
      */
     private void validate() {
-        if (hostList.isEmpty()) {
-            throw new IllegalArgumentException("host cannot be null");
-        }
-        if (database == null) {
-            throw new IllegalArgumentException("database cannot be null");
-        }
-        if (collection == null) {
-            throw new IllegalArgumentException("collection cannot be null");
+
+        if (StringUtils.isEmpty(bsonFile)) {
+            if (hostList.isEmpty()) {
+                throw new IllegalArgumentException("host cannot be null");
+            }
+            if (database == null) {
+                throw new IllegalArgumentException("database cannot be null");
+            }
+            if (collection == null) {
+                throw new IllegalArgumentException("collection cannot be null");
+            }
         }
     }
 
@@ -501,5 +577,22 @@ public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
             initialize();
         }
         return configHadoop;
+    }
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBsonFile() {
+        return bsonFile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Class<? extends InputFormat<Object,BSONObject>> getInputFormatClass() {
+        return inputFormatClass;
     }
 }

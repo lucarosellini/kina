@@ -1,8 +1,6 @@
 *.iml
 **/.idea
 */.classpath
-*/.project
-*/.settings
 */.cache
 kina-distribution*
 */*.versionsBackup

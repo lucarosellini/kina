@@ -27,14 +27,10 @@ public class CellMongoKinaConfig extends GenericMongoKinaConfig<Cells> {
     public CellMongoKinaConfig() {
     }
 
-    {
-        dummyCells = new Cells();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Class<Cells> getEntityClass() {
-        return (Class<Cells>) dummyCells.getClass();
+        return Cells.class;
     }
 
 }

@@ -21,10 +21,8 @@ import com.mongodb.DBObject;
 import kina.config.MongoKinaConfig;
 import kina.config.MongoConfigFactory;
 import kina.context.MongoKinaContext;
-import kina.testentity.BookEntity;
-import kina.testentity.CantoEntity;
-import kina.testentity.MessageTestEntity;
-import kina.testentity.WordCount;
+import kina.testentity.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.FlatMapFunction;
@@ -36,6 +34,8 @@ import org.bson.BSONObject;
 import org.bson.BasicBSONObject;
 import org.testng.annotations.Test;
 import scala.Tuple2;
+import scala.runtime.AbstractFunction1;
+import scala.runtime.BoxedUnit;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,13 +45,48 @@ import java.util.List;
 import static kina.rdd.mongodb.MongoJavaRDDTest.*;
 import static org.testng.Assert.*;
 
+class MyEntityTransformer extends AbstractFunction1<AccountEntity, BoxedUnit> implements Serializable {
+
+    @Override
+    public BoxedUnit apply(AccountEntity v1) {
+        assertNotNull(v1.getAccountAlarm());
+        assertNotNull(v1.getAccountAlarm().getAlarmTxFilter());
+
+        List<TransactionFilter> txsFilt = v1.getAccountAlarm().getAlarmTxFilter();
+
+        for (TransactionFilter f : txsFilt) {
+            assertNotNull(f.getCategories());
+            assertTrue(f.getCategories().size() > 0);
+            assertNotNull(f.getThreshold());
+        }
+
+        assertNotNull(v1.getAccountAlarm().getAlarmTxFilter().iterator());
+        assertNotNull(v1.getAccountAlarm().getBalanceThreshold());
+
+        assertNotNull(v1.getAccountAlarm().getEnabledByType());
+
+        assertTrue(v1.getAccountAlarm().getEnabledByType().size() > 0);
+
+        assertNotNull(v1.getAlias());
+
+        assertTrue(StringUtils.isNotEmpty(v1.getCcc()));
+        assertTrue(StringUtils.isEmpty(v1.getUserAlias()));
+
+        assertNotNull(v1.getAccountId());
+        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getBank()));
+        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getBranch()));
+        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getControlDigits()));
+        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getNumber()));
+        
+        return BoxedUnit.UNIT;
+    }
+}
+
 /**
  * Created by rcrespo on 18/06/14.
  */
-
 @Test(suiteName = "mongoRddTests", groups = {"MongoEntityRDDTest"})
 public class MongoEntityRDDTest implements Serializable {
-
 
     @Test
     public void testReadingRDD() {
@@ -250,6 +285,25 @@ public class MongoEntityRDDTest implements Serializable {
         assertNull(bookEntity3.getMetadataEntity());
         assertNotNull(bookEntity3.getCantoEntities());
 
+    }
+
+    @Test
+    public void testBSONReadRDD(){
+        String bsonFile = getClass().getClassLoader().getResource("dump/business/account.bson").getFile();
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        MongoKinaConfig<AccountEntity> inputConfigEntity =
+                MongoConfigFactory.createMongoDB(AccountEntity.class)
+                        .bsonFile(bsonFile, false)
+                        //.bsonFilesExcludePatterns(new String[]{".*?metadata.json",".*?indexes.json"})
+                        .initialize();
+
+        RDD<AccountEntity> rdd = context.mongoRDD(inputConfigEntity);
+
+        assertTrue(rdd.count() > 0);
+        System.out.println(rdd.count());
+
+        rdd.foreach(new MyEntityTransformer());
     }
 
 

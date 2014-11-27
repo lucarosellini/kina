@@ -20,9 +20,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import kina.config.MongoKinaConfig
+import kina.rdd.mongodb.KinaBSONFileInputFormat
 import org.apache.hadoop.conf.Configurable
+import org.apache.hadoop.fs.Path
 import org.apache.hadoop.io.Writable
 import org.apache.hadoop.mapreduce._
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.spark._
 import org.apache.spark.annotation.DeveloperApi
 import org.bson.BSONObject
@@ -70,14 +73,14 @@ abstract class KinaMongoRDD[T: ClassTag](sc: SparkContext,
   @transient protected val jobId = new JobID(jobTrackerId, id)
 
   override def getPartitions: Array[Partition] = {
-    val inputFormatClass: Class[com.mongodb.hadoop.MongoInputFormat] = classOf[com.mongodb.hadoop.MongoInputFormat]
+    val inputFormatClass: Class[_ <: InputFormat[AnyRef, BSONObject]] = confBroadcast.value.getInputFormatClass
     val inputFormat = inputFormatClass.newInstance
     inputFormat match {
       case configurable: Configurable =>
         configurable.setConf(config.getHadoopConfiguration)
       case _ =>
     }
-    val jobContext = newJobContext(config.getHadoopConfiguration, jobId)
+    val jobContext: JobContext = newJobContext(config.getHadoopConfiguration, jobId)
     val rawSplits = inputFormat.getSplits(jobContext).toArray
     val result = new Array[Partition](rawSplits.size)
     for (i <- 0 until rawSplits.size) {
@@ -91,8 +94,8 @@ abstract class KinaMongoRDD[T: ClassTag](sc: SparkContext,
   override def compute(theSplit: Partition, context: TaskContext): InterruptibleIterator[T] = {
     val iter = new Iterator[T] {
       val split = theSplit.asInstanceOf[NewHadoopPartition]
-      logInfo("Input split: " + split.serializableHadoopSplit)
-      val inputFormatClass: Class[com.mongodb.hadoop.MongoInputFormat] = classOf[com.mongodb.hadoop.MongoInputFormat]
+      logDebug("Input split: " + split.serializableHadoopSplit)
+      val inputFormatClass: Class[_ <: InputFormat[AnyRef, BSONObject]] = confBroadcast.value.getInputFormatClass
       val conf = confBroadcast.value.getHadoopConfiguration
       val attemptId = newTaskAttemptID(jobTrackerId, id, isMap = true, split.index, 0)
       val hadoopAttemptContext = newTaskAttemptContext(conf, attemptId)

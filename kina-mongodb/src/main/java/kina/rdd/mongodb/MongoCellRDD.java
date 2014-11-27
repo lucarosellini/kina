@@ -58,8 +58,6 @@ public final class MongoCellRDD extends KinaMongoRDD<Cells> {
      */
     @Override
     public Cells transformElement(Tuple2<Object, BSONObject> tuple) {
-
-
         try {
             return UtilMongoDB.getCellFromBson(tuple._2());
         } catch (Exception e) {
@@ -78,14 +76,11 @@ public final class MongoCellRDD extends KinaMongoRDD<Cells> {
     public static void saveCell(RDD rdd, MongoKinaConfig<Cells> config) {
 
         JavaPairRDD<Object, BSONObject> save = rdd.toJavaRDD().mapToPair(new PairFunction<Cells, Object, BSONObject>() {
-
-
             @Override
             public Tuple2<Object, BSONObject> call(Cells t) throws Exception {
                 return new Tuple2<>(null, UtilMongoDB.getBsonFromCell(t));
             }
         });
-
 
         // Only MongoOutputFormat and config are relevant
         save.saveAsNewAPIHadoopFile("file:///cell", Object.class, Object.class, MongoOutputFormat.class, config.getHadoopConfiguration());

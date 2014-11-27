@@ -47,6 +47,10 @@
         <priority value="FATAL"/>
     </category>
 
+    <category name="kina.config">
+        <priority value="DEBUG"/>
+    </category>
+
     <!--
     <category name="org.apache.spark">
         <priority value="DEBUG"/>

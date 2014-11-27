@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.mongodb.QueryBuilder;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapreduce.InputFormat;
 import org.bson.BSONObject;
 
 /**
@@ -53,6 +54,26 @@ public interface MongoKinaConfig<T> extends KinaConfig<T, MongoKinaConfig<T>> {
      * @return the hadoop configuration object if the concrete implementation has one, null otherwise.
      */
     Configuration getHadoopConfiguration();
+
+    /**
+     * Configures the BSON file to process. If a folder is provided, all the BSON dump files present
+     * in the provided folder will be processed (unless you specify exlusions using
+     * {@link #bsonFilesExcludePatterns(String[])}.
+     *
+     * @param file a local or remote file or directory.
+     * @param recursive instructs kina to process recursively the provided folder. (Default: false). Only applies if
+     *                  <i>file</i> is a folder
+     * @return
+     */
+    MongoKinaConfig<T> bsonFile(String file, Boolean recursive);
+
+    /**
+     * Provides a way to specify the list of regular expressions to exclude certain file from
+     * being treated when processing a Mongo BSON dump folder.
+     * @param bsonFilesExcludePatterns
+     * @return
+     */
+    MongoKinaConfig<T> bsonFilesExcludePatterns(String[] bsonFilesExcludePatterns);
 
     /**
      * Configures the 'readPreference' MongoDB's config property.
@@ -159,4 +180,18 @@ public interface MongoKinaConfig<T> extends KinaConfig<T, MongoKinaConfig<T>> {
      * @return this object.
      */
     MongoKinaConfig<T> ignoreIdField();
+
+    /**
+     * Name of the bson input file.
+     *
+     * @return the full path of bson file
+     */
+    String getBsonFile();
+
+    /**
+     * Returns the configured inpur format class.
+     *
+     * @return the configured input format class
+     */
+    Class<? extends InputFormat<Object, BSONObject>> getInputFormatClass();
 }
