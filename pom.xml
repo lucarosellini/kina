@@ -28,7 +28,7 @@
     <properties>
         <!-- Cassandra -->
         <cassandra.version>2.1.1</cassandra.version>
-        <datastax.driver.version>2.1.2-EX</datastax.driver.version>
+        <datastax.driver.version>2.1.2</datastax.driver.version>
 
         <!-- Spark version -->
         <spark.version>1.0.1</spark.version>
@@ -141,6 +141,12 @@
                 </exclusion>
                 
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.18.2-GA</version>
         </dependency>
         
         <dependency>
@@ -286,6 +292,7 @@
 
     <modules>
         <module>./kina-commons</module>
+        <module>./kina-agent</module>
         <module>./kina-cassandra</module>
         <module>./kina-mongodb</module>
         <module>./kina-examples</module>

@@ -20,12 +20,16 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.datastax.driver.core.Host;
+import com.datastax.driver.core.Metadata;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import javassist.*;
+import javassist.util.proxy.ProxyFactory;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -34,6 +38,7 @@ import kina.entity.Cells;
 import kina.entity.KinaType;
 import kina.exceptions.GenericException;
 import kina.exceptions.IOException;
+import org.apache.hadoop.util.ReflectionUtils;
 import scala.Tuple2;
 
 /**
@@ -296,6 +301,16 @@ public final class Utils {
         return fields.toArray(new Field[fields.size()]);
     }
 
+    public static Set<Host> callGetTokenReplicas(Metadata metadata, String keyspace, String token){
+        try {
+            Method method = metadata.getClass().getMethod("getTokenReplicas", String.class, String.class);
+            return (Set<Host>)method.invoke(metadata,keyspace,token);
+
+        } catch (Exception e) {
+            throw new GenericException(e);
+        }
+
+    }
     /**
      * private constructor.
      */

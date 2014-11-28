@@ -16,10 +16,17 @@
 
 package kina.config;
 
-import java.io.Serializable;
+import java.io.*;
+import java.io.IOException;
+import java.net.URL;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import javassist.*;
 import kina.entity.Cells;
 import kina.entity.KinaType;
+import kina.exceptions.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,10 +35,10 @@ import org.apache.log4j.Logger;
  * @author Luca Rosellini <luca.rosellini@gmail.com>
  */
 public final class CassandraConfigFactory implements Serializable {
+    private static final Logger LOG = Logger.getLogger(CassandraConfigFactory.class);
 
     private static final long serialVersionUID = -4559130919203819088L;
 
-    private static final Logger LOG = Logger.getLogger(CassandraConfigFactory.class);
 
     /**
      * private constructor

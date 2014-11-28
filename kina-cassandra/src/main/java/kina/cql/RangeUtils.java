@@ -16,8 +16,8 @@
 
 package kina.cql;
 
+import java.lang.reflect.Method;
 import java.net.InetAddress;
-import java.nio.ByteBuffer;
 import java.util.*;
 
 import com.google.common.base.Function;
@@ -40,7 +40,6 @@ import static com.google.common.collect.Iterables.*;
 import static kina.utils.Utils.quote;
 
 /**
- * {@link CqlPagingRecordReader} implementation that returns an instance of a
  * {@link CqlRecordReader}.
  *
  * @author Luca Rosellini <luca@strat.io>
@@ -123,7 +122,9 @@ public class RangeUtils {
         final Metadata metadata = session.getCluster().getMetadata();
 
         @SuppressWarnings("unchecked")
-        Set<Host> replicas = metadata.getTokenReplicas(quote(session.getLoggedKeyspace()), token.toString());
+
+        /* dynamically call getTokenReplicas code */
+        Set<Host> replicas = Utils.callGetTokenReplicas(metadata, quote(session.getLoggedKeyspace()), token.toString());
 
         return Lists.newArrayList(Iterables.transform(replicas, new Function<Host, String>() {
             @Nullable

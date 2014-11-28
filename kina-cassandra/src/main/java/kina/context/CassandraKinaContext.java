@@ -32,6 +32,7 @@ package kina.context;/*
 
 import java.util.Map;
 
+import javassist.*;
 import kina.config.CassandraKinaConfig;
 import kina.config.CellCassandraKinaConfig;
 import kina.config.EntityCassandraKinaConfig;
@@ -41,25 +42,32 @@ import kina.rdd.CassandraCellRDD;
 import kina.rdd.CassandraEntityRDD;
 import kina.rdd.CassandraJavaRDD;
 import kina.rdd.CassandraRDD;
+import kina.utils.Utils;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkContext;
 
+
 /**
+ * Cassandra-related kina spark context.
+ *
  * Created by luca on 11/07/14.
  */
 public class CassandraKinaContext extends KinaContext {
-	private static final Logger LOG = Logger.getLogger(CassandraKinaContext.class);
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public CassandraKinaContext(SparkContext sc) {
 		super(sc);
+
+
 	}
 	/**
 	 * {@inheritDoc}
 	 */
 	public CassandraKinaContext(String master, String appName) {
 		super(master, appName);
+        //Utils.instrumentMetadata();
 	}
 
 	/**
@@ -67,18 +75,21 @@ public class CassandraKinaContext extends KinaContext {
 	 */
 	public CassandraKinaContext(String master, String appName, String sparkHome, String jarFile) {
 		super(master, appName, sparkHome, jarFile);
+        //Utils.instrumentMetadata();
 	}
 	/**
 	 * {@inheritDoc}
 	 */
 	public CassandraKinaContext(String master, String appName, String sparkHome, String[] jars) {
 		super(master, appName, sparkHome, jars);
+        //Utils.instrumentMetadata();
 	}
 	/**
 	 * {@inheritDoc}
 	 */
 	public CassandraKinaContext(String master, String appName, String sparkHome, String[] jars, Map<String, String> environment) {
 		super(master, appName, sparkHome, jars, environment);
+        //Utils.instrumentMetadata();
 	}
 
 	/**
