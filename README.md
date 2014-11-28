@@ -1,5 +1,4 @@
 # What is Kina? [![Build Status](https://travis-ci.org/lucarosellini/kina.svg?branch=develop](https://travis-ci.org/lucarosellini/kina)
-=====================
 
 Kina is an high level storage API integrating Apache Spark and several NoSQL datastores.
 I actually support Apache Cassandra and MongoDB, but in the near future we will add support for sever other datastores.
