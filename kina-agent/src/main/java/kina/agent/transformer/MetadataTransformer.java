@@ -17,11 +17,17 @@ import java.security.ProtectionDomain;
  */
 public class MetadataTransformer implements  ClassFileTransformer {
     private static final Logger LOG = Logger.getLogger(MetadataTransformer.class);
-    public static final String COM_DATASTAX_DRIVER_CORE_METADATA_PATH = "com/datastax/driver/core/Metadata";
-    public static final String COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_PATH = COM_DATASTAX_DRIVER_CORE_METADATA_PATH + "$TokenMap";
 
-    private static final String COM_DATASTAX_DRIVER_CORE_METADATA_CLASS = COM_DATASTAX_DRIVER_CORE_METADATA_PATH.replaceAll("/",".");
-    public static final String COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_CLASS = COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_PATH.replaceAll("/",".");
+    private static final String COM_DATASTAX_DRIVER_CORE_METADATA_PATH = "com/datastax/driver/core/Metadata";
+
+    private static final String COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_PATH =
+            COM_DATASTAX_DRIVER_CORE_METADATA_PATH + "$TokenMap";
+
+    private static final String COM_DATASTAX_DRIVER_CORE_METADATA_CLASS =
+            COM_DATASTAX_DRIVER_CORE_METADATA_PATH.replaceAll("/",".");
+
+    private static final String COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_CLASS =
+            COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_PATH.replaceAll("/",".");
 
     /**
      * {@inheritDoc}
