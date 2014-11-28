@@ -14,7 +14,7 @@ fi
 SPARK_BRANCH="$2"
 
 if [ -z "$2" ]; then
-    SPARK_BRANCH="v1.0.1"
+    SPARK_BRANCH="v1.1.1"
 fi
 
 LOCAL_EDITOR=$(which vim)
@@ -63,6 +63,9 @@ git status
 echo "Updating pom version numbers"
 cd ${TMPDIR}/
 mvn versions:set -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
+
+#fix version number for travis CI
+sed -i -e s/\?branch=develop\)/\?branch=version-${RELEASE_VER}/ README.md
 
 cd ..
 
@@ -120,6 +123,10 @@ git checkout develop
 
 echo "Setting new snapshot version"
 mvn versions:set -DnewVersion=${next_version} || { echo "Cannot set new version: ${next_version}"; exit 1; }
+
+#fix version number for travis CI
+sed -i -e s/\?branch=version-${RELEASE_VER}/\?branch=develop\)/ README.md
+
 cd ..
 
 find . -name 'pom.xml.versionsBackup' | xargs rm

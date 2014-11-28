@@ -31,7 +31,7 @@ fi
 
 
 if [ -z "$2" ]; then
-    SPARK_BRANCH="v1.0.1"
+    SPARK_BRANCH="v1.1.1"
 fi
 
 echo "SPARK_REPO: ${SPARK_REPO}"
