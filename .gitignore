@@ -11,3 +11,4 @@ target/
 .project
 .settings/
 test-output/
+lib/
