@@ -55,19 +55,17 @@ RELEASE_VER=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dex
 
 cd ${TMPDIR}/
 
-git flow init -d || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
+git flow init || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
 git flow release start version-$RELEASE_VER || { echo "Cannot create $RELEASE_VER branch"; exit 1; }
 
 git status
 
 echo "Updating pom version numbers"
 cd ${TMPDIR}/
-mvn versions:set -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
+mvn versions:set -q -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
 
 #fix version number for travis CI
 sed -i -e s/\?branch=develop\)/\?branch=version-${RELEASE_VER}/ README.md
-
-cd ..
 
 find . -name 'pom.xml.versionsBackup' | xargs rm
 
@@ -76,16 +74,24 @@ git commit -a -m "[kina release prepare] preparing for version ${RELEASE_VER}"  
 echo " >>> Uploading new release branch to remote repository"
 git flow release publish version-$RELEASE_VER || { echo "Cannot publish $RELEASE_VER branch"; exit 1; }
 
-mvn clean package || { echo "Cannot deploy $RELEASE_VER of Kina"; exit 1; }
+echo "Building Kina ${RELEASE_VER} ..."
+mvn -q clean package -DskipTests || { echo "Cannot deploy $RELEASE_VER of Kina"; exit 1; }
 
 mkdir -p ${TMPDIR}/lib || { echo "Cannot create output lib directory"; exit 1; }
 
-cp ../*/target/*.jar ${TMPDIR}/lib || { echo "Cannot copy target jars to output lib directory, aborting"; exit 1; }
-cp ../*/target/alternateLocation/*.jar ${TMPDIR}/lib || { echo "Cannot copy alternate jars to output lib directory, aborting"; exit 1; }
+cp  -b ./kina-cassandra/target/*.jar ${TMPDIR}/lib || { echo "Cannot copy cassandra target jars to output lib directory, aborting"; exit 1; }
+cp  -b ./kina-cassandra/target/alternateLocation/*.jar ${TMPDIR}/lib || { echo "Cannot copy cassandra alternate target jars to output lib directory, aborting"; exit 1; }
+cp  -b ./kina-mongodb/target/*.jar ${TMPDIR}/lib || { echo "Cannot copy mongodb target jars to output lib directory, aborting"; exit 1; }
+cp  -b ./kina-mongodb/target/alternateLocation/*.jar ${TMPDIR}/lib || { echo "Cannot copy mongodb alternate jars to output lib directory, aborting"; exit 1; }
+
+rm -f ${TMPDIR}/lib/*.jar~
 
 # Generating ChangeLog
 git fetch --tags
 latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+touch ChangeLog.txt
+git add ChangeLog.txt
 
 echo -e "[${RELEASE_VER}]\n\n$(git log ${latest_tag}..HEAD)\n\n$(cat ChangeLog.txt)" > ChangeLog.txt
 
@@ -94,7 +100,7 @@ if [ -n "$LOCAL_EDITOR" ]; then
 fi
 
 echo "Finishing release ${RELEASE_VER}"
-mvn clean
+mvn -q clean
 
 git commit -a -m "[Updated ChangeLog.txt for release ${RELEASE_VER}]"
 
@@ -127,11 +133,9 @@ mvn versions:set -DnewVersion=${next_version} || { echo "Cannot set new version:
 #fix version number for travis CI
 sed -i -e s/\?branch=version-${RELEASE_VER}/\?branch=develop\)/ README.md
 
-cd ..
-
 find . -name 'pom.xml.versionsBackup' | xargs rm
 
-echo "Commiting next_version"
+echo "Commiting version ${next_version}"
 git commit -a -m "[kina release finish] next snapshot version ${next_version}" || { echo "Cannot commit new changes for ${next_version}"; exit 1; }
 
 git push origin || { echo "Cannot push new version: ${next_version}"; exit 1; }
