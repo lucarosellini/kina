@@ -1,0 +1,668 @@
+[0.9.0]
+
+commit 6dbaf705e3ac5f4971a07d69e80ef7ac1b94bdc1
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:45:33 2014 +0100
+
+    [kina release prepare] preparing for version 0.9.0
+
+commit adfb2a72aeb681070939b9b250c7188dc7f38b98
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:32:13 2014 +0100
+
+    added lib/ to gitignore
+
+commit fe20dbc29a0b9bf77a3f991a5600bc21ca7e4839
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:32:01 2014 +0100
+
+    deploy script fixes
+
+commit 9c289832fb5e6843577c204e4879cfb45e480976
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:31:45 2014 +0100
+
+    removed travis-ci status
+
+commit 8121f57b169f579d241dfc8b2217fa2c3870e8c9
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 20:30:26 2014 +0100
+
+    fixed build status position
+
+commit d983972d2f9c39da10ee0524074f8f88978d2a5f
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 20:29:52 2014 +0100
+
+    fixed build status position
+
+commit 0622657d39fa9a552918bc7221a9159c61ab2cfe
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 20:24:56 2014 +0100
+
+    fixed build status position
+
+commit 34d8ca46ca7ce221c6078f468d2f8a845cf8a69b
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 14:19:08 2014 +0100
+
+    modified deployment scripts
+
+commit c39e05d087fc98ec6280768c128ec7793ca3209f
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 14:18:48 2014 +0100
+
+    changed examples log4j configuration
+
+commit 96e6a7728bb6ee0ce6bb1105fdf7d7f5007ee685
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 14:18:23 2014 +0100
+
+    changed constants visibility to private
+
+commit 69f3c7439e8ae106a2e9064306c9d54a10dec1f8
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 14:16:55 2014 +0100
+
+    Added travis-ci build status
+
+commit 944997ab8aeddf73af6695328d102b847082f6fa
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Nov 28 13:14:40 2014 +0100
+
+    Removed dependency to modified version of datastax's cassandra java driver. Bytecode manipulation is now done through a jvm agent + javassist
+
+commit d27f00aee585bd237ac1a53fee89c99b82c1a04a
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Nov 27 17:45:57 2014 +0100
+
+    Added jdk version to travis conf
+
+commit 7b416e135223532f725ea2d90285e20c01bcb4a4
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Nov 27 17:43:04 2014 +0100
+
+    Added travis CI configuration file
+
+commit 0751215bd915efee1be13ceebc309e14c4da875c
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Nov 27 17:38:04 2014 +0100
+
+    Added support for reading MongoDB BSON dump files
+
+commit 637d671e04d04bbd87536d3976d37ede082a2e0c
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Oct 30 15:34:48 2014 +0100
+
+    Ported to Cassandra 2.1.1
+
+commit cc6dd596de8a2774e760ad12c47fd42acfd5fafd
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Oct 30 15:33:50 2014 +0100
+
+    Added eclipse folders to gitignore
+
+commit e86179b63e50346098ea9e5ef2cac6d608669f32
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Sep 15 16:29:44 2014 +0200
+
+    Added compareCellToValue and getCellValueAs utility methods to kina.entity.Cells class
+
+commit 192d9176cf4b8d8470587dfdbf3264699992676b
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Sep 12 14:35:16 2014 +0200
+
+    fixed folder level path in distribution generation
+
+commit 5cfc7c7c02e58de897dd23648ca143018fabe213
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Fri Sep 12 14:34:39 2014 +0200
+
+    added kina-distribution* to gitignore
+
+commit e985b9787e4af2e18c135193ff6a453a229a082e
+Author: Luca Rosellini <luca.rosellini@gmail.com>
+Date:   Tue Aug 12 19:34:32 2014 +0200
+
+    - Added generic @Key annotation, unaware of any datastore-specific key property
+    - Added cassandra-specific annotations @PartitionKey and @ClusterKey replace the use of isPartOfPartitionKey and isPartOfClusteringKey in @Field.
+    - Removed isPartOfPartitionKey and isPartOfClusteringKey from @Field
+
+commit 3c9e4f50eceb16e02d1d0f1d5757622a81a8c068
+Author: Luca Rosellini <luca.rosellini@gmail.com>
+Date:   Tue Aug 12 14:10:54 2014 +0200
+
+    de-deepization, part 2
+
+commit 1fdcd3bb86f049fa79f7a88834eddf8ee6e5bf62
+Author: Luca Rosellini <luca.rosellini@gmail.com>
+Date:   Mon Aug 4 18:22:11 2014 +0200
+
+    de-deepization, part 1
+
+commit b3038ca7a559b4c8e9431dff1cb981ce83060e7d
+Author: Luca Rosellini <luca.rosellini@gmail.com>
+Date:   Mon Aug 4 14:53:16 2014 +0200
+
+    Initial migration to Kina codename, tests passing
+
+commit 8ce24b25aaa14e2a776f6ca04a0e48288ff8479a
+Author: Emmanuelle Raffenne <eraffenne@paradigmatecnologico.com>
+Date:   Mon Aug 4 10:15:59 2014 +0200
+
+    Ignore all idea directory recursively
+
+commit 2ac64ab8804439fed2fa30d4bd60f07d9a9b0950
+Author: Emmanuelle Raffenne <eraffenne@paradigmatecnologico.com>
+Date:   Mon Aug 4 10:15:19 2014 +0200
+
+    First commit of markdown documentation
+
+commit 51b7a34b5b57bab8ee51d3e10900e1cf45c58ca8
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 23 12:00:31 2014 +0200
+
+    examples fixed
+
+commit 4adf2f61f6d6d71554bed8ec90ccbd976819c3dd
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 15:08:49 2014 +0200
+
+    changed version
+
+commit 397b8fd99aff7b6994339dce66a00d2e5914d33a
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 18 12:17:14 2014 +0200
+
+    Changed initReplica code to fetch replicas using the new method getTokenReplicas
+
+commit e6d0b969af0021b01923c370eda2174d57c47b7d
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 18 12:16:06 2014 +0200
+
+    changed cassandra-driver dependency to com.stratio.cassandra 2.0.3
+
+commit f997f34a9ec008ee45c143df2ec5bfcc8c4fb764
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 12:07:59 2014 +0200
+
+    fixed
+
+commit 7ce83059fba35b7f3f405e872b3b86ba547d9aab
+Merge: fa5b82a e8d85cf
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:39:25 2014 +0200
+
+    Merge branch 'develop' of github.com:Stratio/stratio-deep into deep-refactor-different
+
+commit fa5b82aae8786086a5faefc394b7bb31e5bc5e80
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:39:03 2014 +0200
+
+    fixed
+
+commit 4d8e0b11f3fd56e849226405d378862eebddbfbe
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:27:10 2014 +0200
+
+    fixed
+
+commit e8d85cf8820970831f002b3d744a3d5ecc846603
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:26:26 2014 +0200
+
+    fixed
+
+commit e8d60d69999ac3725df3ffba34306c3bb8712459
+Merge: 25cd8cb fae3876
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:21:46 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+
+commit 25cd8cb6c5e892a064f4aace0af611cfdd9173ec
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 11:20:32 2014 +0200
+
+    code reformated
+
+commit fae38761d70333a54073276ac1cfd487a54794ee
+Merge: 613899d 0a17f93
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 18 09:53:16 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+    
+    # By rcrespodelosreyes
+    # Via rcrespodelosreyes
+    * 'deep-refactor-different' of github.com:Stratio/stratio-deep:
+      added new tests
+
+commit 613899ddba62e25802a78dfd474e5bd05dd0388c
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 18 09:52:58 2014 +0200
+
+    update dependency to spark 1.0.1
+
+commit 0a17f937163a1e98e027bd88a21bd7edaeaeac7e
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 18 09:50:56 2014 +0200
+
+    added new tests
+
+commit a89c4529abf02ddcf272cdd0c5e15a05a14ca685
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jul 17 11:41:31 2014 +0200
+
+    updated stratio's spark branch to 1.0.1
+
+commit f6ac36a56f85389435b8123079c385190fa557e4
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 16 09:26:15 2014 +0200
+
+    code reformated
+
+commit 66de6516da15afd724ad94812789c57e241cd6c0
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 16 08:40:18 2014 +0200
+
+    fixed: project dependencies
+
+commit 2887a2107049137473d0d0cd43dac6ee652d40af
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Tue Jul 15 10:46:29 2014 +0200
+
+    improved Cells integration
+
+commit 4d6b21e68a48d09a648201e3fb53d12d82784a73
+Merge: 0a520c7 c242462
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 14 09:38:35 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+    
+    Conflicts:
+    	deep-commons/src/main/java/com/stratio/deep/config/ConfigFactory.java
+
+commit 0a520c71446a1f9447205cd9d99fe9afb156d07a
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 14 09:35:37 2014 +0200
+
+    added new config methods
+
+commit 5727c251cfae01a9a0cecac55023404f95d128f7
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 14 09:35:03 2014 +0200
+
+    added new config methods
+
+commit c242462741920bb01970bcf4661e129321008354
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Mon Jul 14 09:33:02 2014 +0200
+
+    Additional refactor: moved last database-specific classes from deep-commons to the proper sub-project
+
+commit 0051e1171bc478d1e445c9e6a3a06728eba6c4a4
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 14:11:52 2014 +0200
+
+    Mongo Cell moved to project deep-mongodb
+
+commit 2e20739a48215e60ea269ced93abcb2d6c8c2dcf
+Merge: 18704ef 5ec5e21
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 11 13:59:23 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+
+commit 5ec5e21af38bc27aafa0357145a382e82a61a733
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 13:58:35 2014 +0200
+
+    Refactored Cassandra specific classes and methods to deep-cassandra
+
+commit 20034703e9ae28e49538b5c9035ae4d51295a4d9
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 13:04:42 2014 +0200
+
+    Merged previous refactors with mongo's test changes
+
+commit 4e4d463fbe231e7fb1e83a3ec6d9f4ccd4f1d828
+Merge: 6702477 f2226aa
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 12:53:27 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+    
+    # By rcrespodelosreyes
+    # Via rcrespodelosreyes
+    * 'deep-refactor-different' of github.com:Stratio/stratio-deep:
+      have been erased unnecessary files
+      added: now it throws an exception instead of returning null
+    
+    Conflicts:
+    	deep-commons/src/main/java/com/stratio/deep/context/DeepSparkContext.java
+    	deep-mongodb/src/test/java/com/stratio/deep/config/GenericConfigFactoryMongoDBTest.java
+    	deep-mongodb/src/test/java/com/stratio/deep/rdd/mongodb/MongoEntityRDDTest.java
+
+commit 67024773fdbfb051ea2743cc7cde934718cce385
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 12:50:42 2014 +0200
+
+    * splitter DeepSparkContext into CassandraDeepSparkContext and MongoDeepSparkContext
+    * renamed DeepJobConfigFactory to ConfigFactory
+
+commit a0c5350c8d5e20ec7a763d2b0ff930efdcb3c041
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 12:45:10 2014 +0200
+
+    Updated README.md documentation
+
+commit 18704ef4c4924c9a9ba8bd9de480a42bffb22125
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 11 11:25:49 2014 +0200
+
+    have been erased unnecessary files
+
+commit f2226aa710eb81fee99263ea69de99a4baa5ea8a
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 11 11:22:42 2014 +0200
+
+    have been erased unnecessary files
+
+commit 992ac8dc433f5cd8e75dc937afeddacdca9be84c
+Merge: 43a3ef7 6d0efe0
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 11 10:33:06 2014 +0200
+
+    Merge branch 'deep-refactor-different' of github.com:Stratio/stratio-deep into deep-refactor-different
+
+commit 43a3ef7d815e9793d783be02b383c27632b25537
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Fri Jul 11 10:26:32 2014 +0200
+
+    added: now it throws an exception instead of returning null
+
+commit fc513a20cae7d960cf9f18b794abcb8d5925e692
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 09:47:02 2014 +0200
+
+    Added migration guide from version 0.2.9
+
+commit 6d0efe087b5ce70cc3e78942d28b86b47f8d8a1a
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 11 08:35:05 2014 +0200
+
+    renamed deep-core-cassandra to deep-cassandra
+    renamed deep-core-mongodb to deep-mongodb
+
+commit bea6452481e14704bd49aec94b9d6466f3afcea8
+Merge: 95331bb 590baca
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jul 10 15:58:36 2014 +0200
+
+    Merge branch 'develop' into deep-refactor-different
+    
+    * develop:
+      improved support for mixed case column family names, fixed #6
+      Adding addAll method to the Cells object
+    
+    * renamed deep-core to deep-core-cassandra
+    * fixed ScalaCassandraEntityRDDTest
+
+commit 590bacad8247371f75da372248729a0c5d601153
+Merge: 6f36c0d befca1c
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jul 10 14:59:24 2014 +0200
+
+    Merge branch 'develop' of github.com:Stratio/stratio-deep into develop
+    
+    # By rcrespodelosreyes (3) and Óscar Puertas (1)
+    # Via Óscar Puertas
+    * 'develop' of github.com:Stratio/stratio-deep:
+      Adding addAll method to the Cells object
+      fixed merge error
+      cell refactor
+      cell refactor
+
+commit 6f36c0db8ad5a9e75ae75cfd61747f8ec3deb75b
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jul 10 14:59:16 2014 +0200
+
+    improved support for mixed case column family names, fixed #6
+
+commit 95331bbc0156c41a99538574dbb1deced52c200f
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Thu Jul 10 13:56:10 2014 +0200
+
+    Refactor Deep to have different sub-projects for each data store
+
+commit befca1cb2ada284b0366bc5db6a76b683f2d9460
+Merge: 0efef95 fda9382
+Author: Óscar Puertas <opuertas@paradigmatecnologico.com>
+Date:   Thu Jul 10 13:13:17 2014 +0200
+
+    Merging with develop branch
+
+commit 0efef9587b477c2622838777608acae900234a30
+Author: Óscar Puertas <opuertas@paradigmatecnologico.com>
+Date:   Thu Jul 10 13:07:25 2014 +0200
+
+    Adding addAll method to the Cells object
+
+commit fda9382d4b5e6aba1b6c39ccaa68d0cdef358143
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 9 15:04:25 2014 +0200
+
+    fixed merge error
+
+commit acc3a667ebd060b69817ac8c3d8f7ca6237b8b6d
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 9 14:35:15 2014 +0200
+
+    cell refactor
+
+commit 8b721a7c02e8db433376de89be1d215c579234c1
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 9 14:33:58 2014 +0200
+
+    cell refactor
+
+commit 71d32a7835041c40221930216d9c3ace6a69177e
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Wed Jul 9 12:20:30 2014 +0200
+
+    fixed several sonar violations
+
+commit 10de42b3d5e68f77ef90769c3a66d451933692f5
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Wed Jul 9 12:20:12 2014 +0200
+
+    Pagination is outsourced to Datastax Java Driver.
+
+commit 80c15fad10f02dc8230c2d0bc9b07f21b9f1a73c
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Wed Jul 9 10:58:07 2014 +0200
+
+    optimized imports
+
+commit 1d33468b1c35380c3da9b058606ef3b0690a6d03
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 9 10:23:44 2014 +0200
+
+    added cp -u
+
+commit 83486168ac7df5546cbbcd3129a4862047ad4245
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 9 09:59:41 2014 +0200
+
+    dependencies
+
+commit 99b8c3449220d2206d6178d3a6951a3634281294
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Tue Jul 8 12:17:19 2014 +0200
+
+    fixed: data set path
+
+commit 8bcc553f2946b894eb247b857b0af8045abd480e
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 8 08:44:21 2014 +0200
+
+    removed ChangeLog.txt edit before Spark compilation (we don't need this when generating a local distribution).
+
+commit 0a2fb0f02dcf44ec17e255512469275887256416
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 8 08:43:26 2014 +0200
+
+    changed hadoop-core dependency
+
+commit 25e74329bfca6d522bbd70bc0829ffa34f7c973f
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 8 08:11:02 2014 +0200
+
+    fixed several README.md errors.
+
+commit 6cf2c45afb6b2b15ac711f0885bd957eb0a85786
+Merge: edb8642 7bcc347
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 7 14:50:52 2014 +0200
+
+    Merge branch 'mongodb-deep-cells' into develop
+    
+    Conflicts:
+    	deep-commons/src/main/java/com/stratio/deep/entity/Cell.java
+    	deep-core/src/main/java/com/stratio/deep/config/DeepJobConfigFactory.java
+
+commit edb8642842a03686cb3217cda0b46985dd494c55
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Mon Jul 7 13:15:49 2014 +0200
+
+    fixed several sonar violations and improved javadoc
+
+commit 7bcc347568b394e41fbc0eb7eb71a3179901de4c
+Merge: 5b01cb3 5cf1a0e
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 7 12:32:47 2014 +0200
+
+    Merge branch 'develop' into mongodb-deep-cells
+    
+    Conflicts:
+    	deep-commons/src/main/java/com/stratio/deep/entity/Cell.java
+    	deep-commons/src/main/java/com/stratio/deep/entity/Cells.java
+    	deep-commons/src/main/java/com/stratio/deep/utils/Utils.java
+    	deep-commons/src/test/java/com/stratio/deep/entity/CellTest.java
+    	deep-commons/src/test/java/com/stratio/deep/testentity/CellsTest.java
+    	deep-commons/src/test/java/com/stratio/deep/testutils/UtilsTest.java
+    	deep-core/src/test/java/com/stratio/deep/rdd/CassandraCellRDDTest.java
+    	deep-core/src/test/java/com/stratio/deep/rdd/CassandraJavaRDDTest.java
+    	deep-examples/src/main/java/com/stratio/deep/examples/java/WritingCellToCassandra.java
+    	deep-examples/src/main/scala/com/stratio/deep/examples/scala/WritingCellToCassandra.scala
+
+commit 5b01cb3c25dd79e73f1277dc6a2cc946cc422b8d
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Mon Jul 7 11:46:51 2014 +0200
+
+    new configutarion paremeters added
+
+commit 5cf1a0ed62d3afc0b31743079cdaa8cdd886aa72
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 4 14:15:03 2014 +0200
+
+    JavaDoc improvements
+
+commit f7f626af76109910194f5d31c0a486202d1a1858
+Merge: ff669ab 3d3f046
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 4 13:47:59 2014 +0200
+
+    Merge branch 'develop' of github.com:Stratio/stratio-deep into develop
+    
+    # By Emmanuelle Raffenne
+    # Via Emmanuelle Raffenne
+    * 'develop' of github.com:Stratio/stratio-deep:
+      Change to specific type for Cassandra config
+      Fix class for logger
+
+commit ff669ab8fedc4a03ab837237a6d58cf25006ca36
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Fri Jul 4 13:47:51 2014 +0200
+
+    Refactored com.stratio.deep.entity.Cells to handle cells belonging to multiple tables
+
+commit 3d3f046ad0eb409be75c524a315ed6be7346fd74
+Merge: b83c572 a631d5d
+Author: Emmanuelle Raffenne <eraffenne@paradigmatecnologico.com>
+Date:   Fri Jul 4 12:32:56 2014 +0200
+
+    Merge branch 'release/version-0.3.3' into develop
+    
+    Merge last changes on deep-examples from 0.3.3 branch
+
+commit a631d5dc12d307a945cebddc0dff09002677f2e9
+Author: Emmanuelle Raffenne <eraffenne@paradigmatecnologico.com>
+Date:   Fri Jul 4 12:32:15 2014 +0200
+
+    Change to specific type for Cassandra config
+
+commit 116f3255080d14e9fc3dd69632f4e769b0757704
+Author: Emmanuelle Raffenne <eraffenne@paradigmatecnologico.com>
+Date:   Fri Jul 4 12:31:19 2014 +0200
+
+    Fix class for logger
+
+commit babc35bcb53ffc53ba914ce42c0c2b03eb2fbf0f
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Thu Jul 3 12:10:33 2014 +0200
+
+    added: filter query, sorting, fields to be returned.
+
+commit b83c57283b92ff2fe319cb78385f8cc3f6c668e2
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 2 14:11:40 2014 +0200
+
+    added cell tableName
+
+commit 7cf04b87d21fb4faf5f150329ebcd394c46fccf5
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 2 12:47:46 2014 +0200
+
+    mongodb integration with deep cell
+
+commit 8c02fab406497de70b60d1cc99e7bdeafd63888f
+Author: rcrespodelosreyes <ricardo.e.crespo@gmail.com>
+Date:   Wed Jul 2 09:42:49 2014 +0200
+
+    added mongodb test
+
+commit 4636dc4e3e25796d29d35bb62d30b5a23e400a04
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 1 11:58:51 2014 +0200
+
+    fixed issue #5
+
+commit 035e39c3ff66a9756efd7bdf4f2b47295bacea83
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 1 09:26:26 2014 +0200
+
+    fixed several sonar violations
+
+commit def08110f22a083fd380a0734b882245eaea2edc
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Tue Jul 1 09:25:09 2014 +0200
+
+    fixed several sonar violations
+
+commit a71ffadfeff6d0b9213a74f78aace724a7e71cfe
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jun 26 19:29:14 2014 +0200
+
+    [stratio-deep release finish] next snapshot version 0.3.4-SNAPSHOT
+
+commit d601e405d4e107832a474aa7f6fc431b95e4b690
+Merge: 51548b1 0d23aa7
+Author: Luca Rosellini <luca@stratio.com>
+Date:   Thu Jun 26 19:29:02 2014 +0200
+
+    Merge branch 'release/version-0.3.3' into develop
+
+

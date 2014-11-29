@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "business.campaignUser" }, { "v" : 1, "unique" : true, "key" : { "campaign.provider" : 1, "campaign.name" : 1, "inputCode.code" : 1 }, "name" : "campaignUser_inputCode", "ns" : "business.campaignUser", "sparse" : true } ] }

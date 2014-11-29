@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Agent-Class: kina.agent.KinaAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Premain-Class: kina.agent.KinaAgent

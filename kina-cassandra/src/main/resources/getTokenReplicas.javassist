@@ -1,0 +1,10 @@
+public java.util.Set getTokenReplicas(String keyspace, String token) {
+    keyspace = handleId(keyspace);
+    com.datastax.driver.core.Metadata.TokenMap current = tokenMap;
+    if (current == null) {
+        return java.util.Collections.emptySet();
+    } else {
+        java.util.Set hosts = current.getReplicas(keyspace, current.factory.fromString(token));
+        return hosts == null ? java.util.Collections.emptySet() : hosts;
+    }
+}

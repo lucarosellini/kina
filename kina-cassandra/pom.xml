@@ -1,0 +1,260 @@
+<!--
+  ~ Copyright 2014, Luca Rosellini.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>kina-cassandra</artifactId>
+    <packaging>jar</packaging>
+    <name>kina cassandra</name>
+    <url>https://github.com/lucarosellini/kina</url>
+    <description>Project containing the actual implementation of the RDD integrating Apache Spark and Apache Cassandra</description>
+
+    <parent>
+        <groupId>com.github.lucarosellini</groupId>
+        <artifactId>kina-parent</artifactId>
+        <version>0.9.0</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <developers>
+        <developer>
+            <id>lucarosellini</id>
+            <name>Luca Rosellini</name>
+            <email>luca.rosellini@gmail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+                <role>maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>aagea</id>
+            <name>Álvaro Agea</name>
+            <email>alvaro@stratio.com</email>
+            <roles>
+                <role>architect</role>
+                <role>contributor</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>eraffenne</id>
+            <name>Emmanuelle Raffenne</name>
+            <email>eraffenne@stratio.com</email>
+            <roles>
+                <role>tester</role>
+                <role>documentation</role>
+                <role>contributor</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:lucarosellini/kina.git</connection>
+        <developerConnection>scm:git:git@github.com:lucarosellini/kina.git</developerConnection>
+        <url>https://github.com/lucarosellini/kina</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.lucarosellini</groupId>
+            <artifactId>kina-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Logging with SLF4J & LogBack -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.lucarosellini</groupId>
+            <artifactId>kina-commons</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>2.15.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>log4j.xml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <scalaVersion>2.10.3</scalaVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <scalaVersion>2.10.3</scalaVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/alternateLocation
+                            </outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <excludeArtifactIds>::*</excludeArtifactIds>
+                            <includeGroupIds>${distribution.include}</includeGroupIds>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-agent</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.lucarosellini</groupId>
+                                    <artifactId>kina-agent</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${project.build.directory}/agents</outputDirectory>
+                                    <destFileName>kina-agent.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <argLine>-javaagent:${project.build.directory}/agents/kina-agent.jar</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
