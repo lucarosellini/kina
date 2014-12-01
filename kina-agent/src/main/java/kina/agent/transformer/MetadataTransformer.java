@@ -85,7 +85,6 @@ public class MetadataTransformer implements  ClassFileTransformer {
 
             CtClass dtstxMetadata = ClassPool.getDefault().get(COM_DATASTAX_DRIVER_CORE_METADATA_CLASS);
 
-
             CtClass[] declaredClasses = dtstxMetadata.getDeclaredClasses();
             for (CtClass clazz : declaredClasses) {
                 if (clazz.getName().equals(COM_DATASTAX_DRIVER_CORE_METADATA$TOKEN_MAP_CLASS)){
@@ -96,6 +95,8 @@ public class MetadataTransformer implements  ClassFileTransformer {
             try {
                 dtstxMetadata.getDeclaredMethod("getTokenReplicas");
             } catch (NotFoundException e) {
+                // inject the new method
+
                 CtMethod getTokenReplicas = CtNewMethod.make(code, dtstxMetadata);
                 dtstxMetadata.addMethod(getTokenReplicas);
 

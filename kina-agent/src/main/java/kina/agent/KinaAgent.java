@@ -19,15 +19,12 @@ public class KinaAgent {
     /**
      * Entry point hook
      *
-     * @param args
-     * @param inst
+     * @param args any optional agent parameter (actually not used)
+     * @param inst a reference to the {@link java.lang.instrument.Instrumentation} object
      * @throws Exception
      */
     public static void premain(String args, Instrumentation inst) throws Exception {
-        LOG.info("KinaAgent loaded");
         inst.addTransformer(new MetadataTransformer());
-
-        LOG.info("MetadataTransformer registered");
-
+        LOG.info("KinaAgent loaded");
     }
 }
