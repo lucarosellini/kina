@@ -40,6 +40,8 @@ import org.bson.BasicBSONObject;
 
 
 /**
+ * Base class for all mongo-specific configuration objects.
+ *
  * @param <T>
  */
 public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {

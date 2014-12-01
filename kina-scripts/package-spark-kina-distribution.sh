@@ -148,7 +148,7 @@ cd ${TMPDIR_SPARK}
 git checkout "$SPARK_BRANCH" || { echo "Cannot checkout branch: ${SPARK_BRANCH}"; exit 1; }
 
 # Apply patch
-patch -p1 < ${TMPDIR}/kina-scripts/spark-patches/kina-spark-${SPARK_BRANCH}-patches
+patch -p1 < ${TMPDIR}/kina-scripts/spark-patches/kina-spark-${SPARK_BRANCH}-patches.diff
 
 chmod +x bin/kina-shell
 

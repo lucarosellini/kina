@@ -16,18 +16,22 @@
 
 package kina.context;
 
+import com.mongodb.DBObject;
 import kina.config.CellMongoKinaConfig;
 import kina.config.EntityMongoKinaConfig;
 import kina.config.MongoKinaConfig;
+import kina.config.RawMongoKinaConfig;
 import kina.entity.Cells;
 import kina.exceptions.GenericException;
 import kina.rdd.mongodb.MongoCellRDD;
 import kina.rdd.mongodb.MongoEntityRDD;
 import kina.rdd.mongodb.MongoJavaRDD;
+import kina.rdd.mongodb.MongoRawRDD;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.rdd.KinaMongoRDD;
+import org.bson.BSONObject;
 
 import java.util.Map;
 
@@ -98,6 +102,10 @@ public class MongoKinaContext extends KinaContext {
 
         if (CellMongoKinaConfig.class.isAssignableFrom(config.getClass())) {
             return (KinaMongoRDD<T>) new MongoCellRDD(sc(), (MongoKinaConfig<Cells>) config);
+        }
+
+        if (RawMongoKinaConfig.class.isAssignableFrom(config.getClass())){
+            return (KinaMongoRDD<T>) new MongoRawRDD(sc(), (MongoKinaConfig<BSONObject>)config);
         }
 
         throw new GenericException("not recognized config type");

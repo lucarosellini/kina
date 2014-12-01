@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import com.datastax.driver.core.policies.ConstantReconnectionPolicy;
+import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
@@ -51,24 +53,9 @@ public class CassandraServer {
     private class CassandraRunner implements Runnable {
         @Override
         public void run() {
-            File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "embeddedcassandra.lock");
-            FileChannel channel = null;
-            try {
-                channel = new RandomAccessFile(file, "rw").getChannel();
-            } catch (FileNotFoundException e) {
-                throw new GenericException(e);
-            }
-
-            logger.info("!!!! Trying to acquire lock");
-            try (FileLock lock = channel.lock()) {
-                logger.info(">>>> lock ACQUIRED");
-
-                cassandraDaemon = new CassandraDaemon();
-                cassandraDaemon.activate();
-                cassandraDaemon.start();
-            } catch (IOException e){
-                throw new GenericException(e);
-            }
+            cassandraDaemon = new CassandraDaemon();
+            cassandraDaemon.activate();
+            cassandraDaemon.start();
         }
     }
 
@@ -172,7 +159,10 @@ public class CassandraServer {
         if (startupCommands == null || startupCommands.length == 0) {
             return;
         }
+
+
         Cluster cluster = Cluster.builder().withPort(CASSANDRA_CQL_PORT)
+                .withReconnectionPolicy(new ConstantReconnectionPolicy(5000))
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
 
         try (Session session = cluster.connect()) {
