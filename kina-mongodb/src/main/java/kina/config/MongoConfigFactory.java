@@ -21,6 +21,8 @@ import kina.entity.KinaType;
 import org.apache.log4j.Logger;
 
 /**
+ * Factory class for mongo-specific configuration objects.
+ *
  * Created by luca on 14/07/14.
  */
 public class MongoConfigFactory {
@@ -48,5 +50,14 @@ public class MongoConfigFactory {
      */
     public static <T extends KinaType> MongoKinaConfig<T> createMongoDB(Class<T> entityClass) {
         return new EntityMongoKinaConfig<>(entityClass);
+    }
+
+    /**
+     * Creates a new raw MongoDB job configuration object.
+     *
+     * @return a new raw MongoDB job configuration object.
+     */
+    public static RawMongoKinaConfig createRawMongoConfig() {
+        return new RawMongoKinaConfig();
     }
 }

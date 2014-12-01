@@ -18,11 +18,12 @@ package kina.config;
 
 import kina.entity.Cells;
 
-
+/**
+ * Configuration object for Cell-based mongo RDDs.
+ */
 public class CellMongoKinaConfig extends GenericMongoKinaConfig<Cells> {
 
     private static final long serialVersionUID = -598862509865396541L;
-    private Cells dummyCells;
 
     public CellMongoKinaConfig() {
     }

@@ -40,9 +40,11 @@ import org.bson.BasicBSONObject;
 
 
 /**
+ * Abstract class for all mongo-specific configuration objects.
+ *
  * @param <T>
  */
-public class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
+public abstract class GenericMongoKinaConfig<T> implements MongoKinaConfig<T> {
     private static final long serialVersionUID = -7179376653643603038L;
 
 
