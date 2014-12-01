@@ -1,0 +1,135 @@
+diff --git a/bin/kina-init.scala b/bin/kina-init.scala
+new file mode 100644
+index 0000000..e3f7dd4
+--- /dev/null
++++ b/bin/kina-init.scala
+@@ -0,0 +1,41 @@
++//Commmons
++import com.stratio.deep.commons.annotations._
++import com.stratio.deep.commons.config._
++import com.stratio.deep.commons.entity._
++
++
++//Core
++import com.stratio.deep.core.context._
++import com.stratio.deep.core.entity._
++
++//Cassandra
++import com.stratio.deep.cassandra.config._
++import com.stratio.deep.cassandra.entity._
++import com.stratio.deep.cassandra.extractor._
++import com.stratio.deep.cassandra.testentity._
++
++//MongoDB
++import com.stratio.deep.mongodb.config._
++import com.stratio.deep.mongodb.extractor._
++
++
++//ES
++import com.stratio.deep.es.config._
++import com.stratio.deep.es.extractor._
++
++
++//Apache-Cassandra
++import org.apache.cassandra.db.marshal.Int32Type;
++import org.apache.cassandra.db.marshal.LongType;
++
++
++//Spark
++import org.apache.spark.rdd._
++import org.apache.spark.SparkContext._
++
++//Scala
++import scala.collection.JavaConversions._
++
++
++
++val deepContext = new DeepSparkContext(sc)
+diff --git a/bin/kina-shell b/bin/kina-shell
+new file mode 100644
+index 0000000..a9948dd
+--- /dev/null
++++ b/bin/kina-shell
+@@ -0,0 +1,3 @@
++#!/bin/bash
++export SPARK_HOME="$(cd `dirname $0`/..; pwd)"
++$SPARK_HOME/bin/spark-shell -i $SPARK_HOME/bin/kina-init.scala
+\ No newline at end of file
+diff --git a/conf/spark-defaults.conf.template b/conf/spark-defaults.conf.template
+index a48dcc7..5259db8 100644
+--- a/conf/spark-defaults.conf.template
++++ b/conf/spark-defaults.conf.template
+@@ -1,10 +1,14 @@
+ # Default system properties included when running spark-submit.
+ # This is useful for setting default environmental settings.
+ 
+-# Example:
+-# spark.master                     spark://master:7077
+-# spark.eventLog.enabled           true
+-# spark.eventLog.dir               hdfs://namenode:8021/directory
+-# spark.serializer                 org.apache.spark.serializer.KryoSerializer
+-# spark.driver.memory              5g
+-# spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
++# Example 1:
++# spark.master            spark://master:7077
++# spark.eventLog.enabled  true
++# spark.eventLog.dir      hdfs://namenode:8021/directory
++# spark.serializer        org.apache.spark.serializer.KryoSerializer
++
++# Example 2:
++# spark.master            mesos://zk://denethor:2181/mesos
++# spark.serializer        org.apache.spark.serializer.KryoSerializer
++# spark.kryo.registrator  kina.serializer.KinaKryoRegistrator
++# spark.home              /opt/spark
+\ No newline at end of file
+diff --git a/conf/spark-env.sh.template b/conf/spark-env.sh.template
+index f8ffbf6..327a1fb 100755
+--- a/conf/spark-env.sh.template
++++ b/conf/spark-env.sh.template
+@@ -41,3 +41,12 @@
+ # - SPARK_HISTORY_OPTS, to set config properties only for the history server (e.g. "-Dx=y")
+ # - SPARK_DAEMON_JAVA_OPTS, to set config properties for all daemons (e.g. "-Dx=y")
+ # - SPARK_PUBLIC_DNS, to set the public dns name of the master or workers
++
++export SPARK_JAVA_OPTS=" -Djava.net.preferIPv4Stack=true -Dcassandra.config= "
++
++CONFDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
++for jar in $(ls $CONFDIR/../lib/*.jar); do
++  SPARK_CLASSPATH=$SPARK_CLASSPATH:${jar}
++done
++
++export SPARK_CLASSPATH
+diff --git a/repl/src/main/scala/org/apache/spark/repl/SparkILoopInit.scala b/repl/src/main/scala/org/apache/spark/repl/SparkILoopInit.scala
+index 74c58eb..a099138 100644
+--- a/repl/src/main/scala/org/apache/spark/repl/SparkILoopInit.scala
++++ b/repl/src/main/scala/org/apache/spark/repl/SparkILoopInit.scala
+@@ -23,11 +23,11 @@ trait SparkILoopInit {
+   /** Print a welcome message */
+   def printWelcome() {
+     echo("""Welcome to
+-      ____              __
+-     / __/__  ___ _____/ /__
+-    _\ \/ _ \/ _ `/ __/  '_/
+-   /___/ .__/\_,_/_/ /_/\_\   version 1.1.0
+-      /_/
++      __ __ _
++     / //_/(_)___  ____ _
++    / ,<  / / __ \/ __ `/
++   / /| |/ / / / / /_/ /
++  /_/ |_/_/_/ /_/\__,_/ Powered by Spark v1.1.0
+ """)
+     import Properties._
+     val welcomeMsg = "Using Scala %s (%s, Java %s)".format(
+diff --git a/make-distribution.sh b/make-distribution.sh
+index f030d3f..22b5c7c 100755
+--- a/make-distribution.sh
++++ b/make-distribution.sh
+@@ -164,7 +164,7 @@ cd "$FWDIR"
+
+ export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
+
+-BUILD_COMMAND="mvn clean package -DskipTests $@"
++BUILD_COMMAND="mvn -q clean package -DskipTests $@"
+
+ # Actually build the jar
+ echo -e "\nBuilding with..."

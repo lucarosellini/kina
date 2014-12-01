@@ -14,7 +14,7 @@ fi
 SPARK_BRANCH="$2"
 
 if [ -z "$2" ]; then
-    SPARK_BRANCH="v1.1.1"
+    SPARK_BRANCH="v1.1.0"
 fi
 
 LOCAL_EDITOR=$(which vim)
@@ -62,7 +62,7 @@ git status
 
 echo "Updating pom version numbers"
 cd ${TMPDIR}/
-mvn versions:set -q -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
+mvn -q versions:set -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
 
 #fix version number for travis CI
 sed -i -e s/\?branch=develop\)/\?branch=version-${RELEASE_VER}/ README.md
@@ -116,8 +116,6 @@ next_version="${major}.${minor}.${next_bugfix}-SNAPSHOT"
 
 echo "Next SNAPSHOT version: ${next_version}"
 
-cd .. 
-
 echo "Finishing release"
 git flow release finish -k -mFinishing_Release_$RELEASE_VER version-$RELEASE_VER || { echo "Cannot finish Kina ${next_version}"; exit 1; }
 git push --tags
@@ -149,11 +147,14 @@ git clone ${SPARK_REPO} ${TMPDIR_SPARK} || { echo "Cannot clone spark repo from 
 cd ${TMPDIR_SPARK}
 git checkout "$SPARK_BRANCH" || { echo "Cannot checkout branch: ${SPARK_BRANCH}"; exit 1; }
 
+# Apply patch
+patch -p1 < ${TMPDIR}/kina-scripts/spark-patches/kina-spark-${SPARK_BRANCH}-patches
+
 chmod +x bin/kina-shell
 
 echo " >>> Executing make distribution script"
 ##  --skip-java-test has been added to Spark 1.0.0, avoids prompting the user about not having JDK 6 installed
-./make-distribution.sh --skip-java-test --hadoop 2.4.0 --with-yarn || { echo "Cannot make Spark distribution"; exit 1; }
+./make-distribution.sh --name --skip-java-test -Phadoop-2.4 -Pyarn || { echo "Cannot make Spark distribution"; exit 1; }
 
 DISTDIR=kina-distribution-${RELEASE_VER}
 DISTFILENAME=${DISTDIR}.tgz
