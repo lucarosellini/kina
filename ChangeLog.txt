@@ -1,3 +1,33 @@
+[0.9.1]
+
+commit a21eb20f1eed9976f4d6f39cfe2d9cc2d22f3533
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 11:26:38 2014 +0100
+
+    [kina release prepare] preparing for version 0.9.1
+
+commit 42a717291e18e3d6852123dcbe93aa1f49cbadbf
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 11:20:47 2014 +0100
+
+    - Added patch to create custom spark distribution
+    - package script fixes
+
+commit 5f33f150b43376f23dfff7aa03169bc1c74236c2
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:47:38 2014 +0100
+
+    [kina release finish] next snapshot version 0.9.1-SNAPSHOT
+
+commit b280b486c8fc9e3ed94da419d5b1a212d6a0761d
+Merge: adfb2a7 403033b
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Sat Nov 29 13:47:10 2014 +0100
+
+    Merge tag 'version-0.9.0' into develop
+    
+    Finishing_Release_0.9.0 version-0.9.0
+
 [0.9.0]
 
 commit 6dbaf705e3ac5f4971a07d69e80ef7ac1b94bdc1
@@ -664,5 +694,3 @@ Author: Luca Rosellini <luca@stratio.com>
 Date:   Thu Jun 26 19:29:02 2014 +0200
 
     Merge branch 'release/version-0.3.3' into develop
-
-
