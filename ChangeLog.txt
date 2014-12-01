@@ -1,3 +1,56 @@
+[0.9.2]
+
+commit 49ec6c512264151d4e14c1f2a025c653d54e2a55
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:15:36 2014 +0100
+
+    [kina release prepare] preparing for version 0.9.2
+
+commit 470dd236f2aa42b78191ce62f1bb6a4ef6c2f167
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:12:57 2014 +0100
+
+    removed lock
+
+commit ec662a17a6814412a0ae8948763248367e0ebbc4
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:12:09 2014 +0100
+
+    fixed mistakenly marking class as abstract
+
+commit d3cb69718ab41337bfcfca71d04ef3d856d32e58
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:11:39 2014 +0100
+
+    Lowered org.apache.cassandra log level to INFO
+
+commit 974462e29cf4948267f37bec7ab2140694498282
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 14:11:48 2014 +0100
+
+    Added feature for exposing RAW Mongo BSONObject(s)
+
+commit 99231793cfd130815b418543d00d6f9cd2246edd
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 14:11:26 2014 +0100
+
+    Small agent refactors
+
+commit cc1f65f188597ae6545b26f55d75d0807c2ee793
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 11:27:57 2014 +0100
+
+    [kina release finish] next snapshot version 0.9.2-SNAPSHOT
+
+commit 22659f51b7d1eef3fa22b295fb72301c8c96f26e
+Merge: 42a7172 81170eb
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 11:27:50 2014 +0100
+
+    Merge tag 'version-0.9.1' into develop
+    
+    Finishing_Release_0.9.1 version-0.9.1
+
 [0.9.1]
 
 commit a21eb20f1eed9976f4d6f39cfe2d9cc2d22f3533
