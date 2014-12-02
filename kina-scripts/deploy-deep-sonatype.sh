@@ -31,6 +31,12 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-commons-${RELEASE_VER}-sources.jar -Dclassifier=sources -Dgpg.passphrase=$passphrase
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-commons-${RELEASE_VER}-javadoc.jar -Dclassifier=javadoc -Dgpg.passphrase=$passphrase
 
+cd ../kina-agent
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-agent-${RELEASE_VER}.jar -Dgpg.passphrase=$passphrase
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-agent-${RELEASE_VER}-sources.jar -Dclassifier=sources -Dgpg.passphrase=$passphrase
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-agent-${RELEASE_VER}-javadoc.jar -Dclassifier=javadoc -Dgpg.passphrase=$passphrase
+
+
 cd ../kina-cassandra
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-cassandra-${RELEASE_VER}.jar -Dgpg.passphrase=$passphrase
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=pom.xml -Dfile=target/kina-cassandra-${RELEASE_VER}-sources.jar -Dclassifier=sources -Dgpg.passphrase=$passphrase
