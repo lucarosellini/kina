@@ -1,3 +1,38 @@
+[0.9.3]
+
+commit f77f75d0845e1350dd5c03b536557fcdd1208d49
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 12:02:58 2014 +0100
+
+    [kina release prepare] preparing for version 0.9.3
+
+commit 7277111d5d468493c6631dc80f5d2582cdce825b
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 11:57:55 2014 +0100
+
+    Sonatype deployment fixes
+
+commit 5f6f9f66cb0c5a33fc51d7b28d82fea9cb3288fa
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 11:48:58 2014 +0100
+
+    added javadoc and source generation maven plugins to comply with sonatype's deployment rules
+
+commit 3fa86df90973d64497acee8c68ca72b09755025a
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:16:59 2014 +0100
+
+    [kina release finish] next snapshot version 0.9.3-SNAPSHOT
+
+commit 93bed3262f47b8b6c4121796aaf925e6704e1cca
+Merge: 470dd23 939bf56
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Dec 1 15:16:53 2014 +0100
+
+    Merge tag 'version-0.9.2' into develop
+    
+    Finishing_Release_0.9.2 version-0.9.2
+
 [0.9.2]
 
 commit 49ec6c512264151d4e14c1f2a025c653d54e2a55
