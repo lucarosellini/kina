@@ -31,6 +31,8 @@ import scala.runtime.AbstractFunction1;
 import scala.runtime.BoxedUnit;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import static kina.rdd.mongodb.MongoJavaRDDTest.*;
 import static org.testng.Assert.assertEquals;
@@ -47,7 +49,6 @@ class MyRawTransformer extends AbstractFunction1<BSONObject, BoxedUnit> implemen
 
     @Override
     public BoxedUnit apply(BSONObject v1) {
-        System.out.println(v1);
         return BoxedUnit.UNIT;
     }
 }
@@ -63,7 +64,10 @@ public class MongoCellRDDTest {
     public void testReadingRDD() {
 
         String hostConcat = MongoJavaRDDTest.HOST.concat(":").concat(MongoJavaRDDTest.PORT.toString());
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<Cells> inputConfigEntity = MongoConfigFactory.createMongoDB()
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -83,7 +87,10 @@ public class MongoCellRDDTest {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<Cells> inputConfigEntity = MongoConfigFactory.createMongoDB()
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -113,7 +120,10 @@ public class MongoCellRDDTest {
     public void testBSONReadRDD(){
         String bsonFile = getClass().getClassLoader().getResource("dump/").getFile();
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
         MongoKinaConfig<Cells> inputConfigEntity =
                 MongoConfigFactory.createMongoDB()
                         .bsonFile(bsonFile, true)
@@ -135,7 +145,10 @@ public class MongoCellRDDTest {
     public void testRawBSONReadRDD(){
         String bsonFile = getClass().getClassLoader().getResource("dump/").getFile();
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<BSONObject> config =
                 MongoConfigFactory.createRawMongoConfig()
