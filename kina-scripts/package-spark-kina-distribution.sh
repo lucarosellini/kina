@@ -55,7 +55,7 @@ RELEASE_VER=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dex
 
 cd ${TMPDIR}/
 
-git flow init || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
+git flow init -d || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
 git flow release start version-$RELEASE_VER || { echo "Cannot create $RELEASE_VER branch"; exit 1; }
 
 echo "Updating pom version numbers"
