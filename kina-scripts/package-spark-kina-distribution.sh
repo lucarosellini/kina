@@ -58,11 +58,13 @@ cd ${TMPDIR}/
 git flow init || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
 git flow release start version-$RELEASE_VER || { echo "Cannot create $RELEASE_VER branch"; exit 1; }
 
-git status
-
 echo "Updating pom version numbers"
 cd ${TMPDIR}/
 mvn -q versions:set -DnewVersion=${RELEASE_VER} || { echo "Cannot modify pom file with next version number"; exit 1; }
+
+echo "Building Kina ${RELEASE_VER} ..."
+mvn -q clean package -DskipTests || { echo "Cannot build Kina $RELEASE_VER "; exit 1; }
+mvn -q test || { echo "Tests failed for Kina $RELEASE_VER "; exit 1; }
 
 #fix version number for travis CI
 sed -i -e s/\?branch=develop\)/\?branch=version-${RELEASE_VER}/ README.md
@@ -73,9 +75,6 @@ git commit -a -m "[kina release prepare] preparing for version ${RELEASE_VER}"  
 
 echo " >>> Uploading new release branch to remote repository"
 git flow release publish version-$RELEASE_VER || { echo "Cannot publish $RELEASE_VER branch"; exit 1; }
-
-echo "Building Kina ${RELEASE_VER} ..."
-mvn -q clean package -DskipTests || { echo "Cannot deploy $RELEASE_VER of Kina"; exit 1; }
 
 mkdir -p ${TMPDIR}/lib || { echo "Cannot create output lib directory"; exit 1; }
 
@@ -139,7 +138,6 @@ git commit -a -m "[kina release finish] next snapshot version ${next_version}" |
 git push origin || { echo "Cannot push new version: ${next_version}"; exit 1; }
 
 echo "RELEASE_VER=$RELEASE_VER"
-#echo "CASS_VER=$CASS_VER"
 
 # Clone spark repo from github
 git clone ${SPARK_REPO} ${TMPDIR_SPARK} || { echo "Cannot clone spark repo from github"; exit 1; }
