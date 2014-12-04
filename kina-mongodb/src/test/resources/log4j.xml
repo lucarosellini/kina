@@ -47,24 +47,24 @@
         <priority value="FATAL"/>
     </category>
 
-    <category name="kina.config">
-        <priority value="DEBUG"/>
+    <category name="akka.remote">
+        <priority value="ERROR"/>
     </category>
+
+    <category name="de.flapdoodle">
+        <priority value="ERROR"/>
+    </category>
+
 
     <!--
-    <category name="org.apache.spark">
-        <priority value="DEBUG"/>
-    </category>
-
     <category name="kina.rdd">
         <priority value="DEBUG"/>
     </category>
     -->
 
     <root>
-        <priority value="INFO"/>
+        <priority value="WARN"/>
         <appender-ref ref="console"/>
-        <appender-ref ref="fileAppender"/>
     </root>
 
 </log4j:configuration>
