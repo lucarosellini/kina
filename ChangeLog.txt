@@ -1,3 +1,62 @@
+[0.9.4]
+
+commit b176801ee2961d201f79eac37f9338f0ff023fe9
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 17:21:06 2014 +0100
+
+    [kina release prepare] preparing for version 0.9.4
+
+commit 4a9360a92d1b0ccd08fe6a23bef8a75cc1aae8c8
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 17:14:46 2014 +0100
+
+    disabled BSON processing
+
+commit 7bd063474c6fc477ead36da53c1d969b3fd81c53
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 16:31:26 2014 +0100
+
+    fixed deploy scripts
+
+commit afa08deb35a977da080047231900b414102e79d0
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 16:31:11 2014 +0100
+
+    changed log levels
+
+commit e37f90be8973a6228f0d6cdeb8065ecb48be356a
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 16:30:06 2014 +0100
+
+    changed log levels
+
+commit 6bc579648b4125c4d29aaa6a4583ad55c800aad4
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 16:29:41 2014 +0100
+
+    changed snappy to lzf compression
+
+commit ee7891c7b8e7dbb2ae58da03123d24642db920e3
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 15:49:45 2014 +0100
+
+    bump spark version to 1.1.1
+
+commit 3a49a92be5dd4851485043d928697918c8a83d1e
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 12:06:35 2014 +0100
+
+    [kina release finish] next snapshot version 0.9.4-SNAPSHOT
+
+commit f480c3386e2edb6713c42932cd7087cf667511ee
+Merge: 7277111 b11e3d5
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Dec 2 12:06:27 2014 +0100
+
+    Merge tag 'version-0.9.3' into develop
+    
+    Finishing_Release_0.9.3 version-0.9.3
+
 [0.9.3]
 
 commit f77f75d0845e1350dd5c03b536557fcdd1208d49
