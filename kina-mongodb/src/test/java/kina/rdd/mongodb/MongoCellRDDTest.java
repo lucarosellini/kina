@@ -136,9 +136,8 @@ public class MongoCellRDDTest {
         RDD<Cells> rdd = context.mongoRDD(inputConfigEntity);
 
         assertTrue(rdd.count() > 0);
-        System.out.println(rdd.count());
 
-        rdd.foreach(new MyTransformer());
+        //rdd.foreach(new MyTransformer());
     }
 
     @Test
@@ -162,9 +161,8 @@ public class MongoCellRDDTest {
         RDD<BSONObject> rdd = context.mongoRDD(config);
 
         assertTrue(rdd.count() > 0);
-        System.out.println(rdd.count());
 
-        rdd.foreach(new MyRawTransformer());
+        //rdd.foreach(new MyRawTransformer());
     }
 
 //    @Test

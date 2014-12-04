@@ -315,9 +315,8 @@ public class MongoEntityRDDTest implements Serializable {
         RDD<AccountEntity> rdd = context.mongoRDD(inputConfigEntity);
 
         assertTrue(rdd.count() > 0);
-        System.out.println(rdd.count());
 
-        rdd.foreach(new MyEntityTransformer());
+        //rdd.foreach(new MyEntityTransformer());
     }
 
 
