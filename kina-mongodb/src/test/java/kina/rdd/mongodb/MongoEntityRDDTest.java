@@ -38,9 +38,7 @@ import scala.runtime.AbstractFunction1;
 import scala.runtime.BoxedUnit;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static kina.rdd.mongodb.MongoJavaRDDTest.*;
 import static org.testng.Assert.*;
@@ -91,7 +89,11 @@ public class MongoEntityRDDTest implements Serializable {
     @Test
     public void testReadingRDD() {
         String hostConcat = MongoJavaRDDTest.HOST.concat(":").concat(MongoJavaRDDTest.PORT.toString());
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<MessageTestEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(MessageTestEntity.class)
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -111,7 +113,10 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<MessageTestEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(MessageTestEntity.class)
                 .host(hostConcat).database(DATABASE).collection(COLLECTION_INPUT).initialize();
@@ -143,7 +148,10 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<BookEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(BookEntity.class)
                 .host(hostConcat).database("book").collection("input")
@@ -238,7 +246,10 @@ public class MongoEntityRDDTest implements Serializable {
 
         String hostConcat = HOST.concat(":").concat(PORT.toString());
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
         MongoKinaConfig<BookEntity> inputConfigEntity = MongoConfigFactory.createMongoDB(BookEntity.class)
                 .host(hostConcat).database("book").collection("input").inputColumns("metadata").initialize();
@@ -291,7 +302,10 @@ public class MongoEntityRDDTest implements Serializable {
     public void testBSONReadRDD(){
         String bsonFile = getClass().getClassLoader().getResource("dump/business/account.bson").getFile();
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest");
+        Map<String,String> opts = new HashMap<>();
+        opts.put("spark.io.compression.codec", "lzf");
+
+        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
         MongoKinaConfig<AccountEntity> inputConfigEntity =
                 MongoConfigFactory.createMongoDB(AccountEntity.class)
                         .bsonFile(bsonFile, false)
@@ -301,9 +315,8 @@ public class MongoEntityRDDTest implements Serializable {
         RDD<AccountEntity> rdd = context.mongoRDD(inputConfigEntity);
 
         assertTrue(rdd.count() > 0);
-        System.out.println(rdd.count());
 
-        rdd.foreach(new MyEntityTransformer());
+        //rdd.foreach(new MyEntityTransformer());
     }
 
 
