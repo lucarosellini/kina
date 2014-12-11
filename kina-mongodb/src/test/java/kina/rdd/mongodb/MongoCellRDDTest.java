@@ -16,42 +16,21 @@
 
 package kina.rdd.mongodb;
 
-import com.mongodb.DBObject;
-import kina.config.MongoKinaConfig;
 import kina.config.MongoConfigFactory;
-import kina.config.RawMongoKinaConfig;
+import kina.config.MongoKinaConfig;
 import kina.context.MongoKinaContext;
 import kina.entity.Cells;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.rdd.RDD;
-import org.bson.BSONObject;
 import org.testng.annotations.Test;
-import scala.runtime.AbstractFunction1;
-import scala.runtime.BoxedUnit;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import static kina.rdd.mongodb.MongoJavaRDDTest.*;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
-class MyTransformer extends AbstractFunction1<Cells, BoxedUnit> implements Serializable {
-
-    @Override
-    public BoxedUnit apply(Cells v1) {
-        return BoxedUnit.UNIT;
-    }
-}
-class MyRawTransformer extends AbstractFunction1<BSONObject, BoxedUnit> implements Serializable {
-
-    @Override
-    public BoxedUnit apply(BSONObject v1) {
-        return BoxedUnit.UNIT;
-    }
-}
 /**
  * Created by rcrespo on 16/07/14.
  */
@@ -65,7 +44,6 @@ public class MongoCellRDDTest {
 
         String hostConcat = MongoJavaRDDTest.HOST.concat(":").concat(MongoJavaRDDTest.PORT.toString());
         Map<String,String> opts = new HashMap<>();
-        opts.put("spark.io.compression.codec", "lzf");
 
         MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
 
@@ -116,54 +94,8 @@ public class MongoCellRDDTest {
 
     }
 
-    @Test
-    public void testBSONReadRDD(){
-        String bsonFile = getClass().getClassLoader().getResource("dump/").getFile();
 
-        Map<String,String> opts = new HashMap<>();
-        opts.put("spark.io.compression.codec", "lzf");
 
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
-        MongoKinaConfig<Cells> inputConfigEntity =
-                MongoConfigFactory.createMongoDB()
-                        .bsonFile(bsonFile, true)
-                        .bsonFilesExcludePatterns(
-                                new String[]{
-                                        "[\\w\\W]*\\.metadata\\.json$",
-                                        "[\\w\\W]*\\.indexes\\.bson$"})
-                        .initialize();
-
-        RDD<Cells> rdd = context.mongoRDD(inputConfigEntity);
-
-        assertTrue(rdd.count() > 0);
-
-        //rdd.foreach(new MyTransformer());
-    }
-
-    @Test
-    public void testRawBSONReadRDD(){
-        String bsonFile = getClass().getClassLoader().getResource("dump/").getFile();
-
-        Map<String,String> opts = new HashMap<>();
-        opts.put("spark.io.compression.codec", "lzf");
-
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
-
-        MongoKinaConfig<BSONObject> config =
-                MongoConfigFactory.createRawMongoConfig()
-                        .bsonFile(bsonFile, true)
-                        .bsonFilesExcludePatterns(
-                                new String[]{
-                                        "[\\w\\W]*\\.metadata\\.json$",
-                                        "[\\w\\W]*\\.indexes\\.bson$"})
-                        .initialize();
-
-        RDD<BSONObject> rdd = context.mongoRDD(config);
-
-        assertTrue(rdd.count() > 0);
-
-        //rdd.foreach(new MyRawTransformer());
-    }
 
 //    @Test
 //    public void testTransform() {

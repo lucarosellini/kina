@@ -43,47 +43,12 @@ import java.util.*;
 import static kina.rdd.mongodb.MongoJavaRDDTest.*;
 import static org.testng.Assert.*;
 
-class MyEntityTransformer extends AbstractFunction1<AccountEntity, BoxedUnit> implements Serializable {
 
-    @Override
-    public BoxedUnit apply(AccountEntity v1) {
-        assertNotNull(v1.getAccountAlarm());
-        assertNotNull(v1.getAccountAlarm().getAlarmTxFilter());
-
-        List<TransactionFilter> txsFilt = v1.getAccountAlarm().getAlarmTxFilter();
-
-        for (TransactionFilter f : txsFilt) {
-            assertNotNull(f.getCategories());
-            assertTrue(f.getCategories().size() > 0);
-            assertNotNull(f.getThreshold());
-        }
-
-        assertNotNull(v1.getAccountAlarm().getAlarmTxFilter().iterator());
-        assertNotNull(v1.getAccountAlarm().getBalanceThreshold());
-
-        assertNotNull(v1.getAccountAlarm().getEnabledByType());
-
-        assertTrue(v1.getAccountAlarm().getEnabledByType().size() > 0);
-
-        assertNotNull(v1.getAlias());
-
-        assertTrue(StringUtils.isNotEmpty(v1.getCcc()));
-        assertTrue(StringUtils.isEmpty(v1.getUserAlias()));
-
-        assertNotNull(v1.getAccountId());
-        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getBank()));
-        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getBranch()));
-        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getControlDigits()));
-        assertTrue(StringUtils.isNotEmpty(v1.getAccountId().getNumber()));
-        
-        return BoxedUnit.UNIT;
-    }
-}
 
 /**
  * Created by rcrespo on 18/06/14.
  */
-@Test(suiteName = "mongoRddTests", groups = {"MongoEntityRDDTest"})
+@Test(suiteName = "mongoRddTests", groups = {"MongoEntityRDDTest"}, dependsOnGroups = {"MongoCellRDDTest"})
 public class MongoEntityRDDTest implements Serializable {
 
     @Test
@@ -298,26 +263,6 @@ public class MongoEntityRDDTest implements Serializable {
 
     }
 
-    @Test
-    public void testBSONReadRDD(){
-        String bsonFile = getClass().getClassLoader().getResource("dump/business/account.bson").getFile();
-
-        Map<String,String> opts = new HashMap<>();
-        opts.put("spark.io.compression.codec", "lzf");
-
-        MongoKinaContext context = new MongoKinaContext("local", "kinaContextTest", "", new String[]{}, opts);
-        MongoKinaConfig<AccountEntity> inputConfigEntity =
-                MongoConfigFactory.createMongoDB(AccountEntity.class)
-                        .bsonFile(bsonFile, false)
-                        //.bsonFilesExcludePatterns(new String[]{".*?metadata.json",".*?indexes.json"})
-                        .initialize();
-
-        RDD<AccountEntity> rdd = context.mongoRDD(inputConfigEntity);
-
-        assertTrue(rdd.count() > 0);
-
-        //rdd.foreach(new MyEntityTransformer());
-    }
 
 
 }

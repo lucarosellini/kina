@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
 /**
  * Created by rcrespo on 16/07/14.
  */
-@Test(suiteName = "mongoRddTests", groups = {"MongoJavaRDDTest"})
+@Test(suiteName = "mongoRddTests", groups = {"MongoJavaRDDTest"}, dependsOnGroups = {"MongoEntityRDDTest"})
 public class MongoJavaRDDTest {
 
 
