@@ -2,11 +2,14 @@ package kina.config;
 
 import org.apache.hadoop.conf.Configurable;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.ContentSummary;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,13 +39,23 @@ public class KinaMongoPathFilter implements PathFilter, Configurable {
 
         boolean condition = true;
 
-        for (String pattern : excludePatterns) {
-            Pattern p = Pattern.compile(pattern);
-            Matcher m = p.matcher(path.toString());
-            condition &= !m.matches();
+        try {
+            FileSystem fs = path.getFileSystem(conf);
+            ContentSummary cSummary = fs.getContentSummary(path);
+            long length = cSummary.getLength();
+            condition &= length > 0;
+
+        } catch (IOException e) {}
+
+        if (condition) {
+            for (String pattern : excludePatterns) {
+                Pattern p = Pattern.compile(pattern);
+                Matcher m = p.matcher(path.toString());
+                condition &= !m.matches();
+            }
         }
 
-        LOG.debug(path.toString() + " accepted: " + condition);
+        LOG.debug("'"+path.toString() + "' accepted: " + condition);
 
         return condition;
     }
