@@ -168,23 +168,6 @@
                 </exclusion>
             </exclusions>
 		</dependency>
-		<!-- 
-        <dependency>
-            <groupId>com.stratio.cassandra</groupId>
-            <artifactId>cassandra-driver-core</artifactId>
-            <version>${datastax.driver.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>netty</artifactId>
-                    <groupId>io.netty</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-		-->
         <!-- spark artifact -->
         <dependency>
             <groupId>org.apache.spark</groupId>
