@@ -1,6 +1,9 @@
 env: MAVEN_OPTS="-Xmx1g"
 language: java
 jdk: oraclejdk7
+before_install:
+  - sudo rm -rf /var/lib/cassandra/*
+  - wget http://downloads.datastax.com/community/dsc-cassandra-2.1.2-bin.tar.gz && tar -xvzf dsc-cassandra-2.1.2-bin.tar.gz && sudo sh dsc-cassandra-2.1.2/bin/cassandra
 cache:
   directories:
   - $HOME/.m2
