@@ -247,11 +247,4 @@ public class CassandraServer {
         return false;
     }
 
-    public static boolean available(int port) {
-        try (Socket ignored = new Socket(Constants.DEFAULT_CASSANDRA_HOST, port)) {
-            return false;
-        } catch (IOException ignored) {
-            return true;
-        }
-    }
 }

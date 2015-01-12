@@ -29,6 +29,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import kina.embedded.CassandraServer;
 import kina.utils.Constants;
+import kina.utils.Utils;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.log4j.Logger;
 import org.testng.annotations.AfterSuite;
@@ -241,7 +242,7 @@ public abstract class AbstractKinaContextAwareTest {
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
 
-        if (cassandraServer.available(CassandraServer.CASSANDRA_CQL_PORT)){
+        if (Utils.available(CassandraServer.CASSANDRA_CQL_PORT)){
             logger.info("External cassandra NOT found, trying with embedded server");
             cassandraServer.start();
         } else {

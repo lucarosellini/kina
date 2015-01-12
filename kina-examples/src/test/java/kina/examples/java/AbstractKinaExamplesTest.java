@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import com.google.common.io.Resources;
+import kina.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -111,7 +112,7 @@ public class AbstractKinaExamplesTest {
 
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
-        if (cassandraServer.available(CassandraServer.CASSANDRA_CQL_PORT)){
+        if (Utils.available(CassandraServer.CASSANDRA_CQL_PORT)){
             logger.info("External cassandra NOT found, trying with embedded server");
             cassandraServer.start();
         } else {
