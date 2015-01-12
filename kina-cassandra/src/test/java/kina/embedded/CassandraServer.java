@@ -221,8 +221,9 @@ public class CassandraServer {
         }
         System.setProperty("cassandra.config", "file:" + dirPath + yamlFilePath);
         //System.setProperty("log4j.configuration", "file:" + dirPath + "/log4j.xml");
-        System.setProperty("cassandra-foreground", "true");
-        System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "1");
+        //System.setProperty("cassandra-foreground", "true");
+        //System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "1");
+        System.setProperty("cassandra.boot_without_jna","true");
 
         cleanupAndLeaveDirs();
 
@@ -234,6 +235,7 @@ public class CassandraServer {
         }
 
         try {
+            logger.info("Sleeping for " + WAIT_SECONDS);
             TimeUnit.SECONDS.sleep(WAIT_SECONDS);
         } catch (InterruptedException e) {
             logger.error(e);
