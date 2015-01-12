@@ -25,7 +25,7 @@ import static org.testng.Assert.assertTrue;
 /**
  * Created by luca on 10/12/14.
  */
-@Test(suiteName = "mongoRddTests", groups = {"BSONReadRDDTest"})
+@Test
 public class BSONReadRDDTest {
     private MongoKinaContext context;
 
