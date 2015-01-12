@@ -17,6 +17,7 @@
 package kina.embedded;
 
 import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -59,9 +60,9 @@ public class CassandraServer {
         }
     }
 
-    public static final int CASSANDRA_THRIFT_PORT = 9360;
+    public static final int CASSANDRA_THRIFT_PORT = 9160;
 
-    public static final int CASSANDRA_CQL_PORT = 9242;
+    public static final int CASSANDRA_CQL_PORT = 9042;
     private static final Logger logger = Logger.getLogger(CassandraServer.class);
 
     private static final int WAIT_SECONDS = 10;
@@ -155,7 +156,7 @@ public class CassandraServer {
         return startupCommands;
     }
 
-    private void initKeySpace() {
+    public void initKeySpace() {
         if (startupCommands == null || startupCommands.length == 0) {
             return;
         }
@@ -244,5 +245,13 @@ public class CassandraServer {
 
         initKeySpace();
         return false;
+    }
+
+    public static boolean available(int port) {
+        try (Socket ignored = new Socket(Constants.DEFAULT_CASSANDRA_HOST, port)) {
+            return false;
+        } catch (IOException ignored) {
+            return true;
+        }
     }
 }

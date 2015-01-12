@@ -194,6 +194,8 @@ public abstract class AbstractKinaContextAwareTest {
 
     @AfterSuite
     protected void disposeServerAndRdd() throws IOException {
+        executeCustomCQL("DROP KEYSPACE "+ quote(KEYSPACE_NAME), "DROP KEYSPACE "+ quote(OUTPUT_KEYSPACE_NAME));
+
         if (cassandraServer != null) {
             cassandraServer.shutdown();
         }
@@ -235,9 +237,17 @@ public abstract class AbstractKinaContextAwareTest {
                 createCFIndex, /*createLuceneIndex,*/
                 createCql3CF, createCql3CFIndex, createCql3CollectionsCF, initialDataset, useOutputKeyspace};
 
+
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
-        cassandraServer.start();
+
+        if (cassandraServer.available(CassandraServer.CASSANDRA_CQL_PORT)){
+            logger.info("External cassandra NOT found, trying with embedded server");
+            cassandraServer.start();
+        } else {
+            logger.info("External cassandra found");
+            cassandraServer.initKeySpace();
+        }
 
         checkTestData();
     }

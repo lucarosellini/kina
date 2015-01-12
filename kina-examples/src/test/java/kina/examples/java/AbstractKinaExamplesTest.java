@@ -111,8 +111,13 @@ public class AbstractKinaExamplesTest {
 
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
-        cassandraServer.start();
-
+        if (cassandraServer.available(CassandraServer.CASSANDRA_CQL_PORT)){
+            logger.info("External cassandra NOT found, trying with embedded server");
+            cassandraServer.start();
+        } else {
+            logger.info("External cassandra found");
+            cassandraServer.initKeySpace();
+        }
         Cluster cluster = Cluster.builder().withPort(CassandraServer.CASSANDRA_CQL_PORT)
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
 

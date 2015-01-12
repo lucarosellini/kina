@@ -1,6 +1,8 @@
 env: MAVEN_OPTS="-Xmx1g"
 language: java
 jdk: oraclejdk7
+services:
+  - cassandra
 cache:
   directories:
   - $HOME/.m2
