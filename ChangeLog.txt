@@ -1,3 +1,152 @@
+[0.9.5]
+
+commit 5f5a420dc71aec71efe3fdf801044b5990a2d514
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 12:48:26 2015 +0100
+
+    [kina release prepare] preparing for version 0.9.5
+
+commit f84e15eec4de068b60c9ef3726dabcc5b946cd9a
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 12:02:53 2015 +0100
+
+    Increased test heap space
+
+commit a919bf3419cd3ebd70cebceb20d38fdf61631807
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 11:47:10 2015 +0100
+
+    Increased test heap space
+
+commit 988b7a2f7325a2f6d3649f89fefb4f34fd902e42
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 11:35:33 2015 +0100
+
+    Dropping existing keyspaces on test suite initialization
+
+commit b662b410e844a4e20b5d76f030965fc049538cdd
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 11:34:37 2015 +0100
+
+    disabled service cassandra (using embedded server)
+
+commit 86d71678229e7765b69b4243303477774ff5545a
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Tue Jan 13 11:16:44 2015 +0100
+
+    fixed test init
+
+commit c4c3e148ec114f24af1b588143ef91a6ac04b366
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 17:58:47 2015 +0100
+
+    using cassandra 2.1.2
+
+commit 68497d379f8f0fc9156436d2e883445e02cf83fc
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 17:58:32 2015 +0100
+
+    fixed ports
+
+commit 7fb389e602968fd0a95eecd111b2c9cec0860358
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 17:36:54 2015 +0100
+
+    removed cassandra service from travis-CI conf
+
+commit bbc6e2178ec331c19ede6f9ab190dda161626cb9
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 17:23:12 2015 +0100
+
+    method 'available()' moved to Utils classes
+
+commit f1a664bfd0cb702f77eea525918b7dddf76a7109
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:52:58 2015 +0100
+
+    optionally run test against external cassandra server
+
+commit a65d2365c9d4682b2ad43d88bb53d437c5a0b721
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:31:24 2015 +0100
+
+    added maven artifacts cache to travis CI
+
+commit 103bf629b0ce7bff3eb4ef5303a24d8a0abd0fc3
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:27:31 2015 +0100
+
+    lowered travis-ci Xmx to 1g
+
+commit 39099a950fae611cc9d1c61d1a8707a32cef6d06
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:27:12 2015 +0100
+
+    pom cleanup
+
+commit 869fdebdcea9cb727ebde18a8de858469c160dbf
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:15:12 2015 +0100
+
+    travis-ci environment variables
+
+commit 2c2f42a84077b93ee23798da2c2b322d1bf88608
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:15:00 2015 +0100
+
+    tuned system properties for embedded Cassandra instance
+
+commit 1b1cf843cb80de63b253b5bc5b9efa4160f7d05c
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Mon Jan 12 16:14:43 2015 +0100
+
+    added exclusion for io.netty:netty-all
+
+commit 7a08bed59f3bc35e63106f9c21f218a76c15e9c8
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 11 09:38:28 2014 +0100
+
+    mongo tests refactor
+
+commit fc9112ec1c4b437c9aa7f75769b52ac6a9916485
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 11 09:38:12 2014 +0100
+
+    empty input files are not filtered out
+
+commit c3cbf82a43db2366eeac1d033975e76ca46d1995
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 11 09:37:28 2014 +0100
+
+    build scripts refactor
+
+commit 0c49a493a6a9aff748e76335deaad9a74e521e73
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 11 09:36:33 2014 +0100
+
+    Bumped Cassandra version to 2.1.2
+
+commit f0443512fa126db815c8303274b015952f04f21e
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 17:40:29 2014 +0100
+
+    default repos for git flow init
+
+commit 7d32643a46a64ad3ee042be876aaa3f4991961cb
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 17:22:34 2014 +0100
+
+    [kina release finish] next snapshot version 0.9.5-SNAPSHOT
+
+commit 083720361feb193e2aee029e16c6973d86204458
+Merge: 4a9360a 56f9448
+Author: Luca Rosellini <luca@fintonic.com>
+Date:   Thu Dec 4 17:22:25 2014 +0100
+
+    Merge tag 'version-0.9.4' into develop
+    
+    Finishing_Release_0.9.4 version-0.9.4
+
 [0.9.4]
 
 commit b176801ee2961d201f79eac37f9338f0ff023fe9
