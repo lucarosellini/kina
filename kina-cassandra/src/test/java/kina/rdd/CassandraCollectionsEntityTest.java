@@ -39,7 +39,7 @@ import kina.utils.Constants;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.log4j.Logger;
 import org.apache.spark.rdd.RDD;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import scala.Function1;
 import scala.reflect.ClassTag$;
@@ -56,12 +56,18 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
 
     private static Logger logger = Logger.getLogger(CassandraCollectionsEntityTest.class);
 
-    @BeforeClass
+    @BeforeMethod
     protected void initServerAndRDD() throws java.io.IOException, URISyntaxException, ConfigurationException,
             InterruptedException {
+        /*logger.warn(">>>>>> CassandraCollectionsEntityTest.initServerAndRDD");
+
         super.initServerAndRDD();
+        */
+        logger.warn(">>>>>> LOADING DATA");
 
         loadCollectionsData();
+
+        initConfigsAndRdd();
     }
 
     static void loadCollectionsData() {
@@ -116,6 +122,9 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
         Session session = cluster.connect(quote(KEYSPACE_NAME));
         session.execute(batch);
+
+        session.close();
+
     }
 
     @Override
@@ -226,7 +235,7 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
 
     @Override
     public void testSaveToCassandra() {
-
+        assertTrue(getRDD().count() > 0);
         Function1<Cql3CollectionsTestEntity, Cql3CollectionsTestEntity> mappingFunc =
                 new TestEntityAbstractSerializableFunction();
 
@@ -234,10 +243,7 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
                 getRDD().map(mappingFunc, ClassTag$.MODULE$.<Cql3CollectionsTestEntity>apply
                         (Cql3CollectionsTestEntity.class));
 
-        try {
-            executeCustomCQL("DROP TABLE " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
-        } catch (Exception e) {
-        }
+        executeCustomCQL("DROP TABLE IF EXISTS " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
 
         assertTrue(mappedRDD.count() > 0);
 
@@ -301,13 +307,12 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
 
     @Override
     public void testSimpleSaveToCassandra() {
+        assertTrue(getRDD().count() > 0);
+
         CassandraKinaConfig<Cql3CollectionsTestEntity> writeConfig = getWriteConfig();
         writeConfig.createTableOnWrite(Boolean.FALSE);
 
-        try {
-            executeCustomCQL("DROP TABLE " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
-        } catch (Exception e) {
-        }
+        executeCustomCQL("DROP TABLE IF EXISTS " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
 
         try {
             CassandraRDD.saveRDDToCassandra(getRDD(), writeConfig);
@@ -320,17 +325,14 @@ public class CassandraCollectionsEntityTest extends CassandraRDDTest<Cql3Collect
         }
 
         CassandraRDD.saveRDDToCassandra(getRDD(), writeConfig);
-
         checkSimpleTestData();
     }
 
     @Override
     public void testCql3SaveToCassandra() {
+        assertTrue(getRDD().count() > 0);
 
-        try {
-            executeCustomCQL("DROP TABLE " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
-        } catch (Exception e) {
-        }
+        executeCustomCQL("DROP TABLE IF EXISTS " + OUTPUT_KEYSPACE_NAME + "." + OUTPUT_CQL3_COLLECTION_COLUMN_FAMILY);
 
         CassandraKinaConfig<Cql3CollectionsTestEntity> writeConfig = getWriteConfig();
 

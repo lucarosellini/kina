@@ -47,7 +47,7 @@ public abstract class AbstractKinaContextAwareTest {
     private Logger logger = Logger.getLogger(getClass());
     protected static CassandraKinaContext context;
 
-    private static CassandraServer cassandraServer;
+    protected static CassandraServer cassandraServer;
     public static final String KEYSPACE_NAME = "Test_Keyspace";
     public static final String COLUMN_FAMILY = "test_Page";
     public static final String OUTPUT_KEYSPACE_NAME = "out_test_keyspace";
@@ -195,7 +195,10 @@ public abstract class AbstractKinaContextAwareTest {
 
     @AfterSuite
     protected void disposeServerAndRdd() throws IOException {
-        executeCustomCQL("DROP KEYSPACE "+ quote(KEYSPACE_NAME), "DROP KEYSPACE "+ quote(OUTPUT_KEYSPACE_NAME));
+
+        executeCustomCQL(
+                "DROP KEYSPACE IF EXISTS "+ quote(KEYSPACE_NAME),
+                "DROP KEYSPACE IF EXISTS "+ quote(OUTPUT_KEYSPACE_NAME));
 
         if (cassandraServer != null) {
             cassandraServer.shutdown();

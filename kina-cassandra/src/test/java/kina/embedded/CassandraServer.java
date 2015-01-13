@@ -167,6 +167,7 @@ public class CassandraServer {
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
 
         try (Session session = cluster.connect()) {
+
             for (String command : startupCommands) {
                 try {
 
