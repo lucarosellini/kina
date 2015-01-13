@@ -1,4 +1,6 @@
-env: MAVEN_OPTS="-Xmx4g"
+env:
+  global:
+    - JAVA_OPTS=-Xmx4g
 language: java
 jdk: oraclejdk7
 cache:
