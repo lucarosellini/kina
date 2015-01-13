@@ -5,12 +5,12 @@ KINA_REPO="git@github.com:lucarosellini/kina.git"
 
 echo " >>> Kina DEPLOYMENT <<< "
 
-TAGVERSION="false"
+TAGVERSION="true"
 
 LOCAL_EDITOR=$(which vim)
 
 if [ -z "$LOCAL_EDITOR" ]; then
-    $LOCAL_EDITOR=$(which vi)
+    LOCAL_EDITOR=$(which vi)
 fi
 
 if [ -z "$LOCAL_EDITOR" ]; then
@@ -71,14 +71,13 @@ if [ "false" == $TAGVERSION ]; then
     exit 0
 fi
 
+git commit -a -m "[kina release prepare] preparing for version ${RELEASE_VER}"  || { echo "Cannot commit changes in kina-clone project"; exit 1; }
+
 git flow init -d || { echo "Cannot initialize git flow in kina-clone project"; exit 1; }
 git flow release start version-$RELEASE_VER || { echo "Cannot create $RELEASE_VER branch"; exit 1; }
 
-git commit -a -m "[kina release prepare] preparing for version ${RELEASE_VER}"  || { echo "Cannot commit changes in kina-clone project"; exit 1; }
-
 echo " >>> Uploading new release branch to remote repository"
 git flow release publish version-$RELEASE_VER || { echo "Cannot publish $RELEASE_VER branch"; exit 1; }
-
 
 # Generating ChangeLog
 git fetch --tags
