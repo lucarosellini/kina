@@ -225,6 +225,9 @@ public abstract class AbstractKinaContextAwareTest {
         logger.info("instantiating context");
         context = new CassandraKinaContext("local", "kinaContextTest");
 
+        String dropInputKeyspace =  "DROP KEYSPACE IF EXISTS " + quote(KEYSPACE_NAME);
+        String dropOuputKeyspace = "DROP KEYSPACE IF EXISTS " + quote(OUTPUT_KEYSPACE_NAME);
+
         String createKeyspace = "CREATE KEYSPACE " + quote(KEYSPACE_NAME)
                 + " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1 };";
 
@@ -237,7 +240,7 @@ public abstract class AbstractKinaContextAwareTest {
 
         String initialDataset = buildTestDataInsertBatch();
 
-        String[] startupCommands = new String[]{createKeyspace, createOutputKeyspace, useKeyspace, createCF,
+        String[] startupCommands = new String[]{dropInputKeyspace,dropOuputKeyspace, createKeyspace, createOutputKeyspace, useKeyspace, createCF,
                 createCFIndex, /*createLuceneIndex,*/
                 createCql3CF, createCql3CFIndex, createCql3CollectionsCF, initialDataset, useOutputKeyspace};
 
