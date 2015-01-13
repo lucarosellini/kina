@@ -75,6 +75,17 @@ public abstract class CassandraRDDTest<W> extends AbstractKinaContextAwareTest {
     protected void initServerAndRDD() throws IOException, URISyntaxException, ConfigurationException,
             InterruptedException {
 
+        logger.info("<<<<< DROPPING KEYSPACES >>>>>>");
+        executeCustomCQL(
+                "DROP KEYSPACE IF EXISTS " + quote(KEYSPACE_NAME),
+                "DROP KEYSPACE IF EXISTS " + quote(OUTPUT_KEYSPACE_NAME));
+
+        cassandraServer.initKeySpace();
+
+        initConfigsAndRdd();
+    }
+
+    protected void initConfigsAndRdd(){
         rddConfig = initReadConfig();
         writeConfig = initWriteConfig();
         rdd = initRDD();

@@ -36,6 +36,7 @@ import kina.utils.Constants;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.spark.rdd.RDD;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import scala.Function1;
 import scala.reflect.ClassTag$;
@@ -48,12 +49,14 @@ import static org.testng.Assert.*;
 @Test(suiteName = "cassandraRddTests", dependsOnGroups = "CassandraCollectionsEntityTest",
         groups = "CassandraCollectionsCellsTest")
 public class CassandraCollectionsCellsTest extends CassandraRDDTest<Cells> {
-    @BeforeClass
+
+    @BeforeMethod
     protected void initServerAndRDD() throws java.io.IOException, URISyntaxException, ConfigurationException,
             InterruptedException {
-        super.initServerAndRDD();
+        //super.initServerAndRDD();
 
         CassandraCollectionsEntityTest.loadCollectionsData();
+        initConfigsAndRdd();
     }
 
     @Override

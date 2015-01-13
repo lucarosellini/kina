@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 
 import org.apache.cassandra.db.marshal.AbstractType;
 import org.apache.cassandra.dht.IPartitioner;
+import org.apache.cassandra.dht.RingPosition;
 import org.apache.cassandra.dht.Token;
 
 import static com.google.common.collect.Iterables.*;
@@ -88,15 +89,14 @@ public class RangeUtils {
      * @param p the partitioner used in the cluster.
      * @return the merged lists of tokens transformed to Range(s). The returned collection is shuffled.
      */
-    static List<Range> mergeTokenRanges(Map<String, Iterable<Comparable>> tokens,
+    static <R extends RingPosition<R>> List<Range> mergeTokenRanges(Map<String, Iterable<Comparable>> tokens,
                                                          final Session session,
                                                          final IPartitioner p) {
         final Iterable<Comparable> allRanges = Ordering.natural().sortedCopy(concat(tokens.values()));
 
-
-
-        final Comparable maxValue = Ordering.natural().max(allRanges);
-        final Comparable minValue = (Comparable) p.minValue(maxValue.getClass()).getToken().token;
+        final Comparable<R> maxValue = Ordering.natural().max(allRanges);
+        final Class<R> maxValClazz = (Class<R>)maxValue.getClass();
+        final Comparable minValue = (Comparable)p.minValue(maxValClazz).getToken().getTokenValue();
 
         Function<Comparable, Set<Range>> map =
 				        new MergeTokenRangesFunction(maxValue, minValue, session, p, allRanges);

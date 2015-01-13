@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -318,4 +319,11 @@ public final class Utils {
 
     }
 
+    public static boolean available(int port) {
+        try (Socket ignored = new Socket(Constants.DEFAULT_CASSANDRA_HOST, port)) {
+            return false;
+        } catch (java.io.IOException ignored) {
+            return true;
+        }
+    }
 }

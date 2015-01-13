@@ -21,6 +21,7 @@ import kina.testentity.KinaScalaPageEntity
 import kina.config.{CassandraConfigFactory, CassandraKinaConfig}
 import kina.context.AbstractKinaContextAwareTest
 import kina.embedded.CassandraServer
+import kina.utils.Utils._
 import kina.utils.{Utils, Constants}
 import org.apache.spark.Partition
 import org.testng.Assert._
@@ -38,6 +39,11 @@ class ScalaCassandraEntityRDDTest extends AbstractKinaContextAwareTest {
 
   @BeforeClass
   protected def initServerAndRDD {
+    AbstractKinaContextAwareTest.executeCustomCQL("DROP KEYSPACE IF EXISTS " + quote(AbstractKinaContextAwareTest.KEYSPACE_NAME),
+      "DROP KEYSPACE IF EXISTS " + quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME))
+
+    AbstractKinaContextAwareTest.cassandraServer.initKeySpace
+
     rddConfig = initReadConfig
     writeConfig = initWriteConfig
     rdd = initRDD
@@ -127,12 +133,12 @@ class ScalaCassandraEntityRDDTest extends AbstractKinaContextAwareTest {
     val session: Session = cluster.connect
     var command: String = "select count(*) from " +
       Utils.quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME) + "." +
-      Utils.quote(AbstractKinaContextAwareTest.OUTPUT_COLUMN_FAMILY) + ";"
+      Utils.quote(OUTPUT_COLUMN_FAMILY) + ";"
     var rs: ResultSet = session.execute(command)
     assertEquals(rs.one.getLong(0), AbstractKinaContextAwareTest.entityTestDataSize)
     command = "select * from " +
       Utils.quote(AbstractKinaContextAwareTest.OUTPUT_KEYSPACE_NAME) + "." +
-        Utils.quote(AbstractKinaContextAwareTest.OUTPUT_COLUMN_FAMILY) + " WHERE \"id\" = 'e71aa3103bb4a63b9e7d3aa081c1dc5ddef85fa7';"
+        Utils.quote(OUTPUT_COLUMN_FAMILY) + " WHERE \"id\" = 'e71aa3103bb4a63b9e7d3aa081c1dc5ddef85fa7';"
     rs = session.execute(command)
     val row: Row = rs.one
     assertEquals(row.getString("domain_name"), "11870.com")

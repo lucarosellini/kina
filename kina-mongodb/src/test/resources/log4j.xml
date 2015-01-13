@@ -56,11 +56,10 @@
     </category>
 
 
-    <!--
-    <category name="kina.rdd">
+
+    <category name="kina.config">
         <priority value="DEBUG"/>
     </category>
-    -->
 
     <root>
         <priority value="WARN"/>

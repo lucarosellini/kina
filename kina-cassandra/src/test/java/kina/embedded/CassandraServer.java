@@ -17,6 +17,7 @@
 package kina.embedded;
 
 import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -59,9 +60,9 @@ public class CassandraServer {
         }
     }
 
-    public static final int CASSANDRA_THRIFT_PORT = 9360;
+    public static final int CASSANDRA_THRIFT_PORT = 9160;
 
-    public static final int CASSANDRA_CQL_PORT = 9242;
+    public static final int CASSANDRA_CQL_PORT = 9042;
     private static final Logger logger = Logger.getLogger(CassandraServer.class);
 
     private static final int WAIT_SECONDS = 10;
@@ -155,7 +156,7 @@ public class CassandraServer {
         return startupCommands;
     }
 
-    private void initKeySpace() {
+    public void initKeySpace() {
         if (startupCommands == null || startupCommands.length == 0) {
             return;
         }
@@ -166,6 +167,7 @@ public class CassandraServer {
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
 
         try (Session session = cluster.connect()) {
+
             for (String command : startupCommands) {
                 try {
 
@@ -221,8 +223,9 @@ public class CassandraServer {
         }
         System.setProperty("cassandra.config", "file:" + dirPath + yamlFilePath);
         //System.setProperty("log4j.configuration", "file:" + dirPath + "/log4j.xml");
-        System.setProperty("cassandra-foreground", "true");
-        System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "1");
+        //System.setProperty("cassandra-foreground", "true");
+        //System.setProperty("cassandra.skip_wait_for_gossip_to_settle", "1");
+        System.setProperty("cassandra.boot_without_jna","true");
 
         cleanupAndLeaveDirs();
 
@@ -234,6 +237,7 @@ public class CassandraServer {
         }
 
         try {
+            logger.info("Sleeping for " + WAIT_SECONDS);
             TimeUnit.SECONDS.sleep(WAIT_SECONDS);
         } catch (InterruptedException e) {
             logger.error(e);
@@ -243,4 +247,5 @@ public class CassandraServer {
         initKeySpace();
         return false;
     }
+
 }

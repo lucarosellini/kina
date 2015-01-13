@@ -29,6 +29,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import kina.embedded.CassandraServer;
 import kina.utils.Constants;
+import kina.utils.Utils;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.log4j.Logger;
 import org.testng.annotations.AfterSuite;
@@ -46,7 +47,7 @@ public abstract class AbstractKinaContextAwareTest {
     private Logger logger = Logger.getLogger(getClass());
     protected static CassandraKinaContext context;
 
-    private static CassandraServer cassandraServer;
+    protected static CassandraServer cassandraServer;
     public static final String KEYSPACE_NAME = "Test_Keyspace";
     public static final String COLUMN_FAMILY = "test_Page";
     public static final String OUTPUT_KEYSPACE_NAME = "out_test_keyspace";
@@ -194,6 +195,11 @@ public abstract class AbstractKinaContextAwareTest {
 
     @AfterSuite
     protected void disposeServerAndRdd() throws IOException {
+
+        executeCustomCQL(
+                "DROP KEYSPACE IF EXISTS "+ quote(KEYSPACE_NAME),
+                "DROP KEYSPACE IF EXISTS "+ quote(OUTPUT_KEYSPACE_NAME));
+
         if (cassandraServer != null) {
             cassandraServer.shutdown();
         }
@@ -219,6 +225,9 @@ public abstract class AbstractKinaContextAwareTest {
         logger.info("instantiating context");
         context = new CassandraKinaContext("local", "kinaContextTest");
 
+        String dropInputKeyspace =  "DROP KEYSPACE IF EXISTS " + quote(KEYSPACE_NAME);
+        String dropOuputKeyspace = "DROP KEYSPACE IF EXISTS " + quote(OUTPUT_KEYSPACE_NAME);
+
         String createKeyspace = "CREATE KEYSPACE " + quote(KEYSPACE_NAME)
                 + " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1 };";
 
@@ -231,13 +240,21 @@ public abstract class AbstractKinaContextAwareTest {
 
         String initialDataset = buildTestDataInsertBatch();
 
-        String[] startupCommands = new String[]{createKeyspace, createOutputKeyspace, useKeyspace, createCF,
+        String[] startupCommands = new String[]{dropInputKeyspace,dropOuputKeyspace, createKeyspace, createOutputKeyspace, useKeyspace, createCF,
                 createCFIndex, /*createLuceneIndex,*/
                 createCql3CF, createCql3CFIndex, createCql3CollectionsCF, initialDataset, useOutputKeyspace};
 
+
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
-        cassandraServer.start();
+
+        if (Utils.available(CassandraServer.CASSANDRA_CQL_PORT)){
+            logger.info("External cassandra NOT found, trying with embedded server");
+            cassandraServer.start();
+        } else {
+            logger.info("External cassandra found");
+            cassandraServer.initKeySpace();
+        }
 
         checkTestData();
     }

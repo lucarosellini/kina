@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import com.google.common.io.Resources;
+import kina.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -96,7 +97,9 @@ public class AbstractKinaExamplesTest {
     @BeforeSuite
     protected void initContextAndServer() throws ConfigurationException, IOException, InterruptedException {
         logger.info("instantiating context");
-        //context = new KinaContext("local", "kinaContextTest");
+        String dropInputKeyspace =  "DROP KEYSPACE IF EXISTS " + quote(KEYSPACE_NAME);
+        String dropOuputKeyspace = "DROP KEYSPACE IF EXISTS " + quote(OUTPUT_KEYSPACE_NAME);
+        String dropCrawlerKeyspace = "DROP KEYSPACE IF EXISTS " + quote(CRAWLER_KEYSPACE_NAME);
 
         String createKeyspace = "CREATE KEYSPACE " + KEYSPACE_NAME
                 + " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 2 };";
@@ -107,12 +110,17 @@ public class AbstractKinaExamplesTest {
         String useKeyspace = "USE " + KEYSPACE_NAME + ";";
 
         String[] startupCommands =
-                new String[]{createKeyspace, createCrawlerKeyspace, useKeyspace, createTweetCF, createCrawlerCF};
+                new String[]{dropInputKeyspace,dropOuputKeyspace,dropCrawlerKeyspace,createKeyspace, createCrawlerKeyspace, useKeyspace, createTweetCF, createCrawlerCF};
 
         cassandraServer = new CassandraServer();
         cassandraServer.setStartupCommands(startupCommands);
-        cassandraServer.start();
-
+        if (Utils.available(CassandraServer.CASSANDRA_CQL_PORT)){
+            logger.info("External cassandra NOT found, trying with embedded server");
+            cassandraServer.start();
+        } else {
+            logger.info("External cassandra found");
+            cassandraServer.initKeySpace();
+        }
         Cluster cluster = Cluster.builder().withPort(CassandraServer.CASSANDRA_CQL_PORT)
                 .addContactPoint(Constants.DEFAULT_CASSANDRA_HOST).build();
 
